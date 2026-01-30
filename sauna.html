@@ -327,34 +327,65 @@
             }
             .text-column {
                 max-width: 100%;
-                padding: 24px 24px 40px;
+                padding: 16px 24px 40px;
                 min-height: auto;
             }
             .image-column {
-                min-height: 50vh;
-                padding: 20px;
-                padding-bottom: 0;
+                min-height: auto;
+                padding: 60px 20px 0;
+            }
+            .image-column img {
+                max-height: 45vh;
             }
             .modal-content {
                 flex-direction: column;
             }
             .modal-list {
                 max-width: 100%;
-                padding: 60px 24px 40px;
+                padding: 60px 24px 100px;
                 justify-content: flex-start;
+                overflow-y: auto;
             }
+            /* Hide desktop modal image panel */
             .modal-image {
-                max-width: 100%;
-                padding: 20px;
+                display: none;
+            }
+            /* Hide thumbnails on mobile */
+            .module-thumb {
+                display: none;
             }
             .module-item {
                 flex-wrap: wrap;
+                padding: 16px 0 24px;
+                border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+            }
+            .module-item:last-of-type {
+                border-bottom: none;
             }
             .module-dimensions {
                 margin-left: 0;
                 width: 100%;
                 margin-top: 2px;
             }
+            /* Module image shown under each item on mobile */
+            .module-mobile-img {
+                display: block;
+                width: 100%;
+                max-width: 200px;
+                margin-top: 16px;
+            }
+            .module-mobile-img img {
+                width: 100%;
+                height: auto;
+                object-fit: contain;
+            }
+            [data-theme="dark"] .module-mobile-img img {
+                filter: invert(1) brightness(1.15);
+            }
+        }
+        /* Hide mobile images on desktop */
+        .module-mobile-img {
+            display: none;
         }
     </style>
     <script>
@@ -402,42 +433,49 @@
                     <span class="module-name">m1: sauna</span>
                     <span class="module-desc">the core. panoramic glass.</span>
                     <span class="module-dimensions">3.3 × 2.2 × 2.5 m</span>
+                    <div class="module-mobile-img"><img src="images/m1-sauna.png" alt="m1 sauna"></div>
                 </div>
                 <div class="module-item" data-module="m2">
                     <span class="module-thumb" style="width: 48px; height: 48px;"><img src="images/m2-bridge.png" alt="m2" style="filter: invert(1) brightness(3);"></span>
                     <span class="module-name">m2: swimming bridge</span>
                     <span class="module-desc">direct water access.</span>
                     <span class="module-dimensions">1.5 × 2.0 × 0.3 m</span>
+                    <div class="module-mobile-img"><img src="images/m2-bridge.png" alt="m2 swimming bridge"></div>
                 </div>
                 <div class="module-item" data-module="m3">
                     <span class="module-thumb"><img src="images/m3-changing.png" alt="m3"></span>
                     <span class="module-name">m3: changing room</span>
                     <span class="module-desc">transitional space. skylit.</span>
                     <span class="module-dimensions">1.5 × 2.0 × 2.5 m</span>
+                    <div class="module-mobile-img"><img src="images/m3-changing.png" alt="m3 changing room"></div>
                 </div>
                 <div class="module-item" data-module="m4">
                     <span class="module-thumb"><img src="images/m4-thermal.png" alt="m4"></span>
                     <span class="module-name">m4: thermal module</span>
                     <span class="module-desc">compute heat. optional.</span>
                     <span class="module-dimensions">site-dependent</span>
+                    <div class="module-mobile-img"><img src="images/m4-thermal.png" alt="m4 thermal module"></div>
                 </div>
                 <div class="module-item" data-module="m5">
                     <span class="module-thumb"><img src="images/m5-shower.png" alt="m5"></span>
                     <span class="module-name">m5: outdoor shower</span>
                     <span class="module-desc">wall-mounted. cooling.</span>
                     <span class="module-dimensions">0.5 × 0.1 × 2.0 m</span>
+                    <div class="module-mobile-img"><img src="images/m5-shower.png" alt="m5 outdoor shower"></div>
                 </div>
                 <div class="module-item" data-module="m6">
                     <span class="module-thumb"><img src="images/m6-storage.png" alt="m6"></span>
                     <span class="module-name">m6: outdoor storage</span>
                     <span class="module-desc">robes. towels. slippers.</span>
                     <span class="module-dimensions">0.6 × 0.3 × 1.5 m</span>
+                    <div class="module-mobile-img"><img src="images/m6-storage.png" alt="m6 outdoor storage"></div>
                 </div>
                 <div class="module-item" data-module="m7">
                     <span class="module-thumb"><img src="images/m7-plunge.png" alt="m7"></span>
                     <span class="module-name">m7: cold plunge</span>
                     <span class="module-desc">self-contained basin.</span>
                     <span class="module-dimensions">1.5 × 2.0 × 2.5 m</span>
+                    <div class="module-mobile-img"><img src="images/m7-plunge.png" alt="m7 cold plunge"></div>
                 </div>
                 <div class="cta-block">
                     <a href="https://siteplanning.lyn.page" target="_blank" class="cta-link">configure your site →</a>
