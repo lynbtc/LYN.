@@ -62,6 +62,11 @@
             max-width: 100%;
             max-height: 80vh;
             object-fit: contain;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+        }
+        .image-column img.loaded {
+            opacity: 1;
         }
 
         .block {
@@ -196,8 +201,11 @@
             }
             .text-column {
                 max-width: 100%;
-                padding: 16px 24px 40px;
+                padding: 16px 24px 100px;
                 min-height: auto;
+            }
+            .text-column .block:first-child {
+                margin-bottom: 16px;
             }
             .image-column {
                 min-height: auto;
@@ -306,6 +314,15 @@
         });
 
         updateThemeBtn();
+
+        // Smooth image loading
+        document.querySelectorAll('img').forEach(img => {
+            if (img.complete) {
+                img.classList.add('loaded');
+            } else {
+                img.addEventListener('load', () => img.classList.add('loaded'));
+            }
+        });
     </script>
 </body>
 </html>
