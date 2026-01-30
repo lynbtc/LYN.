@@ -63,7 +63,11 @@
             max-width: 100%;
             max-height: 80vh;
             object-fit: contain;
-            transition: filter 0.3s;
+            transition: filter 0.3s, opacity 0.3s ease-in-out;
+            opacity: 0;
+        }
+        .image-column img.loaded {
+            opacity: 1;
         }
 
         /* Dark mode image inversion */
@@ -304,7 +308,10 @@
             max-width: 100%;
             max-height: 80vh;
             object-fit: contain;
-            transition: opacity 0.2s;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .module-mobile-img img {
+            transition: opacity 0.3s ease-in-out;
         }
         .cta-block {
             padding-top: 20px;
@@ -327,8 +334,11 @@
             }
             .text-column {
                 max-width: 100%;
-                padding: 16px 24px 40px;
+                padding: 16px 24px 100px;
                 min-height: auto;
+            }
+            .text-column .block:first-child {
+                margin-bottom: 16px;
             }
             .image-column {
                 min-height: auto;
@@ -355,6 +365,8 @@
                 display: none;
             }
             .module-item {
+                flex-direction: column;
+                align-items: flex-start;
                 flex-wrap: wrap;
                 padding: 16px 0 24px;
                 border-bottom: 1px solid rgba(128, 128, 128, 0.2);
@@ -366,18 +378,26 @@
                 margin-left: 0;
                 width: 100%;
                 margin-top: 2px;
+                order: 4;
             }
             /* Module image shown under each item on mobile */
             .module-mobile-img {
                 display: block;
                 width: 100%;
-                max-width: 200px;
-                margin-top: 16px;
+                max-width: 280px;
+                margin: 12px 0 8px;
+                order: 2;
             }
             .module-mobile-img img {
                 width: 100%;
                 height: auto;
                 object-fit: contain;
+            }
+            .module-name {
+                order: 1;
+            }
+            .module-desc {
+                order: 3;
             }
             [data-theme="dark"] .module-mobile-img img {
                 filter: invert(1) brightness(1.15);
@@ -583,6 +603,15 @@
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeModal();
+        });
+
+        // Smooth image loading
+        document.querySelectorAll('img').forEach(img => {
+            if (img.complete) {
+                img.classList.add('loaded');
+            } else {
+                img.addEventListener('load', () => img.classList.add('loaded'));
+            }
         });
     </script>
 </body>
