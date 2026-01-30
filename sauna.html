@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sauna – LYN.</title>
+    <meta name="description" content="LYN sauna. one of twentyonehundred. design by groundwork studio. manufacture by koerner sauna.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23111' width='100' height='100' rx='12'/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@300;400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fafafa;
+            --text: #37352f;
+            --text-muted: #a0a0a0;
+        }
+        [data-theme="dark"] {
+            --bg: #111111;
+            --text: #c8c8c8;
+            --text-muted: #666666;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            height: 100%;
+        }
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+            font-weight: 300;
+            font-size: 16px;
+            line-height: 1.6;
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.3s, color 0.3s;
+        }
+        a { color: inherit; text-decoration: none; }
+        a:hover { opacity: 0.6; }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .text-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 60px;
+            max-width: 50%;
+        }
+
+        .image-column {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        .image-column img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            transition: filter 0.3s;
+        }
+
+        /* Dark mode image inversion */
+        [data-theme="dark"] .image-column img,
+        [data-theme="dark"] .modal-image img {
+            filter: invert(1);
+        }
+
+        .block {
+            margin-bottom: 28px;
+        }
+        
+        .block:last-child {
+            margin-bottom: 0;
+        }
+
+        .muted {
+            color: var(--text-muted);
+        }
+
+        .link {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .explore-link {
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .explore-link:hover {
+            opacity: 0.6;
+        }
+
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 300;
+            font-size: 10px;
+            letter-spacing: 0.02em;
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        /* Nav trigger - top right */
+        .nav-trigger {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: var(--text);
+            background: none;
+            border: none;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 0.2s;
+            z-index: 10;
+        }
+        .nav-trigger:hover,
+        .nav-trigger.active {
+            opacity: 0.6;
+        }
+
+        /* Nav menu - opens downward from top right */
+        .nav-menu {
+            position: fixed;
+            top: 48px;
+            right: 20px;
+            background: var(--bg);
+            border: 1px solid var(--text-muted);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+            padding: 12px 16px;
+            min-width: 140px;
+            z-index: 10;
+        }
+        .nav-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .nav-menu ul {
+            list-style: none;
+        }
+        .nav-menu li {
+            margin-bottom: 6px;
+        }
+        .nav-menu li:last-child {
+            margin-bottom: 0;
+        }
+        .nav-menu a,
+        .nav-menu button {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+            color: var(--text);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: opacity 0.15s;
+            display: block;
+            text-decoration: none;
+        }
+        .nav-menu a:hover,
+        .nav-menu button:hover {
+            opacity: 0.6;
+        }
+        .nav-menu .divider {
+            height: 1px;
+            background: var(--text-muted);
+            opacity: 0.3;
+            margin: 10px 0;
+        }
+        .nav-menu .theme-btn {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .nav-menu .nav-external {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+            color: var(--text);
+            display: block;
+            transition: opacity 0.15s;
+            text-decoration: none;
+        }
+        .nav-menu .nav-external:hover {
+            opacity: 0.6;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            z-index: 100;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-close {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: var(--text);
+            background: none;
+            border: none;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 0.2s;
+            z-index: 110;
+        }
+        .modal-close:hover {
+            opacity: 0.6;
+        }
+        .modal-content {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+        .modal-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 60px;
+            max-width: 50%;
+        }
+        .module-item {
+            padding: 8px 0;
+            cursor: pointer;
+            opacity: 0.4;
+            transition: opacity 0.15s;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+        }
+        .module-item:hover,
+        .module-item.active {
+            opacity: 1;
+        }
+        .module-name {
+            font-size: 16px;
+            min-width: 160px;
+            flex-shrink: 0;
+        }
+        .module-desc {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+        .module-dimensions {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-left: auto;
+            white-space: nowrap;
+        }
+        .modal-image {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            max-width: 50%;
+        }
+        .modal-image img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            transition: opacity 0.2s;
+        }
+        .cta-block {
+            padding-top: 20px;
+            margin-top: 12px;
+            border-top: 1px solid rgba(102, 102, 102, 0.3);
+        }
+        .cta-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: opacity 0.2s;
+        }
+        .cta-link:hover {
+            opacity: 0.6;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+            }
+            .text-column {
+                max-width: 100%;
+                padding: 60px 24px 40px;
+                min-height: auto;
+            }
+            .image-column {
+                min-height: 50vh;
+                padding: 20px;
+            }
+            .modal-content {
+                flex-direction: column;
+            }
+            .modal-list {
+                max-width: 100%;
+                padding: 60px 24px 40px;
+                justify-content: flex-start;
+            }
+            .modal-image {
+                max-width: 100%;
+                padding: 20px;
+            }
+            .module-item {
+                flex-wrap: wrap;
+            }
+            .module-dimensions {
+                margin-left: 0;
+                width: 100%;
+                margin-top: 2px;
+            }
+        }
+    </style>
+    <script>
+        (function() {
+            const saved = localStorage.getItem('lyn-theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = saved || (prefersDark ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="text-column">
+            <div class="block">
+                one / twentyonehundred
+            </div>
+
+            <div class="block">
+                design by <a href="https://groundwork.studio" target="_blank" class="link">groundwork studio</a>.<br>
+                manufacture by <a href="https://koerner-sauna.de" target="_blank" class="link">koerner sauna</a>.
+            </div>
+
+            <div class="block">
+                <span class="explore-link" onclick="openModal()">explore</span> <span class="muted">– 7 modules. one system.</span>
+            </div>
+
+            <div class="block">
+                <a href="https://siteplanning.lyn.page" target="_blank" class="muted">configure your site ↗</a>
+            </div>
+        </div>
+
+        <div class="image-column">
+            <img src="images/config-preview.png" alt="LYN Site Configuration">
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <button class="modal-close" onclick="closeModal()">close</button>
+        <div class="modal-content">
+            <div class="modal-list">
+                <div class="module-item active" data-module="m1">
+                    <span class="module-name">m1: sauna</span>
+                    <span class="module-desc">the core. panoramic glass.</span>
+                    <span class="module-dimensions">3.3 × 2.2 × 2.5 m</span>
+                </div>
+                <div class="module-item" data-module="m2">
+                    <span class="module-name">m2: swimming bridge</span>
+                    <span class="module-desc">direct water access.</span>
+                    <span class="module-dimensions">1.5 × 2.0 × 0.3 m</span>
+                </div>
+                <div class="module-item" data-module="m3">
+                    <span class="module-name">m3: changing room</span>
+                    <span class="module-desc">transitional space. skylit.</span>
+                    <span class="module-dimensions">1.5 × 2.0 × 2.5 m</span>
+                </div>
+                <div class="module-item" data-module="m4">
+                    <span class="module-name">m4: thermal module</span>
+                    <span class="module-desc">compute heat. optional.</span>
+                    <span class="module-dimensions">site-dependent</span>
+                </div>
+                <div class="module-item" data-module="m5">
+                    <span class="module-name">m5: outdoor shower</span>
+                    <span class="module-desc">wall-mounted. cooling.</span>
+                    <span class="module-dimensions">0.5 × 0.1 × 2.0 m</span>
+                </div>
+                <div class="module-item" data-module="m6">
+                    <span class="module-name">m6: outdoor storage</span>
+                    <span class="module-desc">robes. towels. slippers.</span>
+                    <span class="module-dimensions">0.6 × 0.3 × 1.5 m</span>
+                </div>
+                <div class="module-item" data-module="m7">
+                    <span class="module-name">m7: cold plunge</span>
+                    <span class="module-desc">self-contained basin.</span>
+                    <span class="module-dimensions">1.5 × 2.0 × 2.5 m</span>
+                </div>
+                <div class="cta-block">
+                    <a href="https://siteplanning.lyn.page" target="_blank" class="cta-link">configure your site →</a>
+                </div>
+            </div>
+            <div class="modal-image">
+                <img id="module-img" src="images/m1-sauna.png" alt="Module visualization">
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">© lynbtc aps · copenhagen 2025 · vat dk46170571</footer>
+
+    <button class="nav-trigger" onclick="toggleNav()" aria-label="Toggle navigation">–</button>
+
+    <nav class="nav-menu" id="navMenu">
+        <ul>
+            <li><a href="sauna.html">sauna</a></li>
+            <li><a href="spa.html">spa</a></li>
+            <li><a href="residence.html">residence</a></li>
+            <li><a href="onepager.html">onepager</a></li>
+            <li><a href="collaborate.html">collaborate</a></li>
+            <li><a href="documents.html">documents</a></li>
+            <li><a href="index.html">home</a></li>
+        </ul>
+        <div class="divider"></div>
+        <a href="https://siteplanning.lyn.page" target="_blank" class="nav-external">siteplanning</a>
+        <div class="divider"></div>
+        <button class="theme-btn" onclick="toggleTheme()" id="themeBtn"></button>
+    </nav>
+
+    <script>
+        const navMenu = document.getElementById('navMenu');
+        const navTrigger = document.querySelector('.nav-trigger');
+
+        function toggleNav() {
+            navMenu.classList.toggle('open');
+            navTrigger.classList.toggle('active');
+        }
+
+        function updateThemeBtn() {
+            const current = document.documentElement.getAttribute('data-theme');
+            document.getElementById('themeBtn').textContent = current === 'dark' ? 'light mode' : 'dark mode';
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('lyn-theme', next);
+            updateThemeBtn();
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!navMenu.contains(e.target) && !navTrigger.contains(e.target)) {
+                navMenu.classList.remove('open');
+                navTrigger.classList.remove('active');
+            }
+        });
+
+        updateThemeBtn();
+
+        // Module images
+        const moduleImages = {
+            m1: 'images/m1-sauna.png',
+            m2: 'images/m2-bridge.png',
+            m3: 'images/m3-changing.png',
+            m4: 'images/m4-thermal.png',
+            m5: 'images/m5-shower.png',
+            m6: 'images/m6-storage.png',
+            m7: 'images/m7-plunge.png'
+        };
+
+        const moduleItems = document.querySelectorAll('.module-item');
+        const moduleImg = document.getElementById('module-img');
+
+        function setActiveModule(moduleId) {
+            moduleItems.forEach(item => item.classList.remove('active'));
+            const target = document.querySelector(`[data-module="${moduleId}"]`);
+            if (target) {
+                target.classList.add('active');
+                moduleImg.src = moduleImages[moduleId];
+            }
+        }
+
+        // Hover to change image
+        moduleItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                const moduleId = item.dataset.module;
+                setActiveModule(moduleId);
+            });
+        });
+
+        function openModal() {
+            document.getElementById('modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            setActiveModule('m1');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>
