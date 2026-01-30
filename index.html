@@ -52,10 +52,10 @@
         /* Nav trigger - top right */
         .nav-trigger {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 12px;
+            right: 12px;
             font-family: 'Inter', sans-serif;
-            font-size: 12px;
+            font-size: 14px;
             color: var(--text);
             background: none;
             border: none;
@@ -63,6 +63,11 @@
             opacity: 1;
             transition: opacity 0.2s;
             z-index: 10;
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .nav-trigger:hover,
         .nav-trigger.active {
