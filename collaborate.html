@@ -32,12 +32,15 @@
             background: var(--bg);
             color: var(--text);
             transition: background 0.3s, color 0.3s;
+            display: flex;
+            align-items: center;
+            min-height: 100%;
         }
         a { color: inherit; text-decoration: none; }
         
         /* Page */
         .page {
-            padding: 30vh 24px 100px 60px;
+            padding: 24px 24px 24px 60px;
             max-width: 480px;
         }
         
@@ -185,7 +188,7 @@
             opacity: 0.6;
         }
         
-        @media (max-width: 600px) {
+        @media (max-width: 900px) {
             .page { 
                 padding: 60px 20px 100px 20px;
             }
