@@ -187,7 +187,7 @@
             }
             .text-column {
                 max-width: 100%;
-                padding: 16px 24px 100px;
+                padding: 60px 24px 100px;
                 min-height: auto;
             }
             .text-column .block:first-child {
@@ -198,7 +198,8 @@
                 padding: 60px 20px 0;
             }
             .image-column img {
-                max-height: 45vh;
+                height: 45vh;
+                object-fit: cover;
             }
         }
     </style>
@@ -235,7 +236,7 @@
             <div class="block">
                 <span class="muted">access</span> (coming 2026)<br>
                 private visits. day spa. offsites.<br>
-                <a href="mailto:sauna@lyn.page" class="link">inquire</a>
+                <a href="/cdn-cgi/l/email-protection#671406120906270b1e094917060002" class="link">inquire</a>
             </div>
         </div>
 
@@ -262,7 +263,7 @@
         <button class="theme-btn" onclick="toggleTheme()" id="themeBtn"></button>
     </nav>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         const navMenu = document.getElementById('navMenu');
         const navTrigger = document.querySelector('.nav-trigger');
 
@@ -298,10 +299,4 @@
         document.querySelectorAll('img').forEach(img => {
             if (img.complete) {
                 img.classList.add('loaded');
-            } else {
-                img.addEventListener('load', () => img.classList.add('loaded'));
             }
-        });
-    </script>
-</body>
-</html>
