@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>LYN. — Partnerschaft · KOERNER Saunabau</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0a'/><text x='50' y='68' font-size='48' font-family='Helvetica,sans-serif' font-weight='bold' fill='%23fafafa' text-anchor='middle'>L</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@300;400;600&family=Inter:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fafafa;
+            --text: #0a0a0a;
+            --text-secondary: #555;
+            --text-muted: #888;
+            --accent: #0a0a0a;
+            --rule: #e0e0e0;
+            --card-bg: #f0f0f0;
+            --font-body: 'IBM Plex Sans', -apple-system, sans-serif;
+            --font-mono: 'IBM Plex Mono', monospace;
+            --font-heading: 'Inter', -apple-system, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-body);
+            font-weight: 300;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* === PASSWORD GATE === */
+        .gate {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.4s ease;
+        }
+        .gate.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .gate-inner {
+            text-align: center;
+            max-width: 320px;
+            padding: 20px;
+        }
+        .gate-logo {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 24px;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+        .gate-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 32px;
+        }
+        .gate-input {
+            width: 100%;
+            padding: 12px 16px;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            border: 1px solid var(--rule);
+            border-radius: 4px;
+            background: #fff;
+            color: var(--text);
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .gate-input:focus {
+            border-color: var(--text);
+        }
+        .gate-input::placeholder {
+            color: #ccc;
+        }
+        .gate-error {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: #c00;
+            margin-top: 12px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .gate-error.visible {
+            opacity: 1;
+        }
+
+        /* === MAIN CONTENT === */
+        .main {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 60px 24px 80px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .main.visible {
+            opacity: 1;
+        }
+
+        /* === HEADER === */
+        .doc-header {
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--rule);
+        }
+        .doc-logo {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 28px;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+        .doc-title {
+            font-family: var(--font-body);
+            font-weight: 400;
+            font-size: 15px;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .doc-meta {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        /* === INTRO === */
+        .intro {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+        .intro p {
+            margin-bottom: 12px;
+        }
+
+        /* === SECTIONS === */
+        section {
+            margin-bottom: 48px;
+        }
+
+        h2 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: -0.3px;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        h3 {
+            font-family: var(--font-heading);
+            font-weight: 500;
+            font-size: 15px;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        /* === MODULES === */
+        .module-item {
+            margin-bottom: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        .module-item strong {
+            color: var(--text);
+            font-weight: 400;
+            font-family: var(--font-body);
+        }
+
+        .price-note {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 20px;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .credits {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+        .credits a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--rule);
+        }
+        .credits a:hover {
+            color: var(--text);
+            border-bottom-color: var(--text);
+        }
+
+        /* === USE CASES === */
+        .use-case {
+            margin-bottom: 32px;
+        }
+        .use-case h3 {
+            margin-bottom: 10px;
+        }
+        .use-case p {
+            margin-bottom: 8px;
+        }
+        .use-case .stove-note {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .use-case .page-link {
+            font-family: var(--font-mono);
+            font-size: 11px;
+        }
+        .use-case .page-link a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--rule);
+        }
+        .use-case .page-link a:hover {
+            color: var(--text);
+            border-bottom-color: var(--text);
+        }
+
+        /* === LABEL === */
+        .label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            margin-top: 28px;
+            margin-bottom: 14px;
+        }
+
+        /* === CHECKLIST / ITEMS === */
+        .item-list {
+            list-style: none;
+        }
+        .item-list li {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+        .item-list li strong {
+            color: var(--text);
+            font-weight: 400;
+        }
+
+        /* === STATS === */
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat {
+            padding: 16px;
+            background: var(--card-bg);
+            border-radius: 4px;
+        }
+        .stat-value {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+        .stat-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* === CHANNELS === */
+        .channel {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        /* === TEAM === */
+        .team-list {
+            list-style: none;
+        }
+        .team-list li {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        .team-list .role {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .team-list a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--rule);
+        }
+        .team-list a:hover {
+            color: var(--text);
+            border-bottom-color: var(--text);
+        }
+
+        /* === LUGANO === */
+        .event-details {
+            margin-top: 20px;
+        }
+        .event-detail {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .event-detail-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 80px;
+            padding-top: 2px;
+        }
+
+        /* === STEPS === */
+        .step {
+            margin-bottom: 16px;
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        .step strong {
+            color: var(--text);
+            font-weight: 400;
+        }
+        .step a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--rule);
+        }
+        .step a:hover {
+            color: var(--text);
+        }
+
+        /* === FOOTER === */
+        .doc-footer {
+            margin-top: 56px;
+            padding-top: 24px;
+            border-top: 1px solid var(--rule);
+        }
+        .doc-footer .footer-logo {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .doc-footer .footer-links {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+        .doc-footer .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--rule);
+        }
+        .doc-footer .footer-links a:hover {
+            color: var(--text);
+        }
+        .doc-footer .footer-legal {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        /* === CTA === */
+        .cta {
+            text-align: center;
+            margin: 40px 0 0;
+        }
+        .cta a {
+            display: inline-block;
+            padding: 14px 32px;
+            background: var(--accent);
+            color: var(--bg);
+            font-family: var(--font-heading);
+            font-weight: 500;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: opacity 0.2s;
+        }
+        .cta a:hover { opacity: 0.85; }
+
+        /* === PRINT === */
+        @media print {
+            @page { size: A4; margin: 20mm 22mm; }
+            .gate { display: none !important; }
+            .main { opacity: 1 !important; padding: 0; max-width: 100%; }
+            .cta { display: none !important; }
+            body { font-size: 10.5px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            section { page-break-inside: avoid; }
+            .doc-header { page-break-inside: avoid; }
+            .doc-footer { page-break-inside: avoid; }
+            .use-case { page-break-inside: avoid; }
+            .event-details { page-break-inside: avoid; }
+            .stats { page-break-inside: avoid; }
+            .team-list { page-break-inside: avoid; }
+            h2 { page-break-after: avoid; }
+            h3 { page-break-after: avoid; }
+            .label { page-break-after: avoid; }
+            a { color: inherit !important; border-bottom: none !important; }
+        }
+
+        /* === MOBILE === */
+        @media (max-width: 600px) {
+            .main { padding: 40px 20px 60px; }
+            .doc-logo { font-size: 24px; }
+            h2 { font-size: 16px; }
+            .stats { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PASSWORD GATE -->
+    <div class="gate" id="gate">
+        <div class="gate-inner">
+            <div class="gate-logo">LYN.</div>
+            <div class="gate-label">Vertraulich · Partner</div>
+            <input type="password" class="gate-input" id="password" placeholder="Passwort" autocomplete="off">
+            <div class="gate-error" id="gate-error">Falsches Passwort</div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main" id="main">
+
+        <!-- HEADER -->
+        <header class="doc-header">
+            <div class="doc-logo">LYN.</div>
+            <div class="doc-meta">
+                Partnerschaft · Februar 2026<br>
+                Vertraulich · KOERNER Saunabau
+            </div>
+        </header>
+
+        <!-- INTRO -->
+        <div class="intro">
+            <p>KOERNER ist die Gründungsmanufaktur von LYN. Dieses Dokument beschreibt den gemeinsamen Rahmen: Produkt, Module, Ofen, Rollen, nächste Schritte.</p>
+            <p>Der Prototyp in Albstadt liefert die Zahlen. Wir entwickeln dieses Dokument laufend weiter.</p>
+            <p>In der Praxis heißt das: LYN. bringt den Kunden und begleitet die Planung — KOERNER baut, liefert, installiert. Oder KOERNER übernimmt den gesamten Prozess eigenständig.</p>
+        </div>
+
+        <!-- DAS PRODUKT -->
+        <section>
+            <h2>Das Produkt</h2>
+            <p>LYN. ist ein modulares Saunasystem. 7 Module. Ein Design. 2.100 nummerierte Outdoor-Einheiten, für immer limitiert. Indoor-Installationen sind Maßanfertigung ohne Begrenzung.</p>
+            <p>Das M4-Modul integriert Bitcoin-Mining-Hardware. Derselbe Strom heizt den Raum und erzeugt Hashrate. Abwärme wird Arbeit.</p>
+        </section>
+
+        <!-- DIE 7 MODULE -->
+        <section>
+            <h2>Die 7 Module</h2>
+
+            <div class="module-item"><strong>M1: Sauna</strong> — Der Kern. Panoramaglas. 9 kW Ofen. 3,3 × 2,2 × 2,5 m · ab EUR 55.555</div>
+            <div class="module-item"><strong>M2: Schwimmsteg</strong> — Direkter Wasserzugang. 1,5 × 2,0 × 0,3 m · EUR 11.111</div>
+            <div class="module-item"><strong>M3: Umkleide</strong> — Übergangsraum mit Oberlicht. Optionale M4-Integration. 1,5 × 2,0 × 2,5 m · EUR 15.111</div>
+            <div class="module-item"><strong>M4: Thermalmodul</strong> — Mining-Hardware. Wärmerückgewinnung. Standortabhängig. · EUR 3.111</div>
+            <div class="module-item"><strong>M5: Außendusche</strong> — Wandmontiert. 0,5 × 0,1 × 2,0 m · EUR 3.111</div>
+            <div class="module-item"><strong>M6: Außenlager</strong> — Bademäntel, Handtücher, Holz. 0,6 × 0,3 × 1,5 m · EUR 2.111</div>
+            <div class="module-item"><strong>M7: Kältebecken</strong> — Eigenständiges Becken. Temperaturgesteuert. 1,5 × 2,0 × 2,5 m · EUR 12.111</div>
+
+            <div class="price-note">Platzhalterpreise. Endgültige Preisgestaltung wird gemeinsam auf Basis der Prototyp-Ergebnisse und tatsächlichen Fertigungskosten festgelegt.</div>
+
+            <div class="credits">
+                Design: <a href="https://www.studiogroundwork.com/" target="_blank" rel="noopener noreferrer">Groundwork Studio</a> · Fertigung: <a href="https://www.sauna-koerner.de/en/" target="_blank" rel="noopener noreferrer">KOERNER Saunabau</a><br>
+                Konfigurator: <a href="https://siteplanning.lyn.page" target="_blank" rel="noopener noreferrer">siteplanning.lyn.page</a>
+            </div>
+        </section>
+
+        <!-- MODULARITÄT IN DER PRAXIS -->
+        <section>
+            <h2>Modularität in der Praxis</h2>
+            <p>Verschiedene Standorte, verschiedene Öfen, verschiedene Module — dieselbe Designsprache. Drei Anwendungsfälle auf der Website:</p>
+
+            <div class="use-case">
+                <h3>Sauna — das Produkt</h3>
+                <p>7 Module. Ein Design. Entworfen von Groundwork Studio, gefertigt von KOERNER Saunabau. Im Konfigurator auf <a href="https://siteplanning.lyn.page" target="_blank" rel="noopener noreferrer">siteplanning.lyn.page</a> lässt sich jede Konfiguration individuell zusammenstellen.</p>
+                <div class="stove-note">Ofen in der aktuellen Darstellung: Huum. Private Outdoor-Konfiguration.</div>
+                <div class="page-link"><a href="https://lyn.page/sauna" target="_blank" rel="noopener noreferrer">lyn.page/sauna</a></div>
+            </div>
+
+            <div class="use-case">
+                <h3>Spa — Outdoor</h3>
+                <p>Heat. Cold. Rest. Die Sauna als Ritual am Wasser. M1 Sauna, M3 Umkleide, M2 Schwimmsteg. Trockenhitze, kaltes Wasser, Ruhe. Die Referenzkonfiguration am See bzw. Meer.</p>
+                <div class="stove-note">Ofen in der aktuellen Darstellung: Huum. Wird auf KOERNER-Ofen aktualisiert.</div>
+                <div class="page-link"><a href="https://lyn.page/spa" target="_blank" rel="noopener noreferrer">lyn.page/spa</a></div>
+            </div>
+
+            <div class="use-case">
+                <h3>Residence — Indoor</h3>
+                <p>Work. Spa. Die Sauna als Teil einer Wohn- und Arbeitsarchitektur. M1-Innenraum 1:1 hinter Panoramaglas, dunkle Außenverkleidung. Rohbeton, Esche, Zeder. Technik integriert, unsichtbar wenn nicht in Gebrauch. M4 Thermalmodul mit Minern als Wärmequelle für den gesamten Raum zb.</p>
+                <div class="stove-note">Ofen in dieser Konfiguration: KOERNER. Darstellung wird aktualisiert.</div>
+                <div class="page-link"><a href="https://lyn.page/residence" target="_blank" rel="noopener noreferrer">lyn.page/residence</a></div>
+            </div>
+
+            <p>Dasselbe Design in verschiedenen Kontexten.</p>
+        </section>
+
+        <!-- DAS OFENSYSTEM -->
+        <section>
+            <h2>Das Ofensystem</h2>
+            <p>Das LYN.-System nimmt eine kuratierte Auswahl an Öfen auf. Nur Öfen, die der Designsprache entsprechen, kommen in Frage.</p>
+            <p>Für Indoor- und kommerzielle Installationen ist der KOERNER-Ofen die Standardkonfiguration. Für private Outdoor-Konfigurationen können andere Öfen innerhalb der LYN.-Auswahl zum Einsatz kommen. Der Anwendungsfall bestimmt den Ofen.</p>
+
+            <div class="label">Was feststeht</div>
+            <p>Innenarchitektur und Materialwahl. Außenverkleidung. Modulmaße. Panoramaglas. Die gestalterische Handschrift.</p>
+
+            <div class="label">Was sich konfigurieren lässt</div>
+            <p>Ofen und Heiztechnik. M4-Integration. Modulauswahl. Standort, Fundament, Logistik, Elektrik.</p>
+        </section>
+
+        <!-- WAS DER PROTOTYP ERMÖGLICHT -->
+        <section>
+            <h2>Was der Prototyp ermöglicht</h2>
+            <p>Der Prototyp bei KOERNER ist die Grundlage für alle weiteren Zahlen. Ziel: belastbare Zahlen bis Ende März 2026.</p>
+
+            <div class="label">Offene Punkte</div>
+            <ul class="item-list">
+                <li><strong>Fertigungskosten:</strong> Was kostet KOERNER die Herstellung einer M1-Einheit nach LYN.-Spezifikation?</li>
+                <li><strong>Ofenkosten:</strong> KOERNER-Ofen in den relevanten Leistungsklassen.</li>
+                <li><strong>Gesamt-Herstellkosten:</strong> Kabine + Ofen + Endbearbeitung. Die Zahl, an der sich die Marge bemisst.</li>
+                <li><strong>Logistik:</strong> Versand ab Albstadt. Gewicht, Abmessungen, Transportweg, Stückkosten.</li>
+                <li><strong>Lieferzeit:</strong> Wochen von Bestellung bis Auslieferung. Kapazität pro Quartal.</li>
+                <li><strong>Verkaufspreis:</strong> Rückrechnung aus EUR 50.000–150.000+: Was braucht KOERNER, was braucht LYN., was zahlt der Kunde?</li>
+                <li><strong>Kapazitätsgrenze:</strong> Ab welchem Volumen braucht KOERNER Verstärkung?</li>
+                <li><strong>Rollen &amp; Margen:</strong> Aufteilung nach Gebieten, Vertriebswegen und Leistungsumfang.</li>
+            </ul>
+
+            <div class="label">Kapazität &amp; Wachstum</div>
+            <p>Wächst die Nachfrage über KOERNERs Kapazität hinaus, fertigen weitere Partner nach KOERNERs Spezifikation.</p>
+        </section>
+
+        <!-- MARKT & CHANCE -->
+        <section>
+            <h2>Markt</h2>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">2.100</div>
+                    <div class="stat-label">Nummerierte Einheiten</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">€50k–150k+</div>
+                    <div class="stat-label">Preisspanne</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">€105M+</div>
+                    <div class="stat-label">Outdoor-Gesamtmarkt</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">∞</div>
+                    <div class="stat-label">Indoor Maßanfertigung</div>
+                </div>
+            </div>
+
+            <div class="label">Umsatz</div>
+            <div class="channel">Einheitenverkauf — 2.100 Outdoor (nummeriert) + Indoor (unbegrenzt)</div>
+            <div class="channel">Spa/Residenz — Sessions, Events, Offsites über die Referenzeinheit</div>
+            <div class="channel">Netzwerk — Lizenzeinnahmen aus Partnerfertigung</div>
+        </section>
+
+        <!-- TEAM & PARTNER -->
+        <section>
+            <h2>Team &amp; Partner</h2>
+            <ul class="team-list">
+                <li>
+                    <span class="role">Gründer</span>
+                    Julius Schulze-Berge, Kopenhagen. Zuvor Vipp, Trustpilot, Usercentrics.
+                </li>
+                <li>
+                    <span class="role">Design</span>
+                    Morten Bo Jensen, <a href="https://www.studiogroundwork.com/" target="_blank" rel="noopener noreferrer">Groundwork Studio</a>
+                </li>
+                <li>
+                    <span class="role">Gründungsmanufaktur</span>
+                    <a href="https://www.sauna-koerner.de/en/" target="_blank" rel="noopener noreferrer">KOERNER Saunabau</a>, Albstadt-Lautlingen
+                </li>
+                <li>
+                    <span class="role">M4-Integration</span>
+                    In Zusammenarbeit mit Orange Wheel + 21Energy
+                </li>
+            </ul>
+        </section>
+
+        <!-- LUGANO -->
+        <section>
+            <h2>Lugano</h2>
+            <p>LYN. plant ein privates Abendessen in Lugano. April 2026. 10 Plätze. Investoren, Family Offices, Bitcoin-nahes Kapital.</p>
+            <p>Am Tisch sitzen die Menschen, die dieses Produkt bauen — Geschäft, Design, Handwerk.</p>
+        </section>
+
+        <!-- NÄCHSTE SCHRITTE -->
+        <section>
+            <h2>Nächste Schritte</h2>
+            <p style="color: var(--text-muted); font-size: 13px;">Stand Februar 2026. Wird laufend aktualisiert.</p>
+
+            <div class="step"><strong>1. Prototyp</strong> — Bau abschließen. Qualität gegen LYN.-Spezifikation prüfen. Belastbare Zahlen bis Ende März.</div>
+            <div class="step"><strong>2. Einheitsökonomie</strong> — Herstellkosten, Ofenkosten, Logistik, Lieferzeit. Gemeinsam rechnen.</div>
+            <div class="step"><strong>3. Preisgestaltung</strong> — Preisspanne festlegen. Margen verteilen. Variable Kosten abbilden.</div>
+            <div class="step"><strong>4. Ofenintegration</strong> — KOERNER-Ofen als Standard für Indoor und kommerzielle Konfigurationen. Gestalterische Integration für weitere Anwendungsfälle prüfen.</div>
+            <div class="step"><strong>5. Materialien &amp; Konfigurator</strong> — Die Partnerschaft sichtbar machen — in <a href="https://siteplanning.lyn.page" target="_blank" rel="noopener noreferrer">siteplanning.lyn.page</a> und im LYN.-Marketing.</div>
+            <div class="step"><strong>6. Miner für KOERNER</strong> — Miner nach Albstadt. M4-Modul im eigenen Betrieb erleben.</div>
+        </section>
+
+        <!-- CTA -->
+        <div class="cta">
+            <a href="#" onclick="window.print(); return false;">PDF herunterladen →</a>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="doc-footer">
+            <div class="footer-logo">LYN.</div>
+            <div class="footer-links">
+                <a href="https://lyn.page" target="_blank" rel="noopener noreferrer">lyn.page</a> ·
+                <a href="https://siteplanning.lyn.page" target="_blank" rel="noopener noreferrer">siteplanning.lyn.page</a> ·
+                <a href="https://lyn.page/koerner" target="_blank" rel="noopener noreferrer">lyn.page/koerner</a>
+            </div>
+            <div class="footer-links">
+                Julius Schulze-Berge · Gründer<br>
+                Kopenhagen, Februar 2026
+            </div>
+            <div class="footer-legal">
+                Vertraulich · Nicht zur Weitergabe · Arbeitsdokument
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        const CONFIG = { password: 'koerner2100' };
+
+        const gate = document.getElementById('gate');
+        const main = document.getElementById('main');
+        const passwordInput = document.getElementById('password');
+        const gateError = document.getElementById('gate-error');
+
+        passwordInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                if (passwordInput.value === CONFIG.password) {
+                    gate.classList.add('hidden');
+                    main.classList.add('visible');
+                    sessionStorage.setItem('lyn-koerner-auth', 'true');
+                } else {
+                    gateError.classList.add('visible');
+                    passwordInput.value = '';
+                    setTimeout(() => gateError.classList.remove('visible'), 2000);
+                }
+            }
+        });
+
+        if (sessionStorage.getItem('lyn-koerner-auth') === 'true') {
+            gate.classList.add('hidden');
+            main.classList.add('visible');
+        }
+    </script>
+</body>
+</html>
