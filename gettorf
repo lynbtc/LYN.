@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LYN. — Gettorf</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&amp;family=IBM+Plex+Sans:wght@300;400&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafafa;
+    --fg: #37352f;
+    --fg-2: #787774;
+    --fg-3: #a0a0a0;
+    --accent: #E8590C;
+    --accent-light: #FFF4EF;
+    --border: #e5e5e3;
+    --card: #FFFFFF;
+    --green: #2B8A3E;
+    --green-light: #EEFAEF;
+    --blue: #1971C2;
+    --blue-light: #EFF6FF;
+    --selected-bg: #f5f5f3;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+    font-weight: 300;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  header {
+    padding: 40px 0 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 56px;
+  }
+
+  .logo {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .ref {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-3);
+    text-align: right;
+    line-height: 1.9;
+  }
+
+  .site-name {
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  .site-meta {
+    font-size: 14px;
+    color: var(--fg-2);
+  }
+
+  /* Sections */
+  section { padding: 44px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+
+  .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin-bottom: 20px;
+  }
+
+  .prose {
+    font-size: 15px;
+    color: var(--fg-2);
+    line-height: 1.75;
+    max-width: 620px;
+  }
+
+  .prose + .prose { margin-top: 10px; }
+  .prose strong { color: var(--fg); font-weight: 400; }
+
+  /* Module list */
+  .module-list { display: flex; flex-direction: column; gap: 4px; margin-top: 20px; }
+
+  .mod {
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    align-items: baseline;
+    padding: 12px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    gap: 10px;
+  }
+
+  .mod.thermal { border-color: var(--accent); background: var(--accent-light); }
+  .mod.inactive { opacity: 0.35; border-style: dashed; }
+
+  .mod-id {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--fg-3);
+  }
+
+  .mod.thermal .mod-id { color: var(--accent); }
+
+  .mod-name { font-size: 14px; font-weight: 400; }
+  .mod-desc { font-size: 12px; color: var(--fg-2); }
+  .mod-dim { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--fg-3); white-space: nowrap; }
+
+  /* Question blocks */
+  .q-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px;
+    margin-top: 16px;
+  }
+
+  .q-block + .q-block { margin-top: 10px; }
+
+  .q-block.answered { border-color: var(--green); background: var(--green-light); }
+
+  .q-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .q-title {
+    font-size: 15px;
+    font-weight: 400;
+  }
+
+  .q-why {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: var(--selected-bg);
+    color: var(--fg-3);
+    white-space: nowrap;
+  }
+
+  .q-context {
+    font-size: 13px;
+    color: var(--fg-2);
+    line-height: 1.65;
+    margin-bottom: 14px;
+  }
+
+  /* Option selectors */
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .opt {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: var(--bg);
+    user-select: none;
+  }
+
+  .opt:hover { border-color: var(--fg-3); }
+  .opt.selected { background: var(--fg); color: white; border-color: var(--fg); }
+
+  .opt-input {
+    margin-top: 8px;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    color: var(--fg);
+    background: white;
+  }
+
+  .opt-input:focus { outline: none; border-color: var(--fg); }
+
+  .opt-textarea {
+    margin-top: 8px;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    color: var(--fg);
+    resize: vertical;
+    min-height: 56px;
+    background: white;
+  }
+
+  .opt-textarea:focus { outline: none; border-color: var(--fg); }
+
+  /* Conditional follow-up */
+  .follow-up {
+    margin-top: 10px;
+    padding: 14px 16px;
+    background: var(--blue-light);
+    border-radius: 5px;
+    font-size: 13px;
+    color: var(--blue);
+    line-height: 1.6;
+    display: none;
+  }
+
+  .follow-up.visible { display: block; }
+
+  .follow-up label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 6px;
+    margin-top: 10px;
+  }
+
+  .follow-up label:first-child { margin-top: 0; }
+
+  .follow-up input, .follow-up select {
+    width: 100%;
+    border: 1px solid #C5DAF0;
+    border-radius: 4px;
+    padding: 7px 10px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    background: white;
+  }
+
+  /* Photo upload hint */
+  .photo-hint {
+    margin-top: 10px;
+    padding: 14px 16px;
+    background: var(--selected-bg);
+    border: 1px dashed var(--border);
+    border-radius: 5px;
+    font-size: 13px;
+    color: var(--fg-2);
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .photo-hint strong { color: var(--fg); }
+
+  /* Progress bar */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--accent);
+    transition: width 0.4s ease;
+    z-index: 100;
+  }
+
+  /* Summary section */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+
+  .s-cell {
+    background: var(--card);
+    padding: 16px 18px;
+  }
+
+  .s-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin-bottom: 4px;
+  }
+
+  .s-value {
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .s-value.ok { color: var(--green); }
+  .s-value.pending { color: var(--fg-3); font-style: italic; font-weight: 400; }
+
+  /* Submit */
+  .submit-section {
+    margin-top: 28px;
+    text-align: center;
+  }
+
+  .submit-btn {
+    padding: 14px 40px;
+    background: var(--fg);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .submit-btn:hover { opacity: 0.85; }
+
+  .submit-note {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--fg-3);
+  }
+
+  /* Success state */
+  .submit-success {
+    display: none;
+    text-align: center;
+    padding: 32px;
+    background: var(--green-light);
+    border: 1px solid #B2DDB5;
+    border-radius: 6px;
+    margin-top: 28px;
+  }
+
+  .submit-success h3 {
+    color: var(--green);
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .submit-success p {
+    font-size: 14px;
+    color: var(--fg-2);
+  }
+
+  /* Footer */
+  footer {
+    padding: 40px 0;
+    text-align: center;
+  }
+
+  .footer-mark {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    margin-bottom: 10px;
+  }
+
+  .footer-note {
+    font-size: 12px;
+    color: var(--fg-3);
+  }
+
+  @media (max-width: 640px) {
+    .summary-grid { grid-template-columns: 1fr; }
+    .header-row { flex-direction: column; gap: 12px; }
+    .ref { text-align: left; }
+    .site-name { font-size: 24px; }
+    .mod { grid-template-columns: 42px 1fr; }
+    .mod-dim { display: none; }
+    .q-header { flex-direction: column; gap: 6px; }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  section { animation: fadeIn 0.4s ease-out both; }
+  section:nth-child(2) { animation-delay: 0.04s; }
+  section:nth-child(3) { animation-delay: 0.08s; }
+  section:nth-child(4) { animation-delay: 0.12s; }
+  section:nth-child(5) { animation-delay: 0.16s; }
+</style>
+</head>
+<body>
+
+<!-- Password Gate -->
+<div id="passwordGate" style="position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center;">
+  <div style="text-align:center;max-width:300px;padding:24px;">
+    <div style="font-family:'Inter',sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.02em;margin-bottom:56px;color:var(--fg);">LYN.</div>
+    <input type="password" id="passwordInput" placeholder="password" autofocus
+      style="width:100%;border:none;border-bottom:1px solid var(--border);border-radius:0;padding:10px 0;font-family:'IBM Plex Mono',monospace;font-size:14px;text-align:center;background:transparent;color:var(--fg);outline:none;letter-spacing:0.08em;"
+      onkeydown="if(event.key==='Enter')checkPassword()">
+    <div id="passwordError" style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent);margin-top:14px;display:none;">incorrect password</div>
+  </div>
+</div>
+
+<div class="progress-bar" id="progressBar" style="width: 0%"></div>
+
+<div class="container" style="display:none;" id="mainContent">
+
+  <header>
+    <div class="header-row">
+      <div class="logo">LYN.</div>
+      <div class="ref">
+        GE-001<br>
+        12.02.2026
+      </div>
+    </div>
+    <h1 class="site-name">Gettorf</h1>
+    <p class="site-meta">Private outdoor — Schulze-Berge</p>
+  </header>
+
+  <!-- What you selected -->
+  <section>
+    <div class="label">Your Configuration</div>
+    <p class="prose">
+      This is the configuration you selected. We use it as a starting point — some modules may shift based on your site conditions. The outdoor storage module is available but wasn't included in your selection.
+    </p>
+
+    <div class="module-list">
+      <div class="mod">
+        <div class="mod-id">M1</div>
+        <div>
+          <div class="mod-name">Sauna</div>
+          <div class="mod-desc">The core. Panoramic glass.</div>
+        </div>
+        <div class="mod-dim">3.3 × 2.2 × 2.5 m</div>
+      </div>
+      <div class="mod">
+        <div class="mod-id">M2</div>
+        <div>
+          <div class="mod-name">Swimming Bridge</div>
+          <div class="mod-desc">Direct water access.</div>
+        </div>
+        <div class="mod-dim">1.5 × 2.0 × 0.3 m</div>
+      </div>
+      <div class="mod">
+        <div class="mod-id">M3</div>
+        <div>
+          <div class="mod-name">Changing Room</div>
+          <div class="mod-desc">Transitional space. Skylit.</div>
+        </div>
+        <div class="mod-dim">1.5 × 2.0 × 2.5 m</div>
+      </div>
+      <div class="mod thermal">
+        <div class="mod-id">M4</div>
+        <div>
+          <div class="mod-name">Thermal Module</div>
+          <div class="mod-desc">Compute heat. Optional.</div>
+        </div>
+        <div class="mod-dim">Site-dependent</div>
+      </div>
+      <div class="mod">
+        <div class="mod-id">M5</div>
+        <div>
+          <div class="mod-name">Outdoor Shower</div>
+          <div class="mod-desc">Wall-mounted. Cooling.</div>
+        </div>
+        <div class="mod-dim">0.5 × 0.1 × 2.0 m</div>
+      </div>
+      <div class="mod inactive">
+        <div class="mod-id">M6</div>
+        <div>
+          <div class="mod-name">Outdoor Storage</div>
+          <div class="mod-desc">Robes. Towels. Slippers.</div>
+        </div>
+        <div class="mod-dim">0.6 × 0.3 × 1.5 m</div>
+      </div>
+      <div class="mod">
+        <div class="mod-id">M7</div>
+        <div>
+          <div class="mod-name">Cold Plunge</div>
+          <div class="mod-desc">Self-contained basin.</div>
+        </div>
+        <div class="mod-dim">1.5 × 2.0 × 2.5 m</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Questions -->
+  <section>
+    <div class="label">About Your Site</div>
+    <p class="prose">
+      To plan the installation and model the economics properly, we need to understand the property. Each question below explains why we're asking.
+    </p>
+
+    <!-- Q1: Water -->
+    <div class="q-block" data-q="water">
+      <div class="q-header">
+        <div class="q-title">Is there natural water on or adjacent to the property?</div>
+        <div class="q-why">Affects layout</div>
+      </div>
+      <div class="q-context">
+        The swimming bridge provides direct water access — a step from the sauna into a lake, river, or sea. If there's no natural water body, the cold plunge handles the cooling cycle on its own, and the swimming bridge can be removed from the configuration.
+      </div>
+      <div class="options">
+        <div class="opt" data-value="lake" onclick="selectOpt(this)">Lake or pond</div>
+        <div class="opt" data-value="river" onclick="selectOpt(this)">River or stream</div>
+        <div class="opt" data-value="coast" onclick="selectOpt(this)">Coastal / sea</div>
+        <div class="opt" data-value="none" onclick="selectOpt(this)">No natural water</div>
+      </div>
+      <div class="follow-up" id="water-followup">
+        <span>How far is the water from where you'd place the sauna? An approximate distance is fine.</span>
+        <label>Distance to water</label>
+        <input type="text" placeholder="e.g. 15 meters, directly at the shore, across the garden..." class="data-field" data-key="water_distance">
+      </div>
+    </div>
+
+    <!-- Q2: Placement -->
+    <div class="q-block" data-q="placement">
+      <div class="q-header">
+        <div class="q-title">Where on the property would this go?</div>
+        <div class="q-why">Logistics</div>
+      </div>
+      <div class="q-context">
+        We need to understand the available space, the ground conditions, and how a crane would access the spot. The modules arrive pre-built and are crane-placed — the crane needs a path from the street to the installation point.
+      </div>
+      <div class="options">
+        <div class="opt" data-value="garden-rear" onclick="selectOpt(this)">Rear garden</div>
+        <div class="opt" data-value="garden-side" onclick="selectOpt(this)">Side of property</div>
+        <div class="opt" data-value="waterfront" onclick="selectOpt(this)">Waterfront / edge</div>
+        <div class="opt" data-value="unsure" onclick="selectOpt(this)">Not sure yet</div>
+      </div>
+      <div class="photo-hint">
+        <strong>A photo helps more than a description.</strong><br>
+        If you can, take a photo of the intended area from a few angles and email it to<br>
+        <strong style="color:var(--accent);">site@lyn.page</strong> with subject line <strong>GE-001</strong>.
+      </div>
+      <div class="follow-up" id="placement-followup">
+        <label>Estimated available area (rough is fine)</label>
+        <input type="text" placeholder="e.g. 8×5 meters, or 'large garden, plenty of space'" class="data-field" data-key="available_area">
+        <label>Crane path from street</label>
+        <select class="data-field" data-key="crane_path">
+          <option value="" disabled selected>Can a crane reach the spot from the street?</option>
+          <option value="direct">Direct access — no obstacles</option>
+          <option value="driveway">Via driveway — should work</option>
+          <option value="narrow">Narrow or restricted access</option>
+          <option value="unsure">Not sure</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Q3: Electrical -->
+    <div class="q-block" data-q="electrical">
+      <div class="q-header">
+        <div class="q-title">What's the electrical situation?</div>
+        <div class="q-why">Sizing</div>
+      </div>
+      <div class="q-context">
+        The thermal module requires electrical capacity beyond the sauna's base heating needs. The more capacity available, the larger the thermal configuration can be. If you're unsure, your electricity provider or an electrician can check — the electrical panel (Zählerschrank) or house connection documentation will show the rated capacity.
+      </div>
+      <div class="options">
+        <div class="opt" data-value="3phase" onclick="selectOpt(this)">Three-phase (Drehstrom) — common in Germany</div>
+        <div class="opt" data-value="unsure-elec" onclick="selectOpt(this)">Not sure</div>
+      </div>
+      <div class="follow-up" id="elec-followup">
+        <label>Main fuse rating (Hauptsicherung), if known</label>
+        <input type="text" placeholder="e.g. 35A, 50A, 63A — or unsure" class="data-field" data-key="fuse_rating">
+        <label>Distance from house/panel to sauna placement</label>
+        <input type="text" placeholder="e.g. 20 meters" class="data-field" data-key="elec_distance">
+      </div>
+    </div>
+
+    <!-- Q4: Solar -->
+    <div class="q-block" data-q="solar">
+      <div class="q-header">
+        <div class="q-title">Is there a solar (PV) system on the property?</div>
+        <div class="q-why">Economics</div>
+      </div>
+      <div class="q-context">
+        Electricity in Schleswig-Holstein costs around €0.35–0.40/kWh from the grid. Solar self-consumption reduces this to roughly €0.06–0.08/kWh — which significantly changes the thermal module economics. Even without an existing system, a new PV installation can be modeled as part of the project.
+      </div>
+      <div class="options">
+        <div class="opt" data-value="pv-yes" onclick="selectOpt(this)">Yes — solar panels installed</div>
+        <div class="opt" data-value="pv-battery" onclick="selectOpt(this)">Yes — solar + battery</div>
+        <div class="opt" data-value="pv-interested" onclick="selectOpt(this)">No — but open to it</div>
+        <div class="opt" data-value="pv-no" onclick="selectOpt(this)">No — not planned</div>
+      </div>
+      <div class="follow-up" id="solar-followup">
+        <label>System size (if installed)</label>
+        <input type="text" placeholder="e.g. 10 kWp, or 'not sure — about 20 panels'" class="data-field" data-key="pv_size">
+        <label>Battery capacity (if installed)</label>
+        <input type="text" placeholder="e.g. 10 kWh, or 'no battery'" class="data-field" data-key="battery_size">
+      </div>
+    </div>
+
+    <!-- Q5: Electricity provider -->
+    <div class="q-block" data-q="provider">
+      <div class="q-header">
+        <div class="q-title">Who is your electricity provider?</div>
+        <div class="q-why">Cost modeling</div>
+      </div>
+      <div class="q-context">
+        We need the current rate to model costs accurately. Some providers in the region offer dynamic tariffs (where the price varies by hour), which can substantially improve the economics — the thermal module can be configured to run during the cheapest hours.
+      </div>
+      <div style="margin-top: 8px;">
+        <input type="text" class="opt-input data-field" data-key="provider" placeholder="e.g. Stadtwerke Kiel, SH Netz, E.ON, Tibber...">
+      </div>
+      <div style="margin-top: 8px;">
+        <input type="text" class="opt-input data-field" data-key="rate" placeholder="Current rate if known, e.g. €0.36/kWh — or 'not sure'">
+      </div>
+    </div>
+
+    <!-- Q6: Usage -->
+    <div class="q-block" data-q="usage">
+      <div class="q-header">
+        <div class="q-title">How often would you use the sauna?</div>
+        <div class="q-why">Heat planning</div>
+      </div>
+      <div class="q-context">
+        Usage frequency determines how much of the thermal module's heat output serves a direct purpose (heating the sauna) versus running independently. Both modes generate bitcoin — but sessions where heat is actively used make the case simplest: it's a heater replacement, not an addition.
+      </div>
+      <div class="options">
+        <div class="opt" data-value="1-2x" onclick="selectOpt(this)">1–2× per week</div>
+        <div class="opt" data-value="3-4x" onclick="selectOpt(this)">3–4× per week</div>
+        <div class="opt" data-value="5x" onclick="selectOpt(this)">5+ per week</div>
+        <div class="opt" data-value="seasonal" onclick="selectOpt(this)">Seasonal — mainly winter</div>
+      </div>
+    </div>
+
+    <!-- Q7: Additional thermal -->
+    <div class="q-block" data-q="thermal">
+      <div class="q-header">
+        <div class="q-title">Are there other things on the property that need heat?</div>
+        <div class="q-why">Optimization</div>
+      </div>
+      <div class="q-context">
+        The thermal module can serve loads beyond the sauna itself. Every additional use of the heat it produces improves the economics. Common examples include heated outdoor showers, hot tubs, garden house heating, or pre-heating domestic hot water. Even a heated driveway for winter de-icing counts.
+      </div>
+      <div class="options">
+        <div class="opt" data-value="hot-tub" onclick="toggleOpt(this)">Hot tub (existing or planned)</div>
+        <div class="opt" data-value="heated-floor" onclick="toggleOpt(this)">Heated floor (garden house, workshop)</div>
+        <div class="opt" data-value="pool" onclick="toggleOpt(this)">Pool</div>
+        <div class="opt" data-value="dhw" onclick="toggleOpt(this)">Domestic hot water</div>
+        <div class="opt" data-value="greenhouse" onclick="toggleOpt(this)">Greenhouse</div>
+        <div class="opt" data-value="none-thermal" onclick="selectOpt(this)">None of these</div>
+      </div>
+      <div style="margin-top: 8px;">
+        <textarea class="opt-textarea data-field" data-key="thermal_notes" placeholder="Anything else that uses heat, or ideas you've been considering..."></textarea>
+      </div>
+    </div>
+
+    <!-- Q8: Budget / Timeline -->
+    <div class="q-block" data-q="budget">
+      <div class="q-header">
+        <div class="q-title">Budget and timing</div>
+        <div class="q-why">Phasing</div>
+      </div>
+      <div class="q-context">
+        No commitment — this helps us understand whether to present a single-phase or phased approach. Some clients start with the core sauna modules and add the thermal module later. Both paths work.
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
+        <div>
+          <label style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-3);display:block;margin-bottom:6px;">Budget range</label>
+          <select class="opt-input data-field" data-key="budget" style="margin-top:0;">
+            <option value="" disabled selected>Approximate</option>
+            <option value="<50k">Under €50,000</option>
+            <option value="50-100k">€50,000 – €100,000</option>
+            <option value="100-150k">€100,000 – €150,000</option>
+            <option value="150k+">€150,000+</option>
+            <option value="prefer-not">Prefer not to say</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-3);display:block;margin-bottom:6px;">Timeline</label>
+          <select class="opt-input data-field" data-key="timeline" style="margin-top:0;">
+            <option value="" disabled selected>When?</option>
+            <option value="asap">As soon as possible</option>
+            <option value="6mo">Within 6 months</option>
+            <option value="12mo">Within 12 months</option>
+            <option value="exploring">Exploring — no rush</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Open notes -->
+    <div class="q-block" data-q="notes">
+      <div class="q-header">
+        <div class="q-title">Anything else we should know?</div>
+      </div>
+      <textarea class="opt-textarea data-field" data-key="open_notes" placeholder="Questions, concerns, preferences, constraints, ideas — anything at all."></textarea>
+    </div>
+
+  </section>
+
+  <!-- Submit -->
+  <section>
+    <div class="label">Submit</div>
+    <p class="prose">
+      Once you've filled in what you can, hit submit. We'll build the full site model — thermal module sizing, electricity strategy, and a 5-year projection — and update this page with the results.
+    </p>
+
+    <div class="submit-section" id="submitSection">
+      <button class="submit-btn" onclick="submitForm()">Submit Site Details →</button>
+      <p class="submit-note">You don't need to fill everything. We'll follow up on what's missing.</p>
+    </div>
+
+    <div class="submit-success" id="submitSuccess">
+      <h3>Received</h3>
+      <p>We'll update this page with the full site model within a few days. You'll receive an email when it's ready.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-mark">LYN.</div>
+    <p class="footer-note">design by groundwork studio. manufacture by koerner sauna.</p>
+    <p class="footer-note" style="margin-top:4px;">Confidential — prepared for Schulze-Berge, Gettorf.</p>
+  </footer>
+
+</div>
+
+<script>
+  // Password
+  function checkPassword() {
+    const input = document.getElementById('passwordInput');
+    if (input.value === 'lyn2100') {
+      document.getElementById('passwordGate').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'block';
+    } else {
+      document.getElementById('passwordError').style.display = 'block';
+      input.value = '';
+      input.style.borderColor = '#E8590C';
+    }
+  }
+
+  // State
+  const state = {};
+  const totalQuestions = 8;
+
+  // Single-select: pick one
+  function selectOpt(el) {
+    const block = el.closest('.q-block');
+    const siblings = block.querySelectorAll('.opt');
+    siblings.forEach(s => s.classList.remove('selected'));
+    el.classList.add('selected');
+
+    const q = block.dataset.q;
+    state[q] = el.dataset.value;
+
+    // Show follow-ups based on selection
+    if (q === 'water' && el.dataset.value !== 'none') {
+      document.getElementById('water-followup').classList.add('visible');
+      document.getElementById('water-followup').style.display = 'block';
+    } else if (q === 'water') {
+      document.getElementById('water-followup').classList.remove('visible');
+      document.getElementById('water-followup').style.display = 'none';
+    }
+
+    if (q === 'electrical') {
+      document.getElementById('elec-followup').classList.add('visible');
+      document.getElementById('elec-followup').style.display = 'block';
+    }
+
+    if (q === 'placement') {
+      document.getElementById('placement-followup').classList.add('visible');
+      document.getElementById('placement-followup').style.display = 'block';
+    }
+
+    if (q === 'solar' && (el.dataset.value === 'pv-yes' || el.dataset.value === 'pv-battery')) {
+      document.getElementById('solar-followup').classList.add('visible');
+      document.getElementById('solar-followup').style.display = 'block';
+    } else if (q === 'solar') {
+      document.getElementById('solar-followup').classList.remove('visible');
+      document.getElementById('solar-followup').style.display = 'none';
+    }
+
+    updateProgress();
+  }
+
+  // Multi-select: toggle
+  function toggleOpt(el) {
+    el.classList.toggle('selected');
+    const block = el.closest('.q-block');
+    const q = block.dataset.q;
+    const selected = block.querySelectorAll('.opt.selected');
+    state[q] = Array.from(selected).map(s => s.dataset.value);
+
+    // Deselect "none" if selecting something else
+    if (el.dataset.value !== 'none-thermal') {
+      const noneOpt = block.querySelector('[data-value="none-thermal"]');
+      if (noneOpt) noneOpt.classList.remove('selected');
+    } else {
+      block.querySelectorAll('.opt').forEach(o => {
+        if (o.dataset.value !== 'none-thermal') o.classList.remove('selected');
+      });
+      state[q] = ['none'];
+    }
+
+    updateProgress();
+  }
+
+  function updateProgress() {
+    let answered = 0;
+    document.querySelectorAll('.q-block').forEach(block => {
+      const hasSelection = block.querySelector('.opt.selected');
+      const hasText = Array.from(block.querySelectorAll('input, textarea, select')).some(f => f.value && f.value.trim());
+      if (hasSelection || hasText) answered++;
+    });
+    const pct = Math.round((answered / totalQuestions) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+
+  // Track all inputs
+  document.querySelectorAll('.data-field').forEach(field => {
+    field.addEventListener('input', () => updateProgress());
+    field.addEventListener('change', () => updateProgress());
+  });
+
+  function submitForm() {
+    // Collect all data
+    const formData = { ...state };
+    document.querySelectorAll('.data-field').forEach(field => {
+      if (field.dataset.key && field.value) {
+        formData[field.dataset.key] = field.value;
+      }
+    });
+
+    console.log('Site submission:', JSON.stringify(formData, null, 2));
+
+    // In production: POST to endpoint
+    // For now, show success
+    document.getElementById('submitSection').style.display = 'none';
+    document.getElementById('submitSuccess').style.display = 'block';
+    document.getElementById('progressBar').style.width = '100%';
+    document.getElementById('progressBar').style.background = '#2B8A3E';
+  }
+</script>
+
+</body>
+</html>
