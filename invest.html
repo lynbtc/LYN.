@@ -3,507 +3,594 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>invest</title>
-    <meta name="description" content="One architecture. 2,100 numbered units. Groundwork Studio and KOERNER Saunabau.">
-    <meta name="robots" content="noindex, nofollow">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='white'/></svg>">
+    <title>LYN. — Invest</title>
+    <meta name="description" content="LYN Growth Credit. Fund the first operating site.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@300;400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400&family=IBM+Plex+Mono:wght@400&family=Inter:wght@600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #fafafa; --text: #0a0a0a; --muted: #737373; --border: #e5e5e5; --accent: #1a1a1a; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { font-size: 16px; scroll-behavior: smooth; }
-        body { font-family: 'IBM Plex Sans', -apple-system, sans-serif; font-weight: 300; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
-        a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--border); transition: color 0.15s, border-color 0.15s; }
-        a:hover { color: var(--text); border-color: var(--muted); }
-
-        /* Gate */
-        #gate { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-        #gate.hidden { display: none; }
-        .gate-content { text-align: center; max-width: 320px; padding: 2rem; }
-        .gate-content h1 { font-family: 'Inter', sans-serif; font-size: 1.25rem; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 2rem; }
-        .gate-content input { width: 100%; padding: 0.875rem 1rem; background: transparent; border: 1px solid var(--border); color: var(--text); font-family: 'IBM Plex Mono', monospace; font-size: 0.875rem; text-align: center; letter-spacing: 0.1em; margin-bottom: 1rem; }
-        .gate-content input:focus { outline: none; border-color: var(--muted); }
-        .gate-content input::placeholder { color: var(--muted); }
-        .gate-error { color: #dc2626; font-size: 0.75rem; font-family: 'IBM Plex Mono', monospace; opacity: 0; transition: opacity 0.2s; }
-        .gate-error.visible { opacity: 1; }
-
-        /* Layout */
-        .container { width: 100%; max-width: 680px; margin: 0 auto; padding: 60px 24px 80px; }
-        #main { display: none; }
-        #main.visible { display: block; }
-
-        /* Header */
-        header { margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
-        .logo { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1.25rem; letter-spacing: -0.03em; margin-bottom: 4px; }
-        .subtitle { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--muted); letter-spacing: 0.02em; }
-
-        /* Hero image */
-        .hero-image { width: 100%; height: auto; margin-bottom: 40px; }
-
-        /* Sections */
-        section { margin-bottom: 40px; }
-        .section-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--muted); letter-spacing: 0.02em; margin-bottom: 16px; }
-        p { font-size: 0.9375rem; line-height: 1.65; margin-bottom: 12px; }
-        p:last-child { margin-bottom: 0; }
-
-        /* Thesis / Blockquote */
-        .thesis { font-size: 0.9375rem; line-height: 1.65; padding-left: 16px; border-left: 1px solid var(--border); margin: 20px 0; }
-
-        /* Lead line */
-        .lead { font-family: 'Inter', sans-serif; font-size: 1.5rem; font-weight: 400; letter-spacing: -0.03em; line-height: 1.35; margin-bottom: 24px; }
-        .lead-sub { font-size: 1rem; line-height: 1.55; margin-bottom: 24px; color: var(--text); }
-
-        /* Stat row */
-        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin: 24px 0; }
-        .stat { background: var(--bg); padding: 20px 16px; text-align: center; }
-        .stat-value { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1.375rem; letter-spacing: -0.03em; margin-bottom: 4px; }
-        .stat-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--muted); letter-spacing: 0.02em; }
-
-        /* Tables */
-        .table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-        .table tr { border-bottom: 1px solid var(--border); }
-        .table tr:last-child { border-bottom: none; }
-        .table td { padding: 10px 0; vertical-align: top; font-size: 0.9375rem; }
-        .table td:first-child { color: var(--muted); font-size: 0.8125rem; width: 140px; padding-right: 16px; }
-        .table td { white-space: normal; }
-
-        /* Team */
-        .team { margin: 8px 0; }
-        .team-item { font-size: 0.9375rem; line-height: 1.65; margin-bottom: 10px; }
-        .team-role { font-size: 0.8125rem; color: var(--muted); display: block; }
-        .team-detail { font-size: 0.8125rem; color: var(--muted); display: block; margin-top: 2px; }
-        .team a { text-decoration: none; }
-        .team a:hover { border-color: var(--muted); }
-
-        /* Revenue lines */
-        .revenue { margin: 16px 0; }
-        .revenue-line { font-size: 0.9375rem; line-height: 1.65; margin-bottom: 6px; }
-
-        /* Timeline */
-        .timeline { margin: 16px 0; }
-        .timeline-item { display: flex; gap: 24px; padding: 8px 0; font-size: 0.9375rem; border-bottom: 1px solid var(--border); }
-        .timeline-item:last-child { border-bottom: none; }
-        .timeline-date { font-size: 0.8125rem; color: var(--muted); min-width: 90px; flex-shrink: 0; padding-top: 1px; }
-
-        /* Risk */
-        .risk { padding-left: 16px; border-left: 1px solid var(--muted); margin: 16px 0; }
-        .risk p { font-size: 0.875rem; margin-bottom: 8px; }
-
-        /* Event */
-        .event { margin: 16px 0; }
-        .event-title { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1.125rem; letter-spacing: -0.02em; margin-bottom: 4px; }
-        .event-sub { font-size: 0.875rem; color: var(--muted); margin-bottom: 16px; }
-        .event-line { display: flex; gap: 24px; padding: 8px 0; font-size: 0.9375rem; border-bottom: 1px solid var(--border); }
-        .event-line:last-child { border-bottom: none; }
-        .event-label { font-size: 0.8125rem; color: var(--muted); min-width: 80px; flex-shrink: 0; }
-
-        /* Founder note */
-        .founder-note { margin: 32px 0; padding: 24px; background: #f5f5f5; }
-        .founder-note p { font-size: 0.875rem; line-height: 1.6; color: var(--text); }
-        .founder-sig { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--muted); margin-top: 12px; }
-        .founder-sig a { color: var(--muted); }
-
-        /* FAQ */
-        .faq-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
-        .faq-item:last-child { border-bottom: none; }
-        .faq-q { font-size: 0.875rem; font-weight: 400; margin-bottom: 4px; }
-        .faq-a { font-size: 0.875rem; color: var(--muted); }
-
-        /* CTA */
-        .cta { text-align: center; margin: 48px 0 0; }
-        .cta-button { display: inline-block; padding: 14px 40px; background: var(--text); color: var(--bg); font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500; text-decoration: none; border-bottom: none; transition: opacity 0.2s; }
-        .cta-button:hover { opacity: 0.85; color: var(--bg); border-bottom: none; }
-        .cta-secondary { text-align: center; margin-top: 16px; }
-        .cta-secondary a, .cta-secondary button { font-family: 'Inter', sans-serif; font-size: 0.8125rem; color: var(--muted); text-decoration: none; border: none; border-bottom: 1px solid var(--border); background: none; cursor: pointer; padding: 0; }
-        .cta-secondary a:hover, .cta-secondary button:hover { color: var(--text); border-color: var(--muted); }
-
-        /* Separator */
-        .sep { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
-
-        /* Utilities */
-        .muted { color: var(--muted); }
-        .small { font-size: 0.875rem; }
-
-        /* Footer */
-        footer { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 0.8125rem; color: var(--muted); }
-        footer p { color: var(--muted); font-size: 0.8125rem; margin-bottom: 4px; }
-        .footer-links { margin-top: 12px; }
-        .footer-links a { margin-right: 16px; }
-        .footer-legal { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 0.625rem; letter-spacing: 0.02em; }
-
-        /* Print */
-        @media print {
-            @page { size: A4; margin: 18mm 16mm; }
-            @page :first { margin-top: 14mm; }
-            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            html, body { font-size: 10pt; line-height: 1.45; background: white !important; color: black !important; }
-            #gate { display: none !important; }
-            #main { display: block !important; }
-            .container { max-width: 100%; padding: 0; }
-            header { padding-bottom: 12px; margin-bottom: 20px; }
-            .logo { font-size: 1.1rem; }
-            .lead { font-size: 1.2rem; }
-            .lead-sub { font-size: 0.9rem; }
-            .hero-image { max-height: 180px; width: 100%; object-fit: contain; object-position: left; margin-bottom: 20px; }
-            .stats { margin: 16px 0; }
-            .stat { padding: 12px 8px; }
-            .stat-value { font-size: 1.1rem; }
-            .stat-label { font-size: 0.55rem; }
-            section { margin-bottom: 20px; }
-            .section-label { font-size: 0.6rem; margin-bottom: 8px; color: #666; }
-            p { font-size: 0.85rem; margin-bottom: 8px; }
-            .thesis { font-size: 0.85rem; margin: 12px 0; padding-left: 12px; }
-            .table { page-break-inside: avoid; }
-            .table td { padding: 6px 0; font-size: 0.85rem; }
-            .table td:first-child { color: #666; font-size: 0.75rem; }
-            .team { page-break-inside: avoid; }
-            .team-item { font-size: 0.85rem; margin-bottom: 6px; }
-            .team-role { font-size: 0.75rem; color: #666; }
-            .team-detail { font-size: 0.7rem; color: #666; }
-            .revenue-line { font-size: 0.85rem; }
-            .timeline-item { padding: 5px 0; font-size: 0.85rem; }
-            .timeline-date { font-size: 0.75rem; color: #666; }
-            .risk p { font-size: 0.8rem; }
-            .event-title { font-size: 1rem; }
-            .event-sub { font-size: 0.8rem; color: #666; }
-            .event-line { padding: 5px 0; font-size: 0.85rem; }
-            .event-label { font-size: 0.75rem; color: #666; }
-            .founder-note { padding: 16px; background: #f5f5f5 !important; page-break-inside: avoid; }
-            .founder-note p { font-size: 0.8rem; }
-            .faq-item { padding: 8px 0; page-break-inside: avoid; }
-            .faq-q { font-size: 0.8rem; }
-            .faq-a { font-size: 0.8rem; }
-            .cta { display: none !important; }
-            .cta-secondary { display: none !important; }
-            .sep { margin: 20px 0; }
-            footer { margin-top: 24px; padding-top: 12px; font-size: 0.7rem; page-break-inside: avoid; }
-            footer .footer-links { margin-top: 6px; }
-            footer .footer-legal { margin-top: 8px; padding-top: 6px; font-size: 0.6rem; }
-            a { color: #666 !important; text-decoration: none !important; border: none !important; border-bottom: none !important; }
-            .founder-sig a::after { content: " (" attr(href) ")"; font-size: 0.65rem; color: #999; }
-            .muted { color: #666 !important; }
-            .small { font-size: 0.8rem; }
-            h2, h3, .section-label { page-break-after: avoid; }
-            .section-label + .small + .table,
-            .section-label + p + .table { page-break-before: avoid; }
+        :root {
+            --text: #37352f;
+            --muted: #a0a0a0;
+            --bg: #fafafa;
+            --border: #e0e0e0;
+            --border-strong: #37352f;
+            --positive: #3d7a5f;
         }
-
-        /* Mobile */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 300;
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+        }
+        .gate {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .gate.hidden { display: none; }
+        .gate-logo {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1.125rem;
+            letter-spacing: -0.02em;
+            color: var(--text);
+        }
+        .gate input {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8125rem;
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: var(--text);
+            text-align: center;
+            outline: none;
+            width: 200px;
+        }
+        .gate input:focus { border-color: var(--text); }
+        .gate-error {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6875rem;
+            color: var(--muted);
+            height: 16px;
+        }
+        .content { display: none; }
+        .content.visible { display: block; }
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 48px 24px 96px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 48px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .logo {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1.125rem;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            text-decoration: none;
+        }
+        .confidential {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6875rem;
+            color: var(--muted);
+            letter-spacing: 0.04em;
+        }
+        h1 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 300;
+            font-size: 1.5rem;
+            line-height: 1.35;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 400;
+            font-size: 0.6875rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+        p { margin-bottom: 12px; }
+        .small { font-size: 0.8125rem; }
+        .muted { color: var(--muted); }
+        .mono {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8125rem;
+        }
+        section { margin-bottom: 48px; }
+        .sep {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 48px 0;
+        }
+        .thesis {
+            font-size: 1rem;
+            font-weight: 300;
+            line-height: 1.6;
+            margin: 24px 0;
+            padding: 20px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+        table tr { border-bottom: 1px solid var(--border); }
+        table tr:last-child { border-bottom: none; }
+        table td {
+            padding: 10px 0;
+            vertical-align: top;
+            font-size: 0.8125rem;
+        }
+        table td:first-child {
+            color: var(--muted);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            width: 160px;
+            padding-right: 16px;
+        }
+        table th {
+            padding: 10px 0;
+            text-align: left;
+            font-weight: 400;
+            font-size: 0.6875rem;
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--muted);
+            border-bottom: 2px solid var(--border);
+        }
+        .econ-table td:nth-child(2) { text-align: right; }
+        .econ-table th:nth-child(2) { text-align: right; }
+        .econ-table td:first-child { width: auto; }
+        .econ-row-highlight td {
+            font-weight: 400;
+            border-top: 2px solid var(--border-strong);
+            padding-top: 12px;
+        }
+        .econ-row-positive td {
+            font-weight: 400;
+            border-top: 2px solid var(--positive);
+            padding-top: 12px;
+            color: var(--positive);
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            margin: 24px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .stat {
+            padding: 16px 0;
+            text-align: center;
+        }
+        .stat:not(:last-child) {
+            border-right: 1px solid var(--border);
+        }
+        .stat-value {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 300;
+            font-size: 1.25rem;
+            color: var(--text);
+            letter-spacing: -0.01em;
+        }
+        .stat-value-positive {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 300;
+            font-size: 1.25rem;
+            color: var(--positive);
+            letter-spacing: -0.01em;
+        }
+        .stat-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.625rem;
+            color: var(--muted);
+            letter-spacing: 0.04em;
+            margin-top: 4px;
+        }
+        .modes {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+            margin: 16px 0;
+        }
+        .mode {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .mode:last-child { border-bottom: none; }
+        .mode-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+        .mode-desc {
+            font-size: 0.8125rem;
+            line-height: 1.6;
+        }
+        .cta-button {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.04em;
+            color: var(--bg);
+            background: var(--text);
+            padding: 12px 32px;
+            text-decoration: none;
+            margin-top: 8px;
+            margin-right: 8px;
+        }
+        .cta-button:hover { opacity: 0.85; }
+        .cta-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .cta-secondary:hover { border-color: var(--text); }
+        @media print {
+            .gate { display: none !important; }
+            .content { display: block !important; }
+            body { font-size: 0.8125rem; }
+            .container { max-width: 100%; padding: 24px; }
+            .header { margin-bottom: 32px; }
+            section { margin-bottom: 32px; page-break-inside: avoid; }
+            .sep { margin: 32px 0; }
+            .cta-button { display: none; }
+            .stats { page-break-inside: avoid; }
+            table { page-break-inside: avoid; }
+        }
         @media (max-width: 600px) {
-            .container { padding: 40px 20px 60px; }
-            .lead { font-size: 1.25rem; }
+            .container { padding: 32px 20px 64px; }
+            h1 { font-size: 1.25rem; }
             .stats { grid-template-columns: 1fr; }
-            .stat { padding: 14px 16px; text-align: left; display: flex; align-items: baseline; gap: 12px; }
-            .stat-value { font-size: 1.125rem; margin-bottom: 0; }
-            .table td:first-child { width: 110px; font-size: 0.75rem; }
-            .timeline-item { flex-direction: column; gap: 2px; }
-            .timeline-date { min-width: auto; }
-            .event-line { flex-direction: column; gap: 2px; }
-            .event-label { min-width: auto; }
-            .cta-button { display: block; text-align: center; }
+            .stat { text-align: left; padding: 12px 0; }
+            .stat:not(:last-child) { border-right: none; border-bottom: 1px solid var(--border); }
+            table td:first-child { width: 120px; }
+            .cta-button { display: block; text-align: center; margin-right: 0; margin-bottom: 8px; }
         }
     </style>
 </head>
 <body>
-    <div id="gate">
-        <div class="gate-content">
-            <h1>LYN.</h1>
-            <input type="password" id="password" placeholder="password" autocomplete="off">
-            <div class="gate-error" id="gate-error">incorrect</div>
-        </div>
-    </div>
 
+<!-- PASSWORD GATE -->
+<div class="gate" id="gate">
+    <div class="gate-logo">LYN.</div>
+    <input type="password" id="gate-input" placeholder="password" autocomplete="off">
+    <div class="gate-error" id="gate-error"></div>
+</div>
+
+<!-- CONTENT -->
+<div class="content" id="content">
     <div class="container">
-        <main id="main">
-            <header>
-                <div class="logo">LYN.</div>
-                <div class="subtitle">February 2026 · Confidential</div>
-            </header>
 
-            <!-- LEAD -->
-            <section>
-                <p class="lead">One architecture. 2,100 numbered units.</p>
-                <p class="lead-sub">A modular sauna system. 7 modules, one fixed architecture. Designed by Morten Bo Jensen at Groundwork Studio, manufactured by KOERNER Saunabau — third generation, est. 1949. The M4 module mines bitcoin with the heat you're already producing. Numbered 1–2,100, then production closes.</p>
-            </section>
+        <!-- HEADER -->
+        <div class="header">
+            <a href="https://lyn.page" class="logo">LYN.</a>
+            <span class="confidential">Confidential · February 2026</span>
+        </div>
 
-            <!-- HERO -->
-            <img src="images/config-preview.png" alt="LYN sauna configuration" class="hero-image">
+        <!-- TITLE -->
+        <section>
+            <h1>Growth Credit</h1>
+            <p class="muted">Fund the first operating LYN site.</p>
+        </section>
 
-            <!-- KEY NUMBERS -->
+        <hr class="sep">
+
+        <!-- LYN -->
+        <section>
+            <h2>LYN</h2>
+            <p>A system of 7 modular components for outdoor saunas with integrated bitcoin mining. 2,100 numbered units. Unlimited bespoke indoor installations. Designed by Groundwork Studio. Manufactured by KOERNER Saunabau.</p>
+            <p>Unit prices range from €55,000 (outdoor) to €210,000 (bespoke indoor). Every installation runs an M4 thermal module — bitcoin mining hardware that converts electricity to heat while accumulating sats.</p>
+            <p class="small muted">LYN is a bitcoin accumulation vehicle that currently focuses on designing 2,100 saunas.</p>
+        </section>
+
+        <hr class="sep">
+
+        <!-- THESIS -->
+        <section>
+            <h2>Thesis</h2>
+            <div class="thesis">
+                A self-funding showroom. Session revenue covers the operating cost. Every guest experiences the full product. The site targets 10 unit sales per year.
+            </div>
+            <p>Every spa session is 75 minutes inside a working LYN installation — KOERNER cabin, M4 thermal system, the full design language. Every session is a product experience at €55–210k. Session revenue exists to make the showroom cost nothing to operate. Unit sales are the business.</p>
+
+            <br>
+            <p class="mono muted" style="margin-bottom: 16px;">Unit sales · 10/year</p>
+            <table class="econ-table">
+                <tr><td>Average unit price</td><td>€100,000</td></tr>
+                <tr><td>Annual product revenue (10 units)</td><td>€1,000,000</td></tr>
+                <tr><td>Gross margin (est. 25–30%)</td><td>€250–300,000</td></tr>
+            </table>
+            <p class="small muted" style="margin-top: 8px;">Blended average across outdoor (€55–80k) and indoor/bespoke (€100–210k). Manufacturing by KOERNER. Margin after production, delivery, M4 hardware.</p>
+
+            <br>
+            <p class="mono muted" style="margin-bottom: 16px;">Conversion</p>
+            <p class="small">Conservative session volume: ~750–900 sessions/year. At up to 4 guests per session: 2,000–3,600 visitors annually. 10 sales from that base is a 0.3–0.5% conversion rate — on a €55–210k considered purchase the visitor has just physically experienced.</p>
+
+            <br>
+            <p class="mono muted" style="margin-bottom: 16px;">Customer acquisition cost</p>
+            <p class="small">Alternative: trade fairs, ads, a sales team — €50–100k/year with no experiential conversion. Here, every paying spa guest is a warm lead who has already used the product. The site gets paid for its own marketing.</p>
+        </section>
+
+        <hr class="sep">
+
+        <!-- SITE -->
+        <section>
+            <h2>The Site</h2>
+            <p>The credit funds one operating site. Copenhagen is ready now. Lugano is the alternative — same model, different market. Site selection depends on where capital and interest align.</p>
+
+            <br>
+            <p class="mono muted" style="margin-bottom: 16px;">Copenhagen · Teglholmen</p>
+            <table>
+                <tr><td>Address</td><td>Teglholmens Østkaj 9, 2450 København SV</td></tr>
+                <tr><td>Space</td><td>163 m². Ground floor. Canal-side. Full-height glass. Former café.</td></tr>
+                <tr><td>Building</td><td>2017. Residential above, commercial ground floor.</td></tr>
+                <tr><td>Ceiling</td><td>3.55 m. Exposed ducting, concrete, copper piping.</td></tr>
+                <tr><td>Catchment</td><td>Teglholmen + Sluseholmen (1,350 apartments) + Sydhavn. Metro 2026.</td></tr>
+                <tr><td>Rent</td><td>28,230 DKK/month all-in (rent + drift). 6-month deposit.</td></tr>
+                <tr><td>Status</td><td>Available now. Lease not signed.</td></tr>
+                <tr><td>Operations</td><td>Founder lives on Sluseholmen. Site operable on foot.</td></tr>
+            </table>
+            <p class="small muted" style="margin-top: 8px;">La Cour & Lykke prospekt 115845727. Use: detail / showroom / restaurant. Public-facing service business required. Landlord must approve sauna use.</p>
+
+            <br>
+            <p class="mono muted" style="margin-bottom: 16px;">Lugano · Alternative</p>
+            <table>
+                <tr><td>Market</td><td>Ticino. Bitcoin-native community. Plan ₿ conference. Higher purchasing power.</td></tr>
+                <tr><td>Format</td><td>Same model — residence with KOERNER cabin, M4 thermal, spa sessions.</td></tr>
+                <tr><td>Session pricing</td><td>Higher than Copenhagen. CHF-denominated. Comparable premium wellness: CHF 250–400/session.</td></tr>
+                <tr><td>Buyer profile</td><td>Property owners in Ticino, Italian Lakes, Swiss Alps. Second-home market.</td></tr>
+                <tr><td>Status</td><td>No site identified. Founder exploring locations. Dinner planned April 2026.</td></tr>
+            </table>
+            <p class="small muted" style="margin-top: 8px;">Lugano trades immediate availability for a higher-value buyer catchment. If an investor prefers the Swiss market, the credit funds the Lugano site instead. Same raise, same structure, same model.</p>
+        </section>
+
+        <hr class="sep">
+
+        <!-- CONCEPT -->
+        <section>
+            <h2>Concept</h2>
+            <div class="modes">
+                <div class="mode">
+                    <div class="mode-name">spa</div>
+                    <div class="mode-desc">KOERNER cabin built into the space. Cedar, glass, concrete. 75 min private sessions, up to 4 guests. Shower, changing, relaxation.</div>
+                </div>
+                <div class="mode">
+                    <div class="mode-name">work</div>
+                    <div class="mode-desc">Adaptable space for focused sessions, meetings, small gatherings. 6-hour offsite blocks, 8–10 people.</div>
+                </div>
+                <div class="mode">
+                    <div class="mode-name">M4</div>
+                    <div class="mode-desc">Bitcoin mining hardware runs continuously. Heat recovered into the space. Sats accumulate.</div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="sep">
+
+        <!-- ECONOMICS -->
+        <section>
+            <h2>Site Economics</h2>
+            <p class="small muted" style="margin-bottom: 24px;">Modeled on the Copenhagen site. Lugano economics would differ in rent, session pricing, and currency — but the structure is the same: sessions cover the burn, unit sales are the business.</p>
+
+            <p class="mono muted" style="margin-bottom: 16px;">Monthly operating cost</p>
+            <table class="econ-table">
+                <tr><td>Rent + operating (drift)</td><td>28,230</td></tr>
+                <tr><td>Electricity (est.)</td><td>3,500</td></tr>
+                <tr><td>Insurance</td><td>1,500</td></tr>
+                <tr><td>Cleaning / supplies</td><td>3,000</td></tr>
+                <tr><td>Booking / admin</td><td>4,000</td></tr>
+                <tr><td>Marketing / acquisition</td><td>3,000</td></tr>
+                <tr><td>Founder salary (capped)</td><td>37,500</td></tr>
+                <tr class="econ-row-highlight"><td>Monthly burn</td><td>~80,500 DKK</td></tr>
+            </table>
+            <p class="small muted">Annual: ~966,000 DKK (~€129k). Founder salary capped at €5,000/month. Same operator model — no dedicated staffing. Excludes VAT.</p>
+
+            <br>
+            <p class="mono muted" style="margin-bottom: 16px;">Session revenue</p>
+            <table class="econ-table">
+                <tr><td>Day spa session (75 min, ≤4 guests)</td><td>2,200 DKK</td></tr>
+                <tr><td>Offsite (6 hr, 8–10 people)</td><td>10,000 DKK</td></tr>
+                <tr><td>M4 mining (net of electricity)</td><td>~3,000 DKK/mo</td></tr>
+            </table>
+
+            <br>
+            <p class="mono muted" style="margin-bottom: 16px;">Breakeven</p>
+            <table class="econ-table">
+                <tr><td>Monthly burn (incl. salary)</td><td>80,500 DKK</td></tr>
+                <tr><td>Revenue per session</td><td>2,200 DKK</td></tr>
+                <tr class="econ-row-highlight"><td>Breakeven</td><td>~37 sessions/month · ~1.7/day</td></tr>
+            </table>
+            <p class="small muted" style="margin-top: 8px;">Less than 2 sessions per working day covers all operating costs including founder salary. The showroom runs at zero cost above this line.</p>
+
+            <br>
+            <p class="mono muted" style="margin-bottom: 16px;">Monthly P&L · sessions only (conservative)</p>
+            <table class="econ-table">
+                <tr><td>Spa sessions (2.5/day avg × 5 days)</td><td>~119,000</td></tr>
+                <tr><td>Offsites (1/week avg)</td><td>~43,000</td></tr>
+                <tr><td>M4 net</td><td>~3,000</td></tr>
+                <tr class="econ-row-positive"><td>Gross session revenue</td><td>~165,000 DKK/month</td></tr>
+            </table>
+            <table class="econ-table" style="margin-top: 0;">
+                <tr><td>Operating costs (incl. salary)</td><td>−80,500</td></tr>
+                <tr class="econ-row-positive"><td>Net session margin</td><td>~84,500 DKK/month</td></tr>
+            </table>
+            <p class="small muted" style="margin-top: 8px;">2.5 sessions/day accounts for seasonality and scheduling around offsites. This is the floor. Unit sales revenue is additive.</p>
+
             <div class="stats">
                 <div class="stat">
-                    <div class="stat-value">2,100</div>
-                    <div class="stat-label">numbered units</div>
+                    <div class="stat-value">~1.7/day</div>
+                    <div class="stat-label">breakeven</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-value">€55–150k+</div>
-                    <div class="stat-label">per configuration</div>
+                    <div class="stat-value-positive">~85k</div>
+                    <div class="stat-label">DKK/month net (sessions)</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-value">€105M+</div>
-                    <div class="stat-label">outdoor revenue ceiling</div>
+                    <div class="stat-value">10 units</div>
+                    <div class="stat-label">annual sales target</div>
                 </div>
             </div>
 
-            <!-- PRODUCT -->
-            <section>
-                <div class="section-label">System</div>
-                <table class="table">
-                    <tr><td>M1 Sauna</td><td>Panoramic glass. 3.3 × 2.2 × 2.5 m, 1,800 kg. Stove selected per configuration. Delivered finished.</td></tr>
-                    <tr><td>M2 Bridge</td><td>Swimming bridge. Marine-grade timber, stainless steel.</td></tr>
-                    <tr><td>M3 Changing</td><td>Enclosed cabin with skylight.</td></tr>
-                    <tr><td>M4 Thermal</td><td>Bitcoin mining hardware as heat source. Same energy, dual output.</td></tr>
-                    <tr><td>M5 Shower</td><td>Outdoor shower. Stainless steel, wall-mounted.</td></tr>
-                    <tr><td>M6 Storage</td><td>Weatherproof cabinet. Towels, wood, equipment.</td></tr>
-                    <tr><td>M7 Cold Plunge</td><td>Insulated basin with optional chiller integration.</td></tr>
-                </table>
-                <div class="thesis">
-                    Each configuration is unique. The architecture is not. Outdoor units are numbered and finite. Indoor installations are bespoke and uncapped.
-                </div>
-                <p class="small muted">Indoor and commercial installations use a KOERNER stove. Private outdoor units select from a curated range.</p>
-            </section>
+            <br>
+            <p class="mono muted" style="margin-bottom: 16px;">Combined annual P&L</p>
+            <table class="econ-table">
+                <tr><td>Session net margin (12 months)</td><td>~1,014,000 DKK</td></tr>
+                <tr><td>Unit sales gross margin (10 × ~€25k)</td><td>~1,875,000 DKK</td></tr>
+                <tr class="econ-row-positive"><td>Combined annual margin</td><td>~2,889,000 DKK (~€387k)</td></tr>
+            </table>
+            <p class="small muted" style="margin-top: 8px;">Session revenue makes the showroom self-funding. Unit sales are the business.</p>
 
-            <!-- STATUS -->
-            <section>
-                <div class="section-label">Status</div>
-                <table class="table">
-                    <tr><td>Design</td><td><a href="https://www.studiogroundwork.com/" target="_blank" rel="noopener noreferrer">Groundwork Studio</a>. Morten Bo Jensen — 16 years Chief Designer at <a href="https://vipp.com" target="_blank" rel="noopener noreferrer">Vipp</a>. Finalized.</td></tr>
-                    <tr><td>Manufacturing</td><td><a href="https://www.sauna-koerner.de/en/" target="_blank" rel="noopener noreferrer">KOERNER Saunabau</a>. Albstadt, Germany. Third generation. Spec locked.</td></tr>
-                    <tr><td>Prototype</td><td>In build at KOERNER.</td></tr>
-                    <tr><td>M4</td><td>In collaboration with <a href="https://21energy.com/" target="_blank" rel="noopener noreferrer">21Energy</a> (Austria) + <a href="https://orange-wheel.com/bitcoin-mining" target="_blank" rel="noopener noreferrer">Orange Wheel</a>.</td></tr>
-                    <tr><td>Site Planning</td><td>Live at <a href="https://siteplanning.lyn.page" target="_blank" rel="noopener noreferrer">siteplanning.lyn.page</a>. Site economics model in development.</td></tr>
-                    <tr><td>Unit #001</td><td>Copenhagen or Lugano. Scouting.</td></tr>
-                    <tr><td>Orders</td><td>Open.</td></tr>
-                </table>
-            </section>
+            <br>
+            <p class="mono muted" style="margin-bottom: 16px;">M4 accumulation</p>
+            <table class="econ-table">
+                <tr><td>Year 1</td><td>~36,000 DKK net mining revenue</td></tr>
+                <tr><td>Year 3</td><td>~108,000 DKK net + accumulated BTC position</td></tr>
+                <tr><td>Year 5</td><td>~180,000 DKK net + accumulated BTC position</td></tr>
+            </table>
+            <p class="small muted" style="margin-top: 8px;">Mining runs 24/7 regardless of session bookings. Modeled flat — no BTC appreciation assumed. M4 is a perpetual accumulation layer.</p>
+        </section>
 
-            <!-- TEAM -->
-            <section>
-                <div class="section-label">Team</div>
-                <div class="team">
-                    <div class="team-item">
-                        <span class="team-role">Founder</span>
-                        Julius Schulze-Berge, Copenhagen
-                        <span class="team-detail">Previously <a href="https://vipp.com" target="_blank" rel="noopener noreferrer">Vipp</a>, Trustpilot, Usercentrics.</span>
-                    </div>
-                    <div class="team-item">
-                        <span class="team-role">Design</span>
-                        Morten Bo Jensen, <a href="https://www.studiogroundwork.com/" target="_blank" rel="noopener noreferrer">Groundwork Studio</a>
-                        <span class="team-detail"><a href="https://vipp.com" target="_blank" rel="noopener noreferrer">Vipp</a> Shelter, <a href="https://vipp.com" target="_blank" rel="noopener noreferrer">Vipp</a> Kitchen. iF Design Award jury.</span>
-                    </div>
-                    <div class="team-item">
-                        <span class="team-role">Manufacturing</span>
-                        <a href="https://www.sauna-koerner.de/en/" target="_blank" rel="noopener noreferrer">KOERNER Saunabau</a>, Albstadt
-                        <span class="team-detail">Founded 1949. First sauna builder in the DACH region. Third generation.</span>
-                    </div>
-                    <div class="team-item">
-                        <span class="team-role">M4</span>
-                        <a href="https://21energy.com/" target="_blank" rel="noopener noreferrer">21Energy</a> + <a href="https://orange-wheel.com/bitcoin-mining" target="_blank" rel="noopener noreferrer">Orange Wheel</a>
-                    </div>
-                </div>
-            </section>
+        <hr class="sep">
 
-            <hr class="sep">
+        <!-- STARTUP -->
+        <section>
+            <h2>Startup Cost</h2>
+            <p class="small muted" style="margin-bottom: 16px;">Copenhagen estimate. Lugano would differ in deposit and local build costs.</p>
+            <table class="econ-table">
+                <tr><td>Deposit (6 months)</td><td>147,000</td></tr>
+                <tr><td>KOERNER sauna cabin</td><td>180,000</td></tr>
+                <tr><td>Interior build-out</td><td>120,000</td></tr>
+                <tr><td>Shower / wet room conversion</td><td>60,000</td></tr>
+                <tr><td>M4 hardware + install</td><td>45,000</td></tr>
+                <tr><td>Furniture, fixtures, signage</td><td>50,000</td></tr>
+                <tr><td>Working capital (3 months)</td><td>130,000</td></tr>
+                <tr class="econ-row-highlight"><td>Total launch capital</td><td>~732,000 DKK (~€98k)</td></tr>
+            </table>
+            <p class="small muted">Copenhagen space comes finished — floors, ceilings, kitchen, paint. Former café. Lower build-out than raw shell. Estimates. Actual costs depend on landlord negotiation and KOERNER pricing.</p>
+        </section>
 
-            <!-- GROWTH CREDIT -->
-            <section>
-                <div class="section-label">Growth Credit</div>
-                <p>Profit-participating loan. Revenue-linked. Capped return.</p>
-                <table class="table">
-                    <tr><td>Raise</td><td>€100,000 – €210,000</td></tr>
-                    <tr><td>Target Return</td><td>2.5×</td></tr>
-                    <tr><td>Payment</td><td>40% of net margin, quarterly</td></tr>
-                    <tr><td>Term</td><td>48 months</td></tr>
-                    <tr><td>Security</td><td>Floating charge on assets + founder personal guarantee</td></tr>
-                    <tr><td>Min. Ticket</td><td>€55,000</td></tr>
-                    <tr><td>Priority</td><td>Senior to equity distributions</td></tr>
-                </table>
-                <p class="muted small" style="margin-top: 16px;">Net margin = Revenue − COGS − Operating costs. Founder salary capped at €5,000/month until 1× return.</p>
-            </section>
+        <hr class="sep">
 
-            <!-- REVENUE -->
-            <section>
-                <div class="section-label">Revenue</div>
-                <div class="revenue">
-                    <div class="revenue-line"><strong>Units</strong> — 2,100 outdoor (numbered, €55k–150k+) + indoor bespoke (uncapped)</div>
-                    <div class="revenue-line"><strong>Unit #001</strong> — commercial spa: sessions, private visits, events, offsites</div>
-                    <div class="revenue-line"><strong>Network</strong> — licensing fees from partner manufacturing under specification</div>
-                    <div class="revenue-line"><strong>M4</strong> — bitcoin mining offsets operating energy costs across installed base</div>
-                </div>
-            </section>
+        <!-- GROWTH CREDIT -->
+        <section>
+            <h2>Growth Credit</h2>
+            <p>Profit-participating loan. Revenue-linked. Capped return. Secured against the site and its assets.</p>
+            <table>
+                <tr><td>Raise</td><td>€100,000</td></tr>
+                <tr><td>Use</td><td>Secure lease, build and open the first operating LYN site</td></tr>
+                <tr><td>Site</td><td>Copenhagen (Teglholmen) or Lugano — investor preference</td></tr>
+                <tr><td>Target return</td><td>2.5×</td></tr>
+                <tr><td>Payment</td><td>40% of net margin, quarterly</td></tr>
+                <tr><td>Term</td><td>48 months</td></tr>
+                <tr><td>Security</td><td>Floating charge on assets + founder personal guarantee</td></tr>
+                <tr><td>Min. ticket</td><td>€55,000</td></tr>
+                <tr><td>Priority</td><td>Senior to equity distributions</td></tr>
+            </table>
+            <p class="small muted" style="margin-top: 16px;">Net margin = Revenue − COGS − Operating costs (incl. founder salary). On session revenue alone, 40% of ~84,500 DKK/month = ~33,800 DKK/month (~€4,500) to the credit holder. Unit sales — 10/year at 25% margin — accelerate return significantly but are not contractually committed. The credit is structured against what sessions can reliably service.</p>
+        </section>
 
-            <!-- UNIT ECONOMICS -->
-            <section>
-                <div class="section-label">Unit Economics · Preliminary</div>
-                <p class="small muted" style="margin-bottom: 16px;">Estimates based on comparable German manufacturers. Final COGS confirmed with KOERNER by March 2026.</p>
+        <hr class="sep">
 
-                <table class="table">
-                    <tr style="border-bottom: 2px solid var(--border);">
-                        <td style="color: var(--text); font-weight: 400; font-size: 0.8125rem;">Module</td>
-                        <td style="color: var(--text); font-weight: 400; font-size: 0.8125rem;">Retail</td>
-                        <td style="color: var(--text); font-weight: 400; font-size: 0.8125rem;">Est. COGS</td>
-                        <td style="color: var(--text); font-weight: 400; font-size: 0.8125rem;">Est. Margin</td>
-                    </tr>
-                    <tr>
-                        <td style="color: var(--text);">M1 Sauna</td>
-                        <td>€55,555</td>
-                        <td>€18,000–24,000</td>
-                        <td>57–68%</td>
-                    </tr>
-                    <tr>
-                        <td style="color: var(--text);">M2 Bridge</td>
-                        <td>€11,111</td>
-                        <td>€3,200–4,500</td>
-                        <td>59–71%</td>
-                    </tr>
-                    <tr>
-                        <td style="color: var(--text);">M3 Changing</td>
-                        <td>€15,111</td>
-                        <td>€5,500–7,500</td>
-                        <td>50–64%</td>
-                    </tr>
-                    <tr>
-                        <td style="color: var(--text);">M4 Thermal</td>
-                        <td>€3,111</td>
-                        <td>€1,200–1,800</td>
-                        <td>42–61%</td>
-                    </tr>
-                    <tr>
-                        <td style="color: var(--text);">M5 Shower</td>
-                        <td>€3,111</td>
-                        <td>€600–900</td>
-                        <td>71–81%</td>
-                    </tr>
-                    <tr>
-                        <td style="color: var(--text);">M6 Storage</td>
-                        <td>€2,111</td>
-                        <td>€500–800</td>
-                        <td>62–76%</td>
-                    </tr>
-                    <tr>
-                        <td style="color: var(--text);">M7 Cold Plunge</td>
-                        <td>€12,111</td>
-                        <td>€4,000–5,500</td>
-                        <td>55–67%</td>
-                    </tr>
-                    <tr style="border-top: 2px solid var(--border);">
-                        <td style="color: var(--text); font-weight: 400;">Full config</td>
-                        <td style="font-weight: 400;">€102,221</td>
-                        <td style="font-weight: 400;">€33,000–45,000</td>
-                        <td style="font-weight: 400;">56–68%</td>
-                    </tr>
-                </table>
+        <!-- TIMELINE -->
+        <section>
+            <h2>Timeline</h2>
+            <table>
+                <tr><td>Q2 2026</td><td>Credit closed. Lease signed. KOERNER ordered.</td></tr>
+                <tr><td>Q3 2026</td><td>Build-out. Interior, cabin install, M4, shower conversion.</td></tr>
+                <tr><td>Q4 2026</td><td>Site operational. Sessions generating revenue. M4 accumulating.</td></tr>
+                <tr><td>2027</td><td>Second site. Network expansion.</td></tr>
+            </table>
+        </section>
 
-                <p class="small" style="margin-top: 16px;">Target blended gross margin: <strong>60%+</strong>. Most configurations will be M1 + subset, averaging €55k–75k. Delivery and installation quoted per project.</p>
-            </section>
+        <hr class="sep">
 
-            <!-- USE OF FUNDS -->
-            <section>
-                <div class="section-label">Use of Funds</div>
-                <table class="table">
-                    <tr><td>Unit #001</td><td>Commercial spa build. First recurring revenue.</td></tr>
-                    <tr><td>Manufacturing</td><td>Prototype completion and first production run.</td></tr>
-                    <tr><td>Tech</td><td>Configurator, site planning, site economics model, M4 integration.</td></tr>
-                    <tr><td>Operations</td><td>Danish ApS, compliance, sales.</td></tr>
-                </table>
-            </section>
+        <!-- TEAM -->
+        <section>
+            <h2>Team</h2>
+            <table>
+                <tr><td>Founder</td><td>Julius Schulze-Berge, Copenhagen. Previously Vipp, Trustpilot, Usercentrics.</td></tr>
+                <tr><td>Design</td><td>Morten Bo Jensen, Groundwork Studio. Vipp Shelter, Vipp Kitchen. iF Design Award jury.</td></tr>
+                <tr><td>Manufacturing</td><td>KOERNER Saunabau, Albstadt. Founded 1949. First sauna builder in the DACH region.</td></tr>
+                <tr><td>M4</td><td>21Energy + Orange Wheel.</td></tr>
+            </table>
+        </section>
 
-            <!-- TIMELINE -->
-            <section>
-                <div class="section-label">Timeline</div>
-                <div class="timeline">
-                    <div class="timeline-item"><span class="timeline-date">Q1 2026</span><span>Prototype complete. COGS confirmed. Close growth credit.</span></div>
-                    <div class="timeline-item"><span class="timeline-date">Q2 2026</span><span>Unit #001 operational. First revenue. Lugano dinner.</span></div>
-                    <div class="timeline-item"><span class="timeline-date">Q3–Q4 2026</span><span>Recurring revenue. Pipeline build. First investor payment.</span></div>
-                    <div class="timeline-item"><span class="timeline-date">2027+</span><span>Scale production. Network expansion. Licensing.</span></div>
-                </div>
-            </section>
+        <hr class="sep">
 
-            <!-- RISK -->
-            <section>
-                <div class="section-label">Risk</div>
-                <div class="risk">
-                    <p>Early-stage. No operating history. You may lose your entire investment.</p>
-                    <p>Returns tied to revenue. No secondary market. Bitcoin mining profitability is variable. Unit economics not yet finalized.</p>
-                    <p class="muted">Sophisticated investors only. Not a regulated offering.</p>
-                </div>
-            </section>
+        <!-- RISK -->
+        <section>
+            <h2>Risk</h2>
+            <p>Early-stage. No operating history. You may lose your entire investment.</p>
+            <p>No lease signed. Returns tied to site revenue. No secondary market. Bitcoin mining profitability is variable. Session demand unproven. Revenue projections are estimates — not guarantees. Unit sales conversion is assumed, not proven. Single operator. Landlord must approve sauna use.</p>
+            <p class="small muted">Sophisticated investors only. Not a regulated offering.</p>
+        </section>
 
-            <hr class="sep">
+        <hr class="sep">
 
-            <!-- LUGANO -->
-            <section>
-                <div class="section-label">Dinner</div>
-                <div class="event">
-                    <div class="event-title">Lugano</div>
-                    <div class="event-sub">April 2026</div>
-                    <div class="event-line"><span class="event-label">Location</span><span>Lugano, Switzerland</span></div>
-                    <div class="event-line"><span class="event-label">Capacity</span><span>10 seats</span></div>
-                    <div class="event-line"><span class="event-label">Format</span><span>Dinner + product walkthrough</span></div>
-                    <div class="event-cta" style="margin-top: 12px;">
-                        <a href="mailto:jsb@lyn.page?subject=Lugano%20%C2%B7%20April%202026">Request a seat →</a>
-                    </div>
-                </div>
-            </section>
+        <!-- CTA -->
+        <section>
+            <h2>Next Step</h2>
+            <p>Copenhagen is available now. Lugano is in development. The model is the same — the site is the variable.</p>
+            <br>
+            <a href="https://cal.com/lynmeet" class="cta-button">Book a Call</a>
+            <a href="mailto:jsb@lyn.page" class="cta-button cta-secondary">jsb@lyn.page</a>
+        </section>
 
-            <!-- FOUNDER NOTE -->
-            <div class="founder-note">
-                <p>One architecture. One manufacturer. A finite run. The kind of provenance that compounds, not depreciates. This raise is small by design — 2–4 people who understand the product and the thesis.</p>
-                <div class="founder-sig">Julius Schulze-Berge · <a href="mailto:jsb@lyn.page">jsb@lyn.page</a> · <a href="https://cal.com/lynmeet" target="_blank" rel="noopener noreferrer">cal.com/lynmeet</a></div>
-            </div>
-
-            <!-- CTA -->
-            <div class="cta">
-                <a href="https://cal.com/lynmeet" class="cta-button" target="_blank" rel="noopener noreferrer">Book a Call</a>
-            </div>
-            <div class="cta-secondary">
-                <a href="mailto:jsb@lyn.page?subject=Growth%20Credit">or email directly</a>
-                &nbsp;&nbsp;·&nbsp;&nbsp;
-                <button onclick="window.print()">Download PDF</button>
-            </div>
-
-            <footer>
-                <p><strong>LYN.</strong></p>
-                <p class="small muted">lynbtc aps · copenhagen · vat dk46170571</p>
-                <div class="footer-links">
-                    <a href="https://lyn.page">lyn.page</a>
-                    <a href="https://lyn.page/sauna.html">sauna</a>
-                    <a href="https://siteplanning.lyn.page" target="_blank" rel="noopener noreferrer">site planning</a>
-                    <a href="https://lyn.page/onepager.html">one pager</a>
-                    <a href="mailto:jsb@lyn.page">contact</a>
-                </div>
-                <div class="footer-legal">Strictly Confidential · Not for Distribution · Qualified Investors Only</div>
-            </footer>
-        </main>
     </div>
+</div>
 
-    <script>
-        const CONFIG = { password: 'lyn2100' };
-        const gate = document.getElementById('gate');
-        const main = document.getElementById('main');
-        const passwordInput = document.getElementById('password');
-        const gateError = document.getElementById('gate-error');
+<script>
+    const PASS = 'lyn2100';
+    const gate = document.getElementById('gate');
+    const content = document.getElementById('content');
+    const input = document.getElementById('gate-input');
+    const error = document.getElementById('gate-error');
 
-        passwordInput.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') {
-                if (passwordInput.value === CONFIG.password) {
-                    gate.classList.add('hidden');
-                    main.classList.add('visible');
-                    sessionStorage.setItem('lyn-invest-auth', 'true');
-                } else {
-                    gateError.classList.add('visible');
-                    passwordInput.value = '';
-                    setTimeout(() => gateError.classList.remove('visible'), 2000);
-                }
+    if (sessionStorage.getItem('lyn-auth') === 'true') {
+        gate.classList.add('hidden');
+        content.classList.add('visible');
+    }
+
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            if (input.value === PASS) {
+                sessionStorage.setItem('lyn-auth', 'true');
+                gate.classList.add('hidden');
+                content.classList.add('visible');
+            } else {
+                error.textContent = '';
+                input.value = '';
+                input.focus();
             }
-        });
-
-        if (sessionStorage.getItem('lyn-invest-auth') === 'true') {
-            gate.classList.add('hidden');
-            main.classList.add('visible');
         }
-    </script>
+    });
+
+    input.focus();
+</script>
+
 </body>
 </html>
