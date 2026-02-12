@@ -1,862 +1,1422 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LYN. — Gettorf</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&amp;family=IBM+Plex+Sans:wght@300;400&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #fafafa;
-    --fg: #37352f;
-    --fg-2: #787774;
-    --fg-3: #a0a0a0;
-    --accent: #E8590C;
-    --accent-light: #FFF4EF;
-    --border: #e5e5e3;
-    --card: #FFFFFF;
-    --green: #2B8A3E;
-    --green-light: #EEFAEF;
-    --blue: #1971C2;
-    --blue-light: #EFF6FF;
-    --selected-bg: #f5f5f3;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>siteplanning</title>
+    <meta name="description" content="Site qualification tool for bitcoin-heated saunas. one sauna. seven modules. twentyonehundred sites.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23262624' width='100' height='100' rx='12'/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fafafa;
+            --text: #37352f;
+            --text-muted: #a0a0a0;
+            --border: #e0e0e0;
+        }
+        [data-theme="dark"] {
+            --bg: #1a1a19;
+            --text: #e8e8e8;
+            --text-muted: #888888;
+            --border: #333333;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+            font-weight: 300;
+            font-size: 16px;
+            line-height: 1.6;
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.3s, color 0.3s;
+        }
+        a { color: inherit; text-decoration: none; }
+        a:hover { opacity: 0.6; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Layout */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .content-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 60px;
+            max-width: 50%;
+        }
+        .image-column {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            max-width: 50%;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            pointer-events: none;
+        }
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: auto;
+        }
+        .image-wrapper > img {
+            position: absolute;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            will-change: opacity;
+        }
+        .image-wrapper > img.active {
+            opacity: 1;
+        }
+        [data-theme="dark"] .image-wrapper > img.invert-dark {
+            filter: invert(1);
+        }
 
-  body {
-    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
-    font-weight: 300;
-    background: var(--bg);
-    color: var(--fg);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
+        /* Steps */
+        .step { display: none; }
+        .step.active { display: block; animation: fadeIn 200ms ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-  .container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+        /* Typography */
+        .step-title {
+            font-size: 16px;
+            margin-bottom: 24px;
+        }
+        .step-description {
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            max-width: 400px;
+        }
+        .muted { color: var(--text-muted); }
+        .link {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
 
-  /* Header */
-  header {
-    padding: 40px 0 32px;
-    border-bottom: 1px solid var(--border);
-  }
+        /* Choices */
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+        .choice {
+            padding: 16px 0;
+            cursor: pointer;
+            opacity: 0.4;
+            transition: opacity 0.2s, padding-left 0.2s;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+        .choice:last-child { border-bottom: none; }
+        .choice:hover {
+            opacity: 1;
+            padding-left: 12px;
+        }
+        .choice.selected {
+            opacity: 1;
+            padding-left: 12px;
+        }
+        .choice::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--text);
+            transition: height 0.2s;
+        }
+        .choice:hover::before,
+        .choice.selected::before {
+            height: 100%;
+        }
+        .choice-title { font-size: 16px; margin-bottom: 4px; }
+        .choice-description { font-size: 14px; color: var(--text-muted); }
 
-  .header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 56px;
-  }
+        /* Constraints */
+        .constraint-group { margin-bottom: 24px; }
+        .constraint-label { font-size: 14px; margin-bottom: 8px; display: block; }
+        .constraint-sublabel { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; display: block; }
+        .constraint-options { display: flex; flex-wrap: wrap; gap: 8px; }
+        .constraint-option {
+            padding: 6px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: all 0.2s;
+            border: 1px solid var(--border);
+            background: transparent;
+        }
+        .constraint-option:hover {
+            opacity: 1;
+            border-color: var(--text-muted);
+            transform: translateY(-1px);
+        }
+        .constraint-option.selected {
+            opacity: 1;
+            border-color: var(--text);
+            background: var(--text);
+            color: var(--bg);
+        }
 
-  .logo {
-    font-family: 'Inter', sans-serif;
-    font-size: 24px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-  }
+        /* Modules */
+        .modules { margin-bottom: 32px; }
+        .module {
+            padding: 12px 0 12px 0;
+            cursor: pointer;
+            opacity: 0.4;
+            transition: all 0.2s;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            margin-left: 0;
+        }
+        .module:last-child { border-bottom: none; }
+        .module::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--text);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .module:hover {
+            opacity: 0.8;
+            padding-left: 8px;
+        }
+        .module.selected {
+            opacity: 1;
+            padding-left: 8px;
+        }
+        .module.selected::before,
+        .module.required::before {
+            opacity: 1;
+        }
+        .module.required { opacity: 1; cursor: default; padding-left: 8px; }
+        .module-thumb {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+        }
+        .module-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        [data-theme="dark"] .module-thumb img {
+            filter: invert(1);
+        }
+        .module-name { font-size: 16px; min-width: 140px; flex-shrink: 0; }
+        .module-desc { font-size: 14px; color: var(--text-muted); flex: 1; }
+        .module-check {
+            width: 16px;
+            height: 16px;
+            border: 1px solid var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .module.selected .module-check,
+        .module.required .module-check {
+            background: var(--text);
+            border-color: var(--text);
+            color: var(--bg);
+        }
 
-  .ref {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--fg-3);
-    text-align: right;
-    line-height: 1.9;
-  }
+        /* Thermal */
+        .thermal-section {
+            padding: 24px;
+            background: var(--border);
+            margin-bottom: 32px;
+        }
+        [data-theme="dark"] .thermal-section {
+            background: #1a1a1a;
+        }
+        .thermal-title { font-size: 16px; margin-bottom: 16px; }
+        .thermal-copy { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.7; }
+        .thermal-copy p { margin-bottom: 8px; }
+        .thermal-actions { display: flex; gap: 16px; }
 
-  .site-name {
-    font-size: 28px;
-    font-weight: 300;
-    letter-spacing: -0.01em;
-    margin-bottom: 6px;
-  }
+        /* Summary */
+        .summary { margin-bottom: 32px; }
+        .summary-section { margin-bottom: 24px; }
+        .summary-label { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+        .summary-value { font-size: 14px; }
+        .summary-modules { font-size: 14px; line-height: 1.8; }
+        .summary-note { font-size: 13px; color: var(--text-muted); margin-top: 16px; }
 
-  .site-meta {
-    font-size: 14px;
-    color: var(--fg-2);
-  }
+        /* Form */
+        .form-row { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 14px; margin-bottom: 6px; color: var(--text-muted); }
+        .form-input {
+            width: 100%;
+            max-width: 320px;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 300;
+            transition: border-color 0.15s;
+        }
+        .form-input:focus { outline: none; border-color: var(--text); }
+        .form-input::placeholder { color: var(--text-muted); }
+        textarea.form-input { min-height: 80px; resize: vertical; }
 
-  /* Sections */
-  section { padding: 44px 0; border-bottom: 1px solid var(--border); }
-  section:last-of-type { border-bottom: none; }
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 8px 20px;
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 300;
+            cursor: pointer;
+            border: 1px solid var(--text);
+            background: var(--bg);
+            color: var(--text);
+            transition: all 0.15s;
+        }
+        .btn:hover { background: var(--text); color: var(--bg); }
+        .btn-primary { background: var(--text); color: var(--bg); }
+        .btn-primary:hover { opacity: 0.8; }
+        .btn-ghost { border-color: var(--text-muted); color: var(--text-muted); }
+        .btn-ghost:hover { border-color: var(--text); color: var(--text); background: var(--bg); }
 
-  .label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--fg-3);
-    margin-bottom: 20px;
-  }
+        /* Selection Strip - hidden legacy */
+        .selection-strip {
+            display: none;
+        }
 
-  .prose {
-    font-size: 15px;
-    color: var(--fg-2);
-    line-height: 1.75;
-    max-width: 620px;
-  }
+        /* Right-column strip builder — assembly view */
+        .strip-builder {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+        .strip-builder::-webkit-scrollbar { width: 4px; }
+        .strip-builder::-webkit-scrollbar-track { background: transparent; }
+        .strip-builder::-webkit-scrollbar-thumb { background: var(--border); }
+        .strip-builder.active {
+            display: flex;
+        }
+        .strip-module {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            animation: stripIn 0.35s ease;
+            flex-shrink: 0;
+        }
+        @keyframes stripIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .strip-module img {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        [data-theme="dark"] .strip-module img {
+            filter: invert(1);
+        }
+        .strip-module-name {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            text-align: center;
+        }
+        .strip-empty {
+            color: var(--text-muted);
+            font-size: 14px;
+            text-align: center;
+            padding: 40px 20px;
+            opacity: 0.5;
+        }
 
-  .prose + .prose { margin-top: 10px; }
-  .prose strong { color: var(--fg); font-weight: 400; }
+        /* Navigation */
+        .step-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 24px;
+            margin-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+        .nav-back {
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--text); }
 
-  /* Module list */
-  .module-list { display: flex; flex-direction: column; gap: 4px; margin-top: 20px; }
+        /* Success */
+        .success { text-align: center; padding: 40px 0; }
+        .success-title { font-size: 16px; margin-bottom: 16px; }
+        .success-message { color: var(--text-muted); }
 
-  .mod {
-    display: grid;
-    grid-template-columns: 48px 1fr auto;
-    align-items: baseline;
-    padding: 12px 16px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    gap: 10px;
-  }
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 300;
+            font-size: 10px;
+            letter-spacing: 0.02em;
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
 
-  .mod.thermal { border-color: var(--accent); background: var(--accent-light); }
-  .mod.inactive { opacity: 0.35; border-style: dashed; }
+        /* Nav trigger */
+        .nav-trigger {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: var(--text);
+            background: none;
+            border: none;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 0.2s;
+            z-index: 100;
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-trigger:hover, .nav-trigger.active { opacity: 0.6; }
 
-  .mod-id {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--fg-3);
-  }
+        /* Nav menu */
+        .nav-menu {
+            position: fixed;
+            top: 48px;
+            right: 20px;
+            background: var(--bg);
+            border: 1px solid var(--text-muted);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+            padding: 12px 16px;
+            min-width: 140px;
+            z-index: 100;
+        }
+        .nav-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
+        .nav-menu ul { list-style: none; }
+        .nav-menu li { margin-bottom: 6px; }
+        .nav-menu li:last-child { margin-bottom: 0; }
+        .nav-menu a, .nav-menu button {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+            color: var(--text);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: opacity 0.15s;
+            display: block;
+            text-decoration: none;
+        }
+        .nav-menu a:hover, .nav-menu button:hover { opacity: 0.6; }
+        .nav-menu .divider { height: 1px; background: var(--text-muted); opacity: 0.3; margin: 10px 0; }
+        .nav-menu .theme-btn { color: var(--text-muted); font-size: 13px; }
 
-  .mod.thermal .mod-id { color: var(--accent); }
+        /* Utilities */
+        .hidden { display: none !important; }
+        .mt-lg { margin-top: 24px; }
 
-  .mod-name { font-size: 14px; font-weight: 400; }
-  .mod-desc { font-size: 12px; color: var(--fg-2); }
-  .mod-dim { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--fg-3); white-space: nowrap; }
+        /* Mobile Teaser - hidden on desktop */
+        .mobile-teaser {
+            display: none;
+            min-height: 100vh;
+            flex-direction: column;
+            padding: 40px 24px 80px;
+        }
+        .mobile-teaser-header {
+            margin-bottom: 32px;
+        }
+        .mobile-teaser-title {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .mobile-teaser-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .mobile-teaser-note {
+            font-size: 12px;
+            color: var(--text-muted);
+            opacity: 0.6;
+            margin-top: 8px;
+        }
+        .mobile-hero {
+            margin-bottom: 32px;
+        }
+        .mobile-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .mobile-modules {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 40px;
+        }
+        .mobile-module {
+            padding: 16px 0 24px;
+            border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .mobile-module:last-child {
+            border-bottom: none;
+        }
+        .mobile-module img {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+            margin: 12px auto 8px;
+            order: 2;
+        }
+        [data-theme="dark"] .mobile-module img {
+            filter: invert(1);
+        }
+        .mobile-module-name {
+            font-size: 16px;
+            order: 1;
+        }
+        .mobile-module-dim {
+            font-size: 13px;
+            color: var(--text-muted);
+            order: 3;
+            margin-top: 2px;
+        }
+        .mobile-cta {
+            text-align: center;
+            padding: 24px;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+        .mobile-cta-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+        .mobile-cta-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 300;
+            border: 1px solid var(--text);
+            background: var(--text);
+            color: var(--bg);
+            text-decoration: none;
+            transition: opacity 0.15s;
+        }
+        .mobile-cta-btn:hover {
+            opacity: 0.8;
+        }
+        .mobile-teaser-link {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .mobile-teaser-link a {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
 
-  /* Question blocks */
-  .q-block {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 24px;
-    margin-top: 16px;
-  }
-
-  .q-block + .q-block { margin-top: 10px; }
-
-  .q-block.answered { border-color: var(--green); background: var(--green-light); }
-
-  .q-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 10px;
-  }
-
-  .q-title {
-    font-size: 15px;
-    font-weight: 400;
-  }
-
-  .q-why {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 2px 8px;
-    border-radius: 3px;
-    background: var(--selected-bg);
-    color: var(--fg-3);
-    white-space: nowrap;
-  }
-
-  .q-context {
-    font-size: 13px;
-    color: var(--fg-2);
-    line-height: 1.65;
-    margin-bottom: 14px;
-  }
-
-  /* Option selectors */
-  .options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .opt {
-    padding: 8px 16px;
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.15s;
-    background: var(--bg);
-    user-select: none;
-  }
-
-  .opt:hover { border-color: var(--fg-3); }
-  .opt.selected { background: var(--fg); color: white; border-color: var(--fg); }
-
-  .opt-input {
-    margin-top: 8px;
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 8px 12px;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 14px;
-    color: var(--fg);
-    background: white;
-  }
-
-  .opt-input:focus { outline: none; border-color: var(--fg); }
-
-  .opt-textarea {
-    margin-top: 8px;
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 8px 12px;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 14px;
-    color: var(--fg);
-    resize: vertical;
-    min-height: 56px;
-    background: white;
-  }
-
-  .opt-textarea:focus { outline: none; border-color: var(--fg); }
-
-  /* Conditional follow-up */
-  .follow-up {
-    margin-top: 10px;
-    padding: 14px 16px;
-    background: var(--blue-light);
-    border-radius: 5px;
-    font-size: 13px;
-    color: var(--blue);
-    line-height: 1.6;
-    display: none;
-  }
-
-  .follow-up.visible { display: block; }
-
-  .follow-up label {
-    display: block;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--blue);
-    margin-bottom: 6px;
-    margin-top: 10px;
-  }
-
-  .follow-up label:first-child { margin-top: 0; }
-
-  .follow-up input, .follow-up select {
-    width: 100%;
-    border: 1px solid #C5DAF0;
-    border-radius: 4px;
-    padding: 7px 10px;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 13px;
-    background: white;
-  }
-
-  /* Photo upload hint */
-  .photo-hint {
-    margin-top: 10px;
-    padding: 14px 16px;
-    background: var(--selected-bg);
-    border: 1px dashed var(--border);
-    border-radius: 5px;
-    font-size: 13px;
-    color: var(--fg-2);
-    line-height: 1.6;
-    text-align: center;
-  }
-
-  .photo-hint strong { color: var(--fg); }
-
-  /* Progress bar */
-  .progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 3px;
-    background: var(--accent);
-    transition: width 0.4s ease;
-    z-index: 100;
-  }
-
-  /* Summary section */
-  .summary-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-top: 20px;
-  }
-
-  .s-cell {
-    background: var(--card);
-    padding: 16px 18px;
-  }
-
-  .s-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--fg-3);
-    margin-bottom: 4px;
-  }
-
-  .s-value {
-    font-size: 14px;
-    font-weight: 400;
-  }
-
-  .s-value.ok { color: var(--green); }
-  .s-value.pending { color: var(--fg-3); font-style: italic; font-weight: 400; }
-
-  /* Submit */
-  .submit-section {
-    margin-top: 28px;
-    text-align: center;
-  }
-
-  .submit-btn {
-    padding: 14px 40px;
-    background: var(--fg);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 400;
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-
-  .submit-btn:hover { opacity: 0.85; }
-
-  .submit-note {
-    margin-top: 10px;
-    font-size: 12px;
-    color: var(--fg-3);
-  }
-
-  /* Success state */
-  .submit-success {
-    display: none;
-    text-align: center;
-    padding: 32px;
-    background: var(--green-light);
-    border: 1px solid #B2DDB5;
-    border-radius: 6px;
-    margin-top: 28px;
-  }
-
-  .submit-success h3 {
-    color: var(--green);
-    font-size: 16px;
-    margin-bottom: 6px;
-  }
-
-  .submit-success p {
-    font-size: 14px;
-    color: var(--fg-2);
-  }
-
-  /* Footer */
-  footer {
-    padding: 40px 0;
-    text-align: center;
-  }
-
-  .footer-mark {
-    font-family: 'Inter', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--fg);
-    margin-bottom: 10px;
-  }
-
-  .footer-note {
-    font-size: 12px;
-    color: var(--fg-3);
-  }
-
-  @media (max-width: 640px) {
-    .summary-grid { grid-template-columns: 1fr; }
-    .header-row { flex-direction: column; gap: 12px; }
-    .ref { text-align: left; }
-    .site-name { font-size: 24px; }
-    .mod { grid-template-columns: 42px 1fr; }
-    .mod-dim { display: none; }
-    .q-header { flex-direction: column; gap: 6px; }
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  section { animation: fadeIn 0.4s ease-out both; }
-  section:nth-child(2) { animation-delay: 0.04s; }
-  section:nth-child(3) { animation-delay: 0.08s; }
-  section:nth-child(4) { animation-delay: 0.12s; }
-  section:nth-child(5) { animation-delay: 0.16s; }
-</style>
+        /* Responsive */
+        @media (max-width: 900px) {
+            .container { display: none; }
+            .mobile-teaser { display: flex; }
+            .footer { display: none; }
+            .nav-trigger { z-index: 100; }
+            .nav-menu { z-index: 100; }
+        }
+    </style>
+    <script>
+        (function() {
+            const saved = localStorage.getItem('lyn-theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = saved || (prefersDark ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
 </head>
 <body>
-
-<!-- Password Gate -->
-<div id="passwordGate" style="position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center;">
-  <div style="text-align:center;max-width:300px;padding:24px;">
-    <div style="font-family:'Inter',sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.02em;margin-bottom:56px;color:var(--fg);">LYN.</div>
-    <input type="password" id="passwordInput" placeholder="password" autofocus
-      style="width:100%;border:none;border-bottom:1px solid var(--border);border-radius:0;padding:10px 0;font-family:'IBM Plex Mono',monospace;font-size:14px;text-align:center;background:transparent;color:var(--fg);outline:none;letter-spacing:0.08em;"
-      onkeydown="if(event.key==='Enter')checkPassword()">
-    <div id="passwordError" style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent);margin-top:14px;display:none;">incorrect password</div>
-  </div>
-</div>
-
-<div class="progress-bar" id="progressBar" style="width: 0%"></div>
-
-<div class="container" style="display:none;" id="mainContent">
-
-  <header>
-    <div class="header-row">
-      <div class="logo">LYN.</div>
-      <div class="ref">
-        GE-001<br>
-        12.02.2026
-      </div>
-    </div>
-    <h1 class="site-name">Gettorf</h1>
-    <p class="site-meta">Private outdoor — Schulze-Berge</p>
-  </header>
-
-  <!-- What you selected -->
-  <section>
-    <div class="label">Your Configuration</div>
-    <p class="prose">
-      This is the configuration you selected. We use it as a starting point — some modules may shift based on your site conditions. The outdoor storage module is available but wasn't included in your selection.
-    </p>
-
-    <div class="module-list">
-      <div class="mod">
-        <div class="mod-id">M1</div>
-        <div>
-          <div class="mod-name">Sauna</div>
-          <div class="mod-desc">The core. Panoramic glass.</div>
+    <!-- Mobile Teaser - Read-only preview -->
+    <div class="mobile-teaser">
+        <div class="mobile-teaser-header">
+            <div class="mobile-teaser-title">site planning</div>
+            <div class="mobile-teaser-subtitle">one sauna. seven modules. 2,100 sites.</div>
+            <div class="mobile-teaser-note">optimized for desktop</div>
         </div>
-        <div class="mod-dim">3.3 × 2.2 × 2.5 m</div>
-      </div>
-      <div class="mod">
-        <div class="mod-id">M2</div>
-        <div>
-          <div class="mod-name">Swimming Bridge</div>
-          <div class="mod-desc">Direct water access.</div>
+
+        <div class="mobile-hero">
+            <img src="images/hero.png" alt="LYN sauna">
         </div>
-        <div class="mod-dim">1.5 × 2.0 × 0.3 m</div>
-      </div>
-      <div class="mod">
-        <div class="mod-id">M3</div>
-        <div>
-          <div class="mod-name">Changing Room</div>
-          <div class="mod-desc">Transitional space. Skylit.</div>
+
+        <div class="mobile-modules">
+            <div class="mobile-module">
+                <div class="mobile-module-name">m1: sauna</div>
+                <img src="images/m1-sauna.png" alt="m1 sauna">
+                <div class="mobile-module-dim">3.3 × 2.2 × 2.5 m</div>
+            </div>
+            <div class="mobile-module">
+                <div class="mobile-module-name">m2: swimming bridge</div>
+                <img src="images/m2-bridge.png" alt="m2 swimming bridge">
+                <div class="mobile-module-dim">1.5 × 2.0 × 0.3 m</div>
+            </div>
+            <div class="mobile-module">
+                <div class="mobile-module-name">m3: changing room</div>
+                <img src="images/m3-changing.png" alt="m3 changing room">
+                <div class="mobile-module-dim">1.5 × 2.0 × 2.5 m</div>
+            </div>
+            <div class="mobile-module">
+                <div class="mobile-module-name">m4: thermal module</div>
+                <img src="images/m4-thermal.png" alt="m4 thermal">
+                <div class="mobile-module-dim">site-dependent</div>
+            </div>
+            <div class="mobile-module">
+                <div class="mobile-module-name">m5: outdoor shower</div>
+                <img src="images/m5-shower.png" alt="m5 outdoor shower">
+                <div class="mobile-module-dim">0.5 × 0.1 × 2.0 m</div>
+            </div>
+            <div class="mobile-module">
+                <div class="mobile-module-name">m6: outdoor storage</div>
+                <img src="images/m6-storage.png" alt="m6 storage">
+                <div class="mobile-module-dim">0.6 × 0.3 × 1.5 m</div>
+            </div>
+            <div class="mobile-module">
+                <div class="mobile-module-name">m7: cold plunge</div>
+                <img src="images/m7-plunge.png" alt="m7 cold plunge">
+                <div class="mobile-module-dim">1.5 × 2.0 × 2.5 m</div>
+            </div>
         </div>
-        <div class="mod-dim">1.5 × 2.0 × 2.5 m</div>
-      </div>
-      <div class="mod thermal">
-        <div class="mod-id">M4</div>
-        <div>
-          <div class="mod-name">Thermal Module</div>
-          <div class="mod-desc">Compute heat. Optional.</div>
+
+        <div class="mobile-cta">
+            <p class="mobile-cta-text">configurations from €55,000. pricing confirmed in site review.</p>
+            <a href="mailto:sauna@lyn.page?subject=site%20review%20request" class="mobile-cta-btn">request site review</a>
         </div>
-        <div class="mod-dim">Site-dependent</div>
-      </div>
-      <div class="mod">
-        <div class="mod-id">M5</div>
-        <div>
-          <div class="mod-name">Outdoor Shower</div>
-          <div class="mod-desc">Wall-mounted. Cooling.</div>
+
+        <div class="mobile-teaser-link">
+            <a href="https://lyn.page">← back to lyn.page</a>
         </div>
-        <div class="mod-dim">0.5 × 0.1 × 2.0 m</div>
-      </div>
-      <div class="mod inactive">
-        <div class="mod-id">M6</div>
-        <div>
-          <div class="mod-name">Outdoor Storage</div>
-          <div class="mod-desc">Robes. Towels. Slippers.</div>
+    </div>
+
+    <div class="container">
+        <div class="content-column">
+            <!-- STEP: Intro -->
+            <section class="step active" data-step="intro">
+                <div class="step-title">site planning</div>
+                <div class="step-description">
+                    one sauna. seven modules. 2,100 sites.<br>
+                    <span class="muted">2099 remaining</span>
+                </div>
+                <div class="choices">
+                    <div class="choice" data-audience="private">
+                        <div class="choice-title">private</div>
+                        <div class="choice-description">personal residence. single unit.</div>
+                    </div>
+                    <div class="choice" data-audience="professional">
+                        <div class="choice-title">professional</div>
+                        <div class="choice-description">developer. architect. operator.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STEP: Site Type -->
+            <section class="step" data-step="site-type">
+                <div class="step-title">site type</div>
+                <div class="choices">
+                    <div class="choice" data-site="outdoor">
+                        <div class="choice-title">outdoor</div>
+                        <div class="choice-description">freestanding object. delivered and installed.</div>
+                    </div>
+                    <div class="choice" data-site="indoor">
+                        <div class="choice-title">indoor</div>
+                        <div class="choice-description">integrated into existing architecture. bespoke.</div>
+                    </div>
+                </div>
+                <nav class="step-nav">
+                    <span class="nav-back" data-action="back">← back</span>
+                    <span></span>
+                </nav>
+            </section>
+
+            <!-- STEP: Constraints (Outdoor) -->
+            <section class="step" data-step="constraints">
+                <div class="step-title">site constraints</div>
+                <div class="step-description">help us understand your site. if you're unsure, we'll assess in the site review.</div>
+
+                <div class="constraint-group">
+                    <label class="constraint-label">crane access</label>
+                    <span class="constraint-sublabel">m1 sauna weighs 1,800 kg</span>
+                    <div class="constraint-options" data-constraint="crane">
+                        <div class="constraint-option" data-value="yes">yes</div>
+                        <div class="constraint-option" data-value="no">no</div>
+                        <div class="constraint-option" data-value="not sure">not sure</div>
+                    </div>
+                </div>
+
+                <div class="constraint-group">
+                    <label class="constraint-label">3-phase power</label>
+                    <span class="constraint-sublabel">required for +10 kW stove</span>
+                    <div class="constraint-options" data-constraint="power">
+                        <div class="constraint-option" data-value="yes">yes</div>
+                        <div class="constraint-option" data-value="no">no</div>
+                        <div class="constraint-option" data-value="not sure">not sure</div>
+                    </div>
+                </div>
+
+                <div class="constraint-group">
+                    <label class="constraint-label">foundation</label>
+                    <div class="constraint-options" data-constraint="foundation">
+                        <div class="constraint-option" data-value="concrete">concrete</div>
+                        <div class="constraint-option" data-value="deck">deck</div>
+                        <div class="constraint-option" data-value="paving">paving</div>
+                        <div class="constraint-option" data-value="water">water</div>
+                        <div class="constraint-option" data-value="grass/soil">grass/soil</div>
+                    </div>
+                </div>
+
+                <nav class="step-nav">
+                    <span class="nav-back" data-action="back">← back</span>
+                    <button class="btn btn-primary" data-action="next">continue</button>
+                </nav>
+            </section>
+
+            <!-- STEP: Indoor Context (Private) -->
+            <section class="step" data-step="indoor-private">
+                <div class="step-title">tell us about the project</div>
+                <div class="step-description">indoor installations are bespoke. same materials. same design. built into your architecture.</div>
+
+                <div class="constraint-group">
+                    <label class="constraint-label">project type</label>
+                    <div class="constraint-options" data-constraint="projectType">
+                        <div class="constraint-option" data-value="house">house</div>
+                        <div class="constraint-option" data-value="apartment">apartment</div>
+                        <div class="constraint-option" data-value="other">other</div>
+                    </div>
+                </div>
+
+                <div class="form-row mt-lg">
+                    <label class="form-label">brief description (optional)</label>
+                    <textarea class="form-input" data-field="projectDescription" placeholder="tell us about the space..."></textarea>
+                </div>
+
+                <nav class="step-nav">
+                    <span class="nav-back" data-action="back">← back</span>
+                    <button class="btn btn-primary" data-action="next">continue</button>
+                </nav>
+            </section>
+
+            <!-- STEP: Indoor Context (Professional) -->
+            <section class="step" data-step="indoor-professional">
+                <div class="step-title">tell us about the project</div>
+                <div class="step-description">indoor installations are bespoke. same materials. same design. built into your architecture.</div>
+
+                <div class="constraint-group">
+                    <label class="constraint-label">project type</label>
+                    <div class="constraint-options" data-constraint="projectType">
+                        <div class="constraint-option" data-value="residence">residence</div>
+                        <div class="constraint-option" data-value="hotel">hotel</div>
+                        <div class="constraint-option" data-value="spa">spa</div>
+                        <div class="constraint-option" data-value="other">other</div>
+                    </div>
+                </div>
+
+                <div class="form-row mt-lg">
+                    <label class="form-label">brief description (optional)</label>
+                    <textarea class="form-input" data-field="projectDescription" placeholder="tell us about the space..."></textarea>
+                </div>
+
+                <nav class="step-nav">
+                    <span class="nav-back" data-action="back">← back</span>
+                    <button class="btn btn-primary" data-action="next">continue</button>
+                </nav>
+            </section>
+
+            <!-- STEP: Modules -->
+            <section class="step" data-step="modules">
+                <div class="step-title">modules</div>
+                <div class="step-description">m1 sauna is the core. add modules to extend the ritual.</div>
+
+                <div class="modules">
+                    <div class="module selected required" data-module="m1">
+                        <span class="module-thumb"><img src="images/m1-sauna.png" alt="m1"></span>
+                        <span class="module-check">✓</span>
+                        <span class="module-name">m1: sauna</span>
+                        <span class="module-desc">the core. panoramic glass.</span>
+                    </div>
+                    <div class="module" data-module="m3">
+                        <span class="module-thumb"><img src="images/m3-changing.png" alt="m3"></span>
+                        <span class="module-check">✓</span>
+                        <span class="module-name">m3: changing room</span>
+                        <span class="module-desc">transitional space. skylit.</span>
+                    </div>
+                    <div class="module" data-module="m2">
+                        <span class="module-thumb"><img src="images/m2-bridge.png" alt="m2"></span>
+                        <span class="module-check">✓</span>
+                        <span class="module-name">m2: swimming bridge</span>
+                        <span class="module-desc">direct water access.</span>
+                    </div>
+                    <div class="module" data-module="m7">
+                        <span class="module-thumb"><img src="images/m7-plunge.png" alt="m7"></span>
+                        <span class="module-check">✓</span>
+                        <span class="module-name">m7: cold plunge</span>
+                        <span class="module-desc">self-contained basin.</span>
+                    </div>
+                    <div class="module" data-module="m5">
+                        <span class="module-thumb"><img src="images/m5-shower.png" alt="m5"></span>
+                        <span class="module-check">✓</span>
+                        <span class="module-name">m5: outdoor shower</span>
+                        <span class="module-desc">wall-mounted. cooling.</span>
+                    </div>
+                    <div class="module" data-module="m6">
+                        <span class="module-thumb"><img src="images/m6-storage.png" alt="m6"></span>
+                        <span class="module-check">✓</span>
+                        <span class="module-name">m6: outdoor storage</span>
+                        <span class="module-desc">robes. towels. slippers.</span>
+                    </div>
+                </div>
+
+                <nav class="step-nav">
+                    <span class="nav-back" data-action="back">← back</span>
+                    <button class="btn btn-primary" data-action="next">continue</button>
+                </nav>
+            </section>
+
+            <!-- STEP: Thermal -->
+            <section class="step" data-step="thermal">
+                <div class="thermal-section">
+                    <div class="thermal-title">m4: thermal module</div>
+                    <div class="thermal-copy">
+                        <p>bitcoin mining hardware as heat source.</p>
+                        <p>same electricity — used twice.<br>
+                        <span id="thermal-benefit">heat for the space. bitcoin for your savings.</span></p>
+                        <p id="thermal-integration">hidden within the m3 bench. or bespoke integration.</p>
+                        <p>we assess feasibility in the site review.</p>
+                    </div>
+                    <div class="thermal-actions">
+                        <button class="btn btn-ghost" data-action="skip-thermal">skip</button>
+                        <button class="btn btn-primary" data-action="add-thermal">add m4</button>
+                    </div>
+                </div>
+
+                <nav class="step-nav">
+                    <span class="nav-back" data-action="back">← back</span>
+                    <span></span>
+                </nav>
+            </section>
+
+            <!-- STEP: Summary -->
+            <section class="step" data-step="summary">
+                <div class="step-title">your configuration</div>
+
+                <div class="summary">
+                    <div id="outdoor-summary">
+                        <div class="summary-section">
+                            <div class="summary-label">site</div>
+                            <div class="summary-value" id="site-summary"></div>
+                        </div>
+
+                        <div class="summary-section">
+                            <div class="summary-label">modules</div>
+                            <div class="summary-modules" id="modules-summary"></div>
+                        </div>
+
+                        <div class="summary-section">
+                            <div class="summary-label">stove</div>
+                            <div class="summary-value">assessed in site review. specified to architecture and site conditions.</div>
+                        </div>
+
+                        <p class="summary-note">configurations from €55,000. pricing confirmed in site review.</p>
+                    </div>
+
+                    <div id="indoor-summary" class="hidden">
+                        <div class="summary-section">
+                            <div class="summary-label">project</div>
+                            <div class="summary-value" id="indoor-site-summary"></div>
+                        </div>
+
+                        <div class="summary-section">
+                            <div class="summary-label">stove</div>
+                            <div class="summary-value">assessed in site review. specified to architecture and site conditions.</div>
+                        </div>
+
+                        <div class="thermal-section">
+                            <p>indoor installations are bespoke.</p>
+                            <p>materials and construction quoted per project.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="step-nav">
+                    <span class="nav-back" data-action="back">← back</span>
+                    <button class="btn btn-primary" data-action="next">continue</button>
+                </nav>
+            </section>
+
+            <!-- STEP: Form -->
+            <section class="step" data-step="form">
+                <div class="step-title">request site review</div>
+
+                <form id="lead-form" name="site-review" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                    <p class="hidden"><label>Don't fill this out: <input name="bot-field"></label></p>
+
+                    <input type="hidden" name="form-name" value="site-review">
+                    <input type="hidden" name="audience" id="form-audience">
+                    <input type="hidden" name="site-type" id="form-site-type">
+                    <input type="hidden" name="configuration" id="form-configuration">
+
+                    <div class="form-row">
+                        <label class="form-label">name</label>
+                        <input type="text" class="form-input" name="name" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">email</label>
+                        <input type="email" class="form-input" name="email" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">location</label>
+                        <input type="text" class="form-input" name="location" placeholder="city, country" required>
+                    </div>
+
+                    <div id="professional-fields" class="hidden">
+                        <div class="form-row">
+                            <label class="form-label">company</label>
+                            <input type="text" class="form-input" name="company">
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label">role</label>
+                            <input type="text" class="form-input" name="role">
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label">timeline</label>
+                            <div class="constraint-options" data-constraint="timeline">
+                                <div class="constraint-option" data-value="3 months">3 months</div>
+                                <div class="constraint-option" data-value="6 months">6 months</div>
+                                <div class="constraint-option" data-value="12+ months">12+ months</div>
+                            </div>
+                            <input type="hidden" name="timeline" id="form-timeline">
+                        </div>
+                    </div>
+
+                    <div class="mt-lg">
+                        <button type="submit" class="btn btn-primary">request site review</button>
+                    </div>
+
+                    <p class="summary-note mt-lg">response within 48 hours</p>
+                </form>
+
+                <nav class="step-nav">
+                    <span class="nav-back" data-action="back">← back</span>
+                    <span></span>
+                </nav>
+            </section>
+
+            <!-- STEP: Success -->
+            <section class="step" data-step="success">
+                <div class="success">
+                    <div class="success-title">request received</div>
+                    <p class="success-message">we'll review your site and respond within 48 hours.</p>
+                    <p class="mt-lg"><a href="https://lyn.page" class="link">← return to lyn.page</a></p>
+                </div>
+            </section>
         </div>
-        <div class="mod-dim">0.6 × 0.3 × 1.5 m</div>
-      </div>
-      <div class="mod">
-        <div class="mod-id">M7</div>
-        <div>
-          <div class="mod-name">Cold Plunge</div>
-          <div class="mod-desc">Self-contained basin.</div>
+
+        <div class="image-column">
+            <div class="image-wrapper">
+                <img id="step-image-a" src="images/config-preview.png" alt="LYN sauna" class="invert-dark active">
+                <img id="step-image-b" src="" alt="LYN sauna">
+                <div class="strip-builder" id="stripBuilder">
+                    <!-- Built dynamically by JS -->
+                </div>
+            </div>
         </div>
-        <div class="mod-dim">1.5 × 2.0 × 2.5 m</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Site Questions -->
-  <section>
-    <div class="label">About Your Site</div>
-    <p class="prose">
-      To plan the installation and model the economics properly, we need to understand the property. Each question below explains why we're asking.
-    </p>
-
-    <!-- Q1: Water -->
-    <div class="q-block" data-q="water">
-      <div class="q-header">
-        <div class="q-title">Is there natural water on or adjacent to the property?</div>
-        <div class="q-why">Affects layout</div>
-      </div>
-      <div class="q-context">
-        The swimming bridge provides direct water access — a step from the sauna into a lake, river, or sea. If there's no natural water body, the cold plunge handles the cooling cycle on its own, and the swimming bridge can be removed from the configuration.
-      </div>
-      <div class="options">
-        <div class="opt" data-value="lake" onclick="selectOpt(this)">Lake or pond</div>
-        <div class="opt" data-value="river" onclick="selectOpt(this)">River or stream</div>
-        <div class="opt" data-value="coast" onclick="selectOpt(this)">Coastal / sea</div>
-        <div class="opt" data-value="none" onclick="selectOpt(this)">No natural water</div>
-      </div>
-      <div class="follow-up" id="water-followup">
-        <span>How far is the water from where you'd place the sauna? An approximate distance is fine.</span>
-        <label>Distance to water</label>
-        <input type="text" placeholder="e.g. 15 meters, directly at the shore, across the garden..." class="data-field" data-key="water_distance">
-      </div>
     </div>
 
-    <!-- Q2: Placement -->
-    <div class="q-block" data-q="placement">
-      <div class="q-header">
-        <div class="q-title">Where on the property would this go?</div>
-        <div class="q-why">Logistics</div>
-      </div>
-      <div class="q-context">
-        We need to understand the available space, the ground conditions, and how a crane would access the spot. The modules arrive pre-built and are crane-placed — the crane needs a path from the street to the installation point.
-      </div>
-      <div class="options">
-        <div class="opt" data-value="garden-rear" onclick="selectOpt(this)">Rear garden</div>
-        <div class="opt" data-value="garden-side" onclick="selectOpt(this)">Side of property</div>
-        <div class="opt" data-value="waterfront" onclick="selectOpt(this)">Waterfront / edge</div>
-        <div class="opt" data-value="unsure" onclick="selectOpt(this)">Not sure yet</div>
-      </div>
-      <div class="photo-hint">
-        <strong>A photo helps more than a description.</strong><br>
-        If you can, take a photo of the intended area from a few angles and email it to<br>
-        <strong style="color:var(--accent);">site@lyn.page</strong> with subject line <strong>GE-001</strong>.
-      </div>
-      <div class="follow-up" id="placement-followup">
-        <label>Estimated available area (rough is fine)</label>
-        <input type="text" placeholder="e.g. 8×5 meters, or 'large garden, plenty of space'" class="data-field" data-key="available_area">
-        <label>Crane path from street</label>
-        <select class="data-field" data-key="crane_path">
-          <option value="" disabled selected>Can a crane reach the spot from the street?</option>
-          <option value="direct">Direct access — no obstacles</option>
-          <option value="driveway">Via driveway — should work</option>
-          <option value="narrow">Narrow or restricted access</option>
-          <option value="unsure">Not sure</option>
-        </select>
-      </div>
-    </div>
+    <footer class="footer">© lynbtc aps · copenhagen 2025 · vat dk46170571</footer>
 
-    <!-- Q3: Electrical -->
-    <div class="q-block" data-q="electrical">
-      <div class="q-header">
-        <div class="q-title">What's the electrical situation?</div>
-        <div class="q-why">Sizing</div>
-      </div>
-      <div class="q-context">
-        The thermal module requires electrical capacity beyond the sauna's base heating needs. The more capacity available, the larger the thermal configuration can be. If you're unsure, your electricity provider or an electrician can check — the electrical panel (Zählerschrank) or house connection documentation will show the rated capacity.
-      </div>
-      <div class="options">
-        <div class="opt" data-value="3phase" onclick="selectOpt(this)">Three-phase (Drehstrom) — common in Germany</div>
-        <div class="opt" data-value="unsure-elec" onclick="selectOpt(this)">Not sure</div>
-      </div>
-      <div class="follow-up" id="elec-followup">
-        <label>Main fuse rating (Hauptsicherung), if known</label>
-        <input type="text" placeholder="e.g. 35A, 50A, 63A — or unsure" class="data-field" data-key="fuse_rating">
-        <label>Distance from house/panel to sauna placement</label>
-        <input type="text" placeholder="e.g. 20 meters" class="data-field" data-key="elec_distance">
-      </div>
-    </div>
+    <button class="nav-trigger" onclick="toggleNav()" aria-label="Toggle navigation">–</button>
 
-    <!-- Q4: Solar -->
-    <div class="q-block" data-q="solar">
-      <div class="q-header">
-        <div class="q-title">Is there a solar (PV) system on the property?</div>
-        <div class="q-why">Economics</div>
-      </div>
-      <div class="q-context">
-        Electricity in Schleswig-Holstein costs around €0.35–0.40/kWh from the grid. Solar self-consumption reduces this to roughly €0.06–0.08/kWh — which significantly changes the thermal module economics. Even without an existing system, a new PV installation can be modeled as part of the project.
-      </div>
-      <div class="options">
-        <div class="opt" data-value="pv-yes" onclick="selectOpt(this)">Yes — solar panels installed</div>
-        <div class="opt" data-value="pv-battery" onclick="selectOpt(this)">Yes — solar + battery</div>
-        <div class="opt" data-value="pv-interested" onclick="selectOpt(this)">No — but open to it</div>
-        <div class="opt" data-value="pv-no" onclick="selectOpt(this)">No — not planned</div>
-      </div>
-      <div class="follow-up" id="solar-followup">
-        <label>System size (if installed)</label>
-        <input type="text" placeholder="e.g. 10 kWp, or 'not sure — about 20 panels'" class="data-field" data-key="pv_size">
-        <label>Battery capacity (if installed)</label>
-        <input type="text" placeholder="e.g. 10 kWh, or 'no battery'" class="data-field" data-key="battery_size">
-      </div>
-    </div>
+    <nav class="nav-menu" id="navMenu">
+        <ul>
+            <li><a href="https://lyn.page/sauna.html">sauna</a></li>
+            <li><a href="https://lyn.page/spa.html">spa</a></li>
+            <li><a href="https://lyn.page/residence.html">residence</a></li>
+            <li><a href="https://lyn.page/onepager.html">onepager</a></li>
+            <li><a href="https://lyn.page/collaborate.html">collaborate</a></li>
+            <li><a href="https://lyn.page/documents.html">documents</a></li>
+            <li><a href="https://lyn.page/">home</a></li>
+        </ul>
+        <div class="divider"></div>
+        <span class="nav-external" style="opacity: 0.5;">siteplanning</span>
+        <div class="divider"></div>
+        <button class="theme-btn" onclick="toggleTheme()" id="themeBtn"></button>
+    </nav>
 
-    <!-- Q5: Electricity provider -->
-    <div class="q-block" data-q="provider">
-      <div class="q-header">
-        <div class="q-title">Who is your electricity provider?</div>
-        <div class="q-why">Cost modeling</div>
-      </div>
-      <div class="q-context">
-        We need the current rate to model costs accurately. Some providers in the region offer dynamic tariffs (where the price varies by hour), which can substantially improve the economics — the thermal module can be configured to run during the cheapest hours.
-      </div>
-      <div style="margin-top: 8px;">
-        <input type="text" class="opt-input data-field" data-key="provider" placeholder="e.g. Stadtwerke Kiel, SH Netz, E.ON, Tibber...">
-      </div>
-      <div style="margin-top: 8px;">
-        <input type="text" class="opt-input data-field" data-key="rate" placeholder="Current rate if known, e.g. €0.36/kWh — or 'not sure'">
-      </div>
-    </div>
+    <script>
+        // Nav menu
+        const navMenu = document.getElementById('navMenu');
+        const navTrigger = document.querySelector('.nav-trigger');
 
-    <!-- Q6: Usage -->
-    <div class="q-block" data-q="usage">
-      <div class="q-header">
-        <div class="q-title">How often would you use the sauna?</div>
-        <div class="q-why">Heat planning</div>
-      </div>
-      <div class="q-context">
-        Usage frequency determines how much of the thermal module's heat output serves a direct purpose (heating the sauna) versus running independently. Both modes generate bitcoin — but sessions where heat is actively used make the case simplest: it's a heater replacement, not an addition.
-      </div>
-      <div class="options">
-        <div class="opt" data-value="1-2x" onclick="selectOpt(this)">1–2× per week</div>
-        <div class="opt" data-value="3-4x" onclick="selectOpt(this)">3–4× per week</div>
-        <div class="opt" data-value="5x" onclick="selectOpt(this)">5+ per week</div>
-        <div class="opt" data-value="seasonal" onclick="selectOpt(this)">Seasonal — mainly winter</div>
-      </div>
-    </div>
+        function toggleNav() {
+            navMenu.classList.toggle('open');
+            navTrigger.classList.toggle('active');
+        }
 
-    <!-- Q7: Additional thermal -->
-    <div class="q-block" data-q="thermal">
-      <div class="q-header">
-        <div class="q-title">Are there other things on the property that need heat?</div>
-        <div class="q-why">Optimization</div>
-      </div>
-      <div class="q-context">
-        The thermal module can serve loads beyond the sauna itself. Every additional use of the heat it produces improves the economics. Common examples include heated outdoor showers, hot tubs, garden house heating, or pre-heating domestic hot water. Even a heated driveway for winter de-icing counts.
-      </div>
-      <div class="options">
-        <div class="opt" data-value="hot-tub" onclick="toggleOpt(this)">Hot tub (existing or planned)</div>
-        <div class="opt" data-value="heated-floor" onclick="toggleOpt(this)">Heated floor (garden house, workshop)</div>
-        <div class="opt" data-value="pool" onclick="toggleOpt(this)">Pool</div>
-        <div class="opt" data-value="dhw" onclick="toggleOpt(this)">Domestic hot water</div>
-        <div class="opt" data-value="greenhouse" onclick="toggleOpt(this)">Greenhouse</div>
-        <div class="opt" data-value="none-thermal" onclick="selectOpt(this)">None of these</div>
-      </div>
-      <div style="margin-top: 8px;">
-        <textarea class="opt-textarea data-field" data-key="thermal_notes" placeholder="Anything else that uses heat, or ideas you've been considering..."></textarea>
-      </div>
-    </div>
+        function updateThemeBtn() {
+            const current = document.documentElement.getAttribute('data-theme');
+            document.getElementById('themeBtn').textContent = current === 'dark' ? 'light mode' : 'dark mode';
+        }
 
-    <!-- Q8: Budget / Timeline -->
-    <div class="q-block" data-q="budget">
-      <div class="q-header">
-        <div class="q-title">Budget and timing</div>
-        <div class="q-why">Phasing</div>
-      </div>
-      <div class="q-context">
-        No commitment — this helps us understand whether to present a single-phase or phased approach. Some clients start with the core sauna modules and add the thermal module later. Both paths work.
-      </div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
-        <div>
-          <label style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-3);display:block;margin-bottom:6px;">Budget range</label>
-          <select class="opt-input data-field" data-key="budget" style="margin-top:0;">
-            <option value="" disabled selected>Approximate</option>
-            <option value="<50k">Under €50,000</option>
-            <option value="50-100k">€50,000 – €100,000</option>
-            <option value="100-150k">€100,000 – €150,000</option>
-            <option value="150k+">€150,000+</option>
-            <option value="prefer-not">Prefer not to say</option>
-          </select>
-        </div>
-        <div>
-          <label style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-3);display:block;margin-bottom:6px;">Timeline</label>
-          <select class="opt-input data-field" data-key="timeline" style="margin-top:0;">
-            <option value="" disabled selected>When?</option>
-            <option value="asap">As soon as possible</option>
-            <option value="6mo">Within 6 months</option>
-            <option value="12mo">Within 12 months</option>
-            <option value="exploring">Exploring — no rush</option>
-          </select>
-        </div>
-      </div>
-    </div>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('lyn-theme', next);
+            updateThemeBtn();
+        }
 
-    <!-- Open notes -->
-    <div class="q-block" data-q="notes">
-      <div class="q-header">
-        <div class="q-title">Anything else we should know?</div>
-      </div>
-      <textarea class="opt-textarea data-field" data-key="open_notes" placeholder="Questions, concerns, preferences, constraints, ideas — anything at all."></textarea>
-    </div>
+        document.addEventListener('click', (e) => {
+            if (!navMenu.contains(e.target) && !navTrigger.contains(e.target)) {
+                navMenu.classList.remove('open');
+                navTrigger.classList.remove('active');
+            }
+        });
 
-  </section>
+        updateThemeBtn();
 
-  <!-- Submit -->
-  <section>
-    <div class="label">Submit</div>
-    <p class="prose">
-      Once you've filled in what you can, hit submit. We'll build the full site model — thermal module sizing, electricity strategy, and a 5-year projection — and update this page with the results.
-    </p>
+        // === CONFIGURATION ===
+        const CONFIG = {
+            currency: '€',
+            formEndpoint: null
+        };
 
-    <div class="submit-section" id="submitSection">
-      <button class="submit-btn" onclick="submitForm()">Submit Site Details →</button>
-      <p class="submit-note">You don't need to fill everything. We'll follow up on what's missing.</p>
-    </div>
+        // === MODULE DATA ===
+        const MODULES = {
+            m1: { name: 'm1: sauna' },
+            m2: { name: 'm2: swimming bridge' },
+            m3: { name: 'm3: changing room' },
+            m4: { name: 'm4: thermal module' },
+            m5: { name: 'm5: outdoor shower' },
+            m6: { name: 'm6: outdoor storage' },
+            m7: { name: 'm7: cold plunge' }
+        };
 
-    <div class="submit-success" id="submitSuccess">
-      <h3>Received</h3>
-      <p>We'll update this page with the full site model within a few days. You'll receive an email when it's ready.</p>
-    </div>
-  </section>
+        // === STEP IMAGES ===
+        const STEP_IMAGES = {
+            'intro': { src: 'images/config-preview.png', invert: true },
+            'site-type': { src: 'images/config-preview.png', invert: true },
+            'constraints': { src: 'images/hero.png', invert: false },
+            'indoor-private': { src: 'images/indoor.png', invert: false },
+            'indoor-professional': { src: 'images/indoor.png', invert: false },
+            'modules': { src: 'images/m1-sauna.png', invert: true },
+            'thermal': { src: 'images/m4-thermal.png', invert: true },
+            'summary': { src: 'images/config-preview.png', invert: true },
+            'form': { src: 'images/config-preview.png', invert: true },
+            'success': { src: 'images/hero.png', invert: false }
+        };
 
-  <footer>
-    <div class="footer-mark">LYN.</div>
-    <p class="footer-note">design by groundwork studio. manufacture by koerner sauna.</p>
-    <p class="footer-note" style="margin-top:4px;">Confidential — prepared for Schulze-Berge, Gettorf.</p>
-  </footer>
+        // === MODULE IMAGES ===
+        const MODULE_IMAGES = {
+            m1: 'images/m1-sauna.png',
+            m2: 'images/m2-bridge.png',
+            m3: 'images/m3-changing.png',
+            m4: 'images/m4-thermal.png',
+            m5: 'images/m5-shower.png',
+            m6: 'images/m6-storage.png',
+            m7: 'images/m7-plunge.png'
+        };
 
-</div>
+        // === STEP FLOWS ===
+        const FLOWS = {
+            outdoor: ['intro', 'site-type', 'constraints', 'modules', 'thermal', 'summary', 'form'],
+            'indoor-private': ['intro', 'site-type', 'indoor-private', 'thermal', 'summary', 'form'],
+            'indoor-professional': ['intro', 'site-type', 'indoor-professional', 'thermal', 'summary', 'form']
+        };
 
-<script>
-  // Password
-  function checkPassword() {
-    const input = document.getElementById('passwordInput');
-    if (input.value === 'lyn2100') {
-      document.getElementById('passwordGate').style.display = 'none';
-      document.getElementById('mainContent').style.display = 'block';
-    } else {
-      document.getElementById('passwordError').style.display = 'block';
-      input.value = '';
-      input.style.borderColor = '#E8590C';
-    }
-  }
+        // === STATE ===
+        const state = {
+            step: 'intro',
+            audience: null,
+            siteType: null,
+            constraints: {},
+            modules: ['m1'],
+            includeThermal: false,
+            timeline: null
+        };
 
-  // State
-  const state = {};
-  const totalQuestions = 8;
+        // === NAVIGATION ===
+        function getFlow() {
+            if (state.siteType === 'outdoor') return FLOWS.outdoor;
+            if (state.siteType === 'indoor') {
+                return state.audience === 'private' ? FLOWS['indoor-private'] : FLOWS['indoor-professional'];
+            }
+            return ['intro', 'site-type'];
+        }
 
-  // Single-select: pick one
-  function selectOpt(el) {
-    const block = el.closest('.q-block');
-    const siblings = block.querySelectorAll('.opt');
-    siblings.forEach(s => s.classList.remove('selected'));
-    el.classList.add('selected');
+        // === IMAGE TRANSITION SYSTEM ===
+        const imageCache = new Map();
+        let currentImageSlot = 'a';
 
-    const q = block.dataset.q;
-    state[q] = el.dataset.value;
+        function preloadImages() {
+            const allSrcs = new Set();
+            Object.values(STEP_IMAGES).forEach(img => allSrcs.add(img.src));
+            Object.values(MODULE_IMAGES).forEach(src => allSrcs.add(src));
 
-    // Show follow-ups based on selection
-    if (q === 'water' && el.dataset.value !== 'none') {
-      document.getElementById('water-followup').classList.add('visible');
-      document.getElementById('water-followup').style.display = 'block';
-    } else if (q === 'water') {
-      document.getElementById('water-followup').classList.remove('visible');
-      document.getElementById('water-followup').style.display = 'none';
-    }
+            allSrcs.forEach(src => {
+                const img = new Image();
+                img.src = src;
+                imageCache.set(src, img);
+            });
+        }
 
-    if (q === 'electrical') {
-      document.getElementById('elec-followup').classList.add('visible');
-      document.getElementById('elec-followup').style.display = 'block';
-    }
+        function transitionImage(newSrc, invert) {
+            const imgA = document.getElementById('step-image-a');
+            const imgB = document.getElementById('step-image-b');
+            if (!imgA || !imgB) return;
 
-    if (q === 'placement') {
-      document.getElementById('placement-followup').classList.add('visible');
-      document.getElementById('placement-followup').style.display = 'block';
-    }
+            const currentImg = currentImageSlot === 'a' ? imgA : imgB;
+            const nextImg = currentImageSlot === 'a' ? imgB : imgA;
 
-    if (q === 'solar' && (el.dataset.value === 'pv-yes' || el.dataset.value === 'pv-battery')) {
-      document.getElementById('solar-followup').classList.add('visible');
-      document.getElementById('solar-followup').style.display = 'block';
-    } else if (q === 'solar') {
-      document.getElementById('solar-followup').classList.remove('visible');
-      document.getElementById('solar-followup').style.display = 'none';
-    }
+            if (currentImg.src.endsWith(newSrc)) {
+                currentImg.classList.toggle('invert-dark', invert);
+                return;
+            }
 
-    updateProgress();
-  }
+            nextImg.classList.toggle('invert-dark', invert);
 
-  // Multi-select: toggle
-  function toggleOpt(el) {
-    el.classList.toggle('selected');
-    const block = el.closest('.q-block');
-    const q = block.dataset.q;
-    const selected = block.querySelectorAll('.opt.selected');
-    state[q] = Array.from(selected).map(s => s.dataset.value);
+            const cachedImg = imageCache.get(newSrc);
+            if (cachedImg && cachedImg.complete && cachedImg.naturalWidth > 0) {
+                nextImg.src = newSrc;
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        nextImg.classList.add('active');
+                        currentImg.classList.remove('active');
+                        currentImageSlot = currentImageSlot === 'a' ? 'b' : 'a';
+                    });
+                });
+            } else {
+                nextImg.onload = function() {
+                    requestAnimationFrame(() => {
+                        nextImg.classList.add('active');
+                        currentImg.classList.remove('active');
+                        currentImageSlot = currentImageSlot === 'a' ? 'b' : 'a';
+                    });
+                    nextImg.onload = null;
+                };
+                nextImg.src = newSrc;
+            }
+        }
 
-    // Deselect "none" if selecting something else
-    if (el.dataset.value !== 'none-thermal') {
-      const noneOpt = block.querySelector('[data-value="none-thermal"]');
-      if (noneOpt) noneOpt.classList.remove('selected');
-    } else {
-      block.querySelectorAll('.opt').forEach(o => {
-        if (o.dataset.value !== 'none-thermal') o.classList.remove('selected');
-      });
-      state[q] = ['none'];
-    }
+        function showStep(stepId) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            const target = document.querySelector(`[data-step="${stepId}"]`);
+            if (target) {
+                target.classList.add('active');
+                state.step = stepId;
+                updateUI();
 
-    updateProgress();
-  }
+                const imgA = document.getElementById('step-image-a');
+                const imgB = document.getElementById('step-image-b');
+                const strip = document.getElementById('stripBuilder');
 
-  function updateProgress() {
-    let answered = 0;
-    document.querySelectorAll('.q-block').forEach(block => {
-      const hasSelection = block.querySelector('.opt.selected');
-      const hasText = Array.from(block.querySelectorAll('input, textarea, select')).some(f => f.value && f.value.trim());
-      if (hasSelection || hasText) answered++;
-    });
-    const pct = Math.round((answered / totalQuestions) * 100);
-    document.getElementById('progressBar').style.width = pct + '%';
-  }
+                if (stepId === 'modules') {
+                    if (imgA) imgA.style.display = 'none';
+                    if (imgB) imgB.style.display = 'none';
+                    if (strip) strip.classList.add('active');
+                    updateSelectionStrip();
+                } else {
+                    if (imgA) imgA.style.display = '';
+                    if (imgB) imgB.style.display = '';
+                    if (strip) strip.classList.remove('active');
 
-  // Track all inputs
-  document.querySelectorAll('.data-field').forEach(field => {
-    field.addEventListener('input', () => updateProgress());
-    field.addEventListener('change', () => updateProgress());
-  });
+                    let imgData = STEP_IMAGES[stepId];
+                    if (stepId === 'constraints' && state.audience === 'professional') {
+                        imgData = { src: 'images/spa.png', invert: false };
+                    }
+                    if (imgData) {
+                        transitionImage(imgData.src, imgData.invert);
+                    }
+                }
+            }
+        }
 
-  function submitForm() {
-    // Collect all data
-    const formData = { ...state };
-    document.querySelectorAll('.data-field').forEach(field => {
-      if (field.dataset.key && field.value) {
-        formData[field.dataset.key] = field.value;
-      }
-    });
+        function nextStep() {
+            const flow = getFlow();
+            const currentIndex = flow.indexOf(state.step);
+            if (currentIndex < flow.length - 1) {
+                showStep(flow[currentIndex + 1]);
+            }
+        }
 
-    console.log('Site submission:', JSON.stringify(formData, null, 2));
+        function prevStep() {
+            const flow = getFlow();
+            const currentIndex = flow.indexOf(state.step);
+            if (currentIndex > 0) {
+                showStep(flow[currentIndex - 1]);
+            }
+        }
 
-    // In production: POST to endpoint
-    // For now, show success
-    document.getElementById('submitSection').style.display = 'none';
-    document.getElementById('submitSuccess').style.display = 'block';
-    document.getElementById('progressBar').style.width = '100%';
-    document.getElementById('progressBar').style.background = '#2B8A3E';
-  }
-</script>
+        // === UI UPDATES ===
+        function updateUI() {
+            updateThermalCopy();
+            updateSummary();
+            updateFormFields();
+        }
 
+        function updateThermalCopy() {
+            const benefitEl = document.getElementById('thermal-benefit');
+            if (benefitEl) {
+                benefitEl.textContent = state.audience === 'professional'
+                    ? 'heat for the space. revenue for the project.'
+                    : 'heat for the space. bitcoin for your savings.';
+            }
+
+            const integrationEl = document.getElementById('thermal-integration');
+            if (integrationEl) {
+                integrationEl.textContent = state.siteType === 'outdoor'
+                    ? 'hidden within the m3 bench. or bespoke integration.'
+                    : 'integrated into your architecture.';
+            }
+        }
+
+        function updateSelectionStrip() {
+            const strip = document.getElementById('stripBuilder');
+            if (!strip) return;
+
+            const existing = new Map();
+            strip.querySelectorAll('.strip-module').forEach(el => {
+                existing.set(el.dataset.moduleId, el);
+            });
+
+            const sorted = [...state.modules].sort((a, b) => {
+                return parseInt(a.slice(1)) - parseInt(b.slice(1));
+            });
+
+            existing.forEach((el, id) => {
+                if (!sorted.includes(id)) {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(-8px)';
+                    setTimeout(() => el.remove(), 200);
+                }
+            });
+
+            sorted.forEach((id, index) => {
+                let item = existing.get(id);
+                if (!item) {
+                    const mod = MODULES[id];
+                    item = document.createElement('div');
+                    item.className = 'strip-module';
+                    item.dataset.moduleId = id;
+                    item.innerHTML = `
+                        <img src="${MODULE_IMAGES[id]}" alt="${mod.name}">
+                        <div class="strip-module-name">${mod.name}</div>
+                    `;
+                }
+                strip.appendChild(item);
+            });
+        }
+
+        function updateSummary() {
+            const outdoorEl = document.getElementById('outdoor-summary');
+            const indoorEl = document.getElementById('indoor-summary');
+
+            if (state.siteType === 'outdoor') {
+                outdoorEl.classList.remove('hidden');
+                indoorEl.classList.add('hidden');
+
+                const parts = ['outdoor', state.constraints.foundation,
+                    `crane: ${state.constraints.crane || '—'}`,
+                    `power: ${state.constraints.power || '—'}`
+                ].filter(Boolean);
+                document.getElementById('site-summary').textContent = parts.join(' · ');
+
+                const summaryEl = document.getElementById('modules-summary');
+                const allModules = state.includeThermal && !state.modules.includes('m4')
+                    ? [...state.modules, 'm4']
+                    : state.modules;
+
+                const sorted = [...allModules].sort((a, b) => parseInt(a.slice(1)) - parseInt(b.slice(1)));
+                summaryEl.innerHTML = sorted.map(id => MODULES[id].name).join('<br>');
+            } else {
+                outdoorEl.classList.add('hidden');
+                indoorEl.classList.remove('hidden');
+
+                const parts = ['indoor', state.constraints.projectType,
+                    state.includeThermal ? 'thermal: interested' : ''
+                ].filter(Boolean);
+                document.getElementById('indoor-site-summary').textContent = parts.join(' · ');
+            }
+        }
+
+        function updateFormFields() {
+            const proFields = document.getElementById('professional-fields');
+            proFields.classList.toggle('hidden', state.audience !== 'professional');
+
+            document.getElementById('form-audience').value = state.audience || '';
+            document.getElementById('form-site-type').value = state.siteType || '';
+            document.getElementById('form-configuration').value = JSON.stringify({
+                modules: state.modules,
+                thermal: state.includeThermal,
+                constraints: state.constraints
+            });
+        }
+
+        // === EVENT HANDLERS ===
+        document.addEventListener('DOMContentLoaded', function() {
+            preloadImages();
+
+            // Audience selection
+            document.querySelectorAll('[data-audience]').forEach(el => {
+                el.addEventListener('click', function() {
+                    state.audience = this.dataset.audience;
+                    document.querySelectorAll('[data-audience]').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    setTimeout(() => showStep('site-type'), 150);
+                });
+            });
+
+            // Site type selection
+            document.querySelectorAll('[data-site]').forEach(el => {
+                el.addEventListener('click', function() {
+                    state.siteType = this.dataset.site;
+                    document.querySelectorAll('[data-site]').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    setTimeout(() => {
+                        if (state.siteType === 'outdoor') {
+                            showStep('constraints');
+                        } else {
+                            showStep(state.audience === 'private' ? 'indoor-private' : 'indoor-professional');
+                        }
+                    }, 150);
+                });
+            });
+
+            // Constraint options
+            document.querySelectorAll('.constraint-options').forEach(group => {
+                group.addEventListener('click', function(e) {
+                    const option = e.target.closest('.constraint-option');
+                    if (!option) return;
+
+                    group.querySelectorAll('.constraint-option').forEach(o => o.classList.remove('selected'));
+                    option.classList.add('selected');
+
+                    const constraint = group.dataset.constraint;
+                    const value = option.dataset.value;
+
+                    if (constraint === 'timeline') {
+                        state.timeline = value;
+                        document.getElementById('form-timeline').value = value;
+                    } else {
+                        state.constraints[constraint] = value;
+                    }
+                });
+            });
+
+            // Module selection
+            document.querySelectorAll('.module:not(.required)').forEach(el => {
+                el.addEventListener('click', function() {
+                    const id = this.dataset.module;
+                    this.classList.toggle('selected');
+
+                    if (this.classList.contains('selected')) {
+                        if (!state.modules.includes(id)) state.modules.push(id);
+                    } else {
+                        state.modules = state.modules.filter(m => m !== id);
+                    }
+                    updateSelectionStrip();
+                });
+            });
+
+            // Text fields
+            document.querySelectorAll('[data-field]').forEach(el => {
+                el.addEventListener('input', function() {
+                    state.constraints[this.dataset.field] = this.value;
+                });
+            });
+
+            // Action buttons
+            document.addEventListener('click', function(e) {
+                const action = e.target.dataset.action;
+                if (!action) return;
+
+                switch (action) {
+                    case 'next': nextStep(); break;
+                    case 'back': prevStep(); break;
+                    case 'skip-thermal': state.includeThermal = false; nextStep(); break;
+                    case 'add-thermal': state.includeThermal = true; nextStep(); break;
+                }
+            });
+
+            // Form submission
+            document.getElementById('lead-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const endpoint = CONFIG.formEndpoint || '/';
+
+                fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(formData).toString()
+                })
+                .then(() => showStep('success'))
+                .catch(() => showStep('success'));
+            });
+        });
+    </script>
 </body>
 </html>
