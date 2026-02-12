@@ -1,890 +1,561 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LYN. — Gettorf</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&amp;family=IBM+Plex+Sans:wght@300;400&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #fafafa;
-    --fg: #37352f;
-    --fg-2: #787774;
-    --fg-3: #a0a0a0;
-    --accent: #E8590C;
-    --accent-light: #FFF4EF;
-    --border: #e5e5e3;
-    --card: #FFFFFF;
-    --green: #2B8A3E;
-    --green-light: #EEFAEF;
-    --blue: #1971C2;
-    --blue-light: #EFF6FF;
-    --selected-bg: #f5f5f3;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LYN. — Gettorf Site Study</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23262624' width='100' height='100' rx='12'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400&family=IBM+Plex+Mono:wght@400&family=Inter:wght@600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --text: #37352f;
+      --muted: #a0a0a0;
+      --bg: #fafafa;
+      --border: #e0e0e0;
+      --green: #2d6a4f;
+      --amber: #b5851a;
+      --red: #8b3a3a;
+    }
 
-  body {
-    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
-    font-weight: 300;
-    background: var(--bg);
-    color: var(--fg);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 300;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  .container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 80px 24px 120px;
+    }
 
-  /* Header */
-  header {
-    padding: 40px 0 32px;
-    border-bottom: 1px solid var(--border);
-  }
+    .logo {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      margin-bottom: 64px;
+    }
 
-  .header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 56px;
-  }
+    section { margin-bottom: 72px; }
 
-  .logo {
-    font-family: 'Inter', sans-serif;
-    font-size: 24px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-  }
+    .label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      text-transform: lowercase;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      margin-bottom: 12px;
+    }
 
-  .ref {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--fg-3);
-    text-align: right;
-    line-height: 1.9;
-  }
+    h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 400;
+      font-size: 28px;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
 
-  .site-name {
-    font-size: 28px;
-    font-weight: 300;
-    letter-spacing: -0.01em;
-    margin-bottom: 6px;
-  }
+    h2 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
 
-  .site-meta {
-    font-size: 14px;
-    color: var(--fg-2);
-  }
+    h3 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 400;
+      font-size: 17px;
+      margin-bottom: 6px;
+      margin-top: 32px;
+    }
 
-  /* Sections */
-  section { padding: 44px 0; border-bottom: 1px solid var(--border); }
-  section:last-of-type { border-bottom: none; }
+    p {
+      margin-bottom: 16px;
+      max-width: 600px;
+    }
 
-  .label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--fg-3);
-    margin-bottom: 20px;
-  }
+    p:last-child { margin-bottom: 0; }
 
-  .prose {
-    font-size: 15px;
-    color: var(--fg-2);
-    line-height: 1.75;
-    max-width: 620px;
-  }
+    .subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 32px;
+      max-width: 520px;
+    }
 
-  .prose + .prose { margin-top: 10px; }
-  .prose strong { color: var(--fg); font-weight: 400; }
+    .data-grid { margin-top: 24px; }
 
-  /* Module list */
-  .module-list { display: flex; flex-direction: column; gap: 4px; margin-top: 20px; }
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 15px;
+    }
 
-  .mod {
-    display: grid;
-    grid-template-columns: 48px 1fr auto;
-    align-items: baseline;
-    padding: 12px 16px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    gap: 10px;
-  }
+    .data-row:last-child { border-bottom: none; }
 
-  .mod.thermal { border-color: var(--accent); background: var(--accent-light); }
-  .mod.inactive { opacity: 0.35; border-style: dashed; }
+    .data-key {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      min-width: 180px;
+      flex-shrink: 0;
+    }
 
-  .mod-id {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--fg-3);
-  }
+    .data-value {
+      text-align: right;
+      font-weight: 300;
+    }
 
-  .mod.thermal .mod-id { color: var(--accent); }
+    .data-value.muted {
+      color: var(--muted);
+      font-size: 14px;
+    }
 
-  .mod-name { font-size: 14px; font-weight: 400; }
-  .mod-desc { font-size: 12px; color: var(--fg-2); }
-  .mod-dim { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--fg-3); white-space: nowrap; }
+    .status {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+      position: relative;
+      top: -1px;
+    }
 
-  /* Question blocks */
-  .q-block {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 24px;
-    margin-top: 16px;
-  }
+    .status.green { background: var(--green); }
+    .status.amber { background: var(--amber); }
+    .status.red { background: var(--red); }
 
-  .q-block + .q-block { margin-top: 10px; }
+    .question-item {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
 
-  .q-block.answered { border-color: var(--green); background: var(--green-light); }
+    .question-item:last-child { border-bottom: none; }
 
-  .q-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 10px;
-  }
+    .question-text {
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
 
-  .q-title {
-    font-size: 15px;
-    font-weight: 400;
-  }
+    .question-context {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 560px;
+    }
 
-  .q-why {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 2px 8px;
-    border-radius: 3px;
-    background: var(--selected-bg);
-    color: var(--fg-3);
-    white-space: nowrap;
-  }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
 
-  .q-context {
-    font-size: 13px;
-    color: var(--fg-2);
-    line-height: 1.65;
-    margin-bottom: 14px;
-  }
+    .note {
+      font-size: 14px;
+      color: var(--muted);
+      font-style: italic;
+    }
 
-  /* Option selectors */
-  .options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
+    a {
+      color: var(--text);
+    }
 
-  .opt {
-    padding: 8px 16px;
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.15s;
-    background: var(--bg);
-    user-select: none;
-  }
+    /* Password gate */
+    .gate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      flex-direction: column;
+    }
 
-  .opt:hover { border-color: var(--fg-3); }
-  .opt.selected { background: var(--fg); color: white; border-color: var(--fg); }
+    .gate .logo {
+      margin-bottom: 32px;
+    }
 
-  .opt-input {
-    margin-top: 8px;
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 8px 12px;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 14px;
-    color: var(--fg);
-    background: white;
-  }
+    .gate input {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      padding: 10px 16px;
+      width: 200px;
+      text-align: center;
+      outline: none;
+      letter-spacing: 0.05em;
+    }
 
-  .opt-input:focus { outline: none; border-color: var(--fg); }
+    .gate input::placeholder {
+      color: var(--muted);
+    }
 
-  .opt-textarea {
-    margin-top: 8px;
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 8px 12px;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 14px;
-    color: var(--fg);
-    resize: vertical;
-    min-height: 56px;
-    background: white;
-  }
+    .gate input.error {
+      border-color: #a33;
+    }
 
-  .opt-textarea:focus { outline: none; border-color: var(--fg); }
+    .content {
+      display: none;
+    }
 
-  /* Conditional follow-up */
-  .follow-up {
-    margin-top: 10px;
-    padding: 14px 16px;
-    background: var(--blue-light);
-    border-radius: 5px;
-    font-size: 13px;
-    color: var(--blue);
-    line-height: 1.6;
-    display: none;
-  }
+    .content.visible {
+      display: block;
+    }
 
-  .follow-up.visible { display: block; }
-
-  .follow-up label {
-    display: block;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--blue);
-    margin-bottom: 6px;
-    margin-top: 10px;
-  }
-
-  .follow-up label:first-child { margin-top: 0; }
-
-  .follow-up input, .follow-up select {
-    width: 100%;
-    border: 1px solid #C5DAF0;
-    border-radius: 4px;
-    padding: 7px 10px;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 13px;
-    background: white;
-  }
-
-  /* Photo upload hint */
-  .photo-hint {
-    margin-top: 10px;
-    padding: 14px 16px;
-    background: var(--selected-bg);
-    border: 1px dashed var(--border);
-    border-radius: 5px;
-    font-size: 13px;
-    color: var(--fg-2);
-    line-height: 1.6;
-    text-align: center;
-  }
-
-  .photo-hint strong { color: var(--fg); }
-
-  /* Progress bar */
-  .progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 3px;
-    background: var(--accent);
-    transition: width 0.4s ease;
-    z-index: 100;
-  }
-
-  /* Summary section */
-  .summary-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-top: 20px;
-  }
-
-  .s-cell {
-    background: var(--card);
-    padding: 16px 18px;
-  }
-
-  .s-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--fg-3);
-    margin-bottom: 4px;
-  }
-
-  .s-value {
-    font-size: 14px;
-    font-weight: 400;
-  }
-
-  .s-value.ok { color: var(--green); }
-  .s-value.pending { color: var(--fg-3); font-style: italic; font-weight: 400; }
-
-  /* Submit */
-  .submit-section {
-    margin-top: 28px;
-    text-align: center;
-  }
-
-  .submit-btn {
-    padding: 14px 40px;
-    background: var(--fg);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 400;
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-
-  .submit-btn:hover { opacity: 0.85; }
-
-  .submit-note {
-    margin-top: 10px;
-    font-size: 12px;
-    color: var(--fg-3);
-  }
-
-  /* Success state */
-  .submit-success {
-    display: none;
-    text-align: center;
-    padding: 32px;
-    background: var(--green-light);
-    border: 1px solid #B2DDB5;
-    border-radius: 6px;
-    margin-top: 28px;
-  }
-
-  .submit-success h3 {
-    color: var(--green);
-    font-size: 16px;
-    margin-bottom: 6px;
-  }
-
-  .submit-success p {
-    font-size: 14px;
-    color: var(--fg-2);
-  }
-
-  /* Footer */
-  footer {
-    padding: 40px 0;
-    text-align: center;
-  }
-
-  .footer-mark {
-    font-family: 'Inter', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--fg);
-    margin-bottom: 10px;
-  }
-
-  .footer-note {
-    font-size: 12px;
-    color: var(--fg-3);
-  }
-
-  @media (max-width: 640px) {
-    .summary-grid { grid-template-columns: 1fr; }
-    .header-row { flex-direction: column; gap: 12px; }
-    .ref { text-align: left; }
-    .site-name { font-size: 24px; }
-    .mod { grid-template-columns: 42px 1fr; }
-    .mod-dim { display: none; }
-    .q-header { flex-direction: column; gap: 6px; }
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  section { animation: fadeIn 0.4s ease-out both; }
-  section:nth-child(2) { animation-delay: 0.04s; }
-  section:nth-child(3) { animation-delay: 0.08s; }
-  section:nth-child(4) { animation-delay: 0.12s; }
-  section:nth-child(5) { animation-delay: 0.16s; }
-</style>
+    @media (max-width: 600px) {
+      .container { padding: 48px 20px 80px; }
+      h1 { font-size: 24px; }
+      .data-key { min-width: 140px; font-size: 12px; }
+      .data-value { font-size: 14px; }
+    }
+  </style>
 </head>
 <body>
-
-<!-- Password Gate -->
-<div id="passwordGate" style="position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center;">
-  <div style="text-align:center;max-width:300px;padding:24px;">
-    <div style="font-family:'Inter',sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.02em;margin-bottom:56px;color:var(--fg);">LYN.</div>
-    <input type="password" id="passwordInput" placeholder="password" autofocus
-      style="width:100%;border:none;border-bottom:1px solid var(--border);border-radius:0;padding:10px 0;font-family:'IBM Plex Mono',monospace;font-size:14px;text-align:center;background:transparent;color:var(--fg);outline:none;letter-spacing:0.08em;"
-      onkeydown="if(event.key==='Enter')checkPassword()">
-    <div id="passwordError" style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent);margin-top:14px;display:none;">incorrect password</div>
+  <!-- Password gate -->
+  <div class="gate" id="gate">
+    <div class="logo">LYN.</div>
+    <input type="password" id="passInput" placeholder="password" autofocus>
   </div>
-</div>
 
-<div class="progress-bar" id="progressBar" style="width: 0%"></div>
+  <!-- Content (hidden until authenticated) -->
+  <div class="content" id="content">
+  <div class="container">
+    <div class="logo">LYN.</div>
 
-<div class="container" style="display:none;" id="mainContent">
+    <!-- GREETING -->
+    <section>
+      <div class="label">site study — GE-001</div>
+      <h1>Gettorf Indoor Basement Sauna</h1>
+      <p>This is the project page for the Gettorf installation — a bespoke indoor sauna built into the basement of your parents' home. It updates as we work through the details together.</p>
+    </section>
 
-  <header>
-    <div class="header-row">
-      <div class="logo">LYN.</div>
-      <div class="ref">
-        GE-001<br>
-        12.02.2026
-      </div>
-    </div>
-    <h1 class="site-name">Gettorf</h1>
-    <p class="site-meta">Private outdoor — Schulze-Berge</p>
-  </header>
+    <!-- LYN -->
+    <section>
+      <div class="label">about lyn</div>
+      <h2>What We Build</h2>
+      <p>LYN is a system of 7 modular components for outdoor and indoor saunas — designed by Morten Bo Jensen (Groundwork Studio, formerly 16 years Chief Designer at Vipp) and manufactured by KOERNER Saunabau, the first sauna builder in the DACH region, founded 1949.</p>
+      <p>2,100 numbered outdoor units, then production closes. Unlimited bespoke indoor installations. Each unit includes an optional thermal module that replaces conventional electric heating with a bitcoin miner — same electricity, same heat, dual output.</p>
+    </section>
 
-  <!-- What you selected -->
-  <section>
-    <div class="label">Your Configuration</div>
-    <p class="prose">
-      This is the configuration you selected. We use it as a starting point — some modules may shift based on your site conditions. The outdoor storage module is available but wasn't included in your selection.
-    </p>
+    <!-- THE SITE -->
+    <section>
+      <div class="label">your site</div>
+      <h2>Gettorf, Schleswig-Holstein</h2>
+      <p>Private residential property in Gettorf, a town of ~7,500 between Kiel and Eckernförde near the Baltic coast. Indoor basement installation — the sauna is built into the existing house, not placed as a freestanding unit.</p>
 
-    <div class="module-list">
-      <div class="mod">
-        <div class="mod-id">M1</div>
-        <div>
-          <div class="mod-name">Sauna</div>
-          <div class="mod-desc">The core. Panoramic glass.</div>
+      <div class="data-grid">
+        <div class="data-row">
+          <span class="data-key">location</span>
+          <span class="data-value">Gettorf, 24214 Rendsburg-Eckernförde</span>
         </div>
-        <div class="mod-dim">3.3 × 2.2 × 2.5 m</div>
-      </div>
-      <div class="mod">
-        <div class="mod-id">M2</div>
-        <div>
-          <div class="mod-name">Swimming Bridge</div>
-          <div class="mod-desc">Direct water access.</div>
+        <div class="data-row">
+          <span class="data-key">district</span>
+          <span class="data-value">Rendsburg-Eckernförde, Schleswig-Holstein</span>
         </div>
-        <div class="mod-dim">1.5 × 2.0 × 0.3 m</div>
-      </div>
-      <div class="mod">
-        <div class="mod-id">M3</div>
-        <div>
-          <div class="mod-name">Changing Room</div>
-          <div class="mod-desc">Transitional space. Skylit.</div>
+        <div class="data-row">
+          <span class="data-key">type</span>
+          <span class="data-value">private residential — indoor basement</span>
         </div>
-        <div class="mod-dim">1.5 × 2.0 × 2.5 m</div>
-      </div>
-      <div class="mod thermal">
-        <div class="mod-id">M4</div>
-        <div>
-          <div class="mod-name">Thermal Module</div>
-          <div class="mod-desc">Compute heat. Optional.</div>
+        <div class="data-row">
+          <span class="data-key">climate</span>
+          <span class="data-value">marine (Cfb), avg ~8.5°C, ~7 mo heating season</span>
         </div>
-        <div class="mod-dim">Site-dependent</div>
-      </div>
-      <div class="mod">
-        <div class="mod-id">M5</div>
-        <div>
-          <div class="mod-name">Outdoor Shower</div>
-          <div class="mod-desc">Wall-mounted. Cooling.</div>
-        </div>
-        <div class="mod-dim">0.5 × 0.1 × 2.0 m</div>
-      </div>
-      <div class="mod inactive">
-        <div class="mod-id">M6</div>
-        <div>
-          <div class="mod-name">Outdoor Storage</div>
-          <div class="mod-desc">Robes. Towels. Slippers.</div>
-        </div>
-        <div class="mod-dim">0.6 × 0.3 × 1.5 m</div>
-      </div>
-      <div class="mod">
-        <div class="mod-id">M7</div>
-        <div>
-          <div class="mod-name">Cold Plunge</div>
-          <div class="mod-desc">Self-contained basin.</div>
-        </div>
-        <div class="mod-dim">1.5 × 2.0 × 2.5 m</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Site Questions -->
-  <form name="gettorf-site" method="POST" data-netlify="true" id="siteForm">
-  <input type="hidden" name="form-name" value="gettorf-site">
-  <input type="hidden" name="project" value="GE-001">
-  <input type="hidden" name="water" id="field-water">
-  <input type="hidden" name="placement" id="field-placement">
-  <input type="hidden" name="electrical" id="field-electrical">
-  <input type="hidden" name="solar" id="field-solar">
-  <input type="hidden" name="usage" id="field-usage">
-  <input type="hidden" name="thermal-loads" id="field-thermal">
-
-  <section>
-    <div class="label">About Your Site</div>
-    <p class="prose">
-      To plan the installation and model the economics properly, we need to understand the property. Each question below explains why we're asking.
-    </p>
-
-    <!-- Q1: Water -->
-    <div class="q-block" data-q="water">
-      <div class="q-header">
-        <div class="q-title">Is there natural water on or adjacent to the property?</div>
-        <div class="q-why">Affects layout</div>
-      </div>
-      <div class="q-context">
-        The swimming bridge provides direct water access — a step from the sauna into a lake, river, or sea. If there's no natural water body, the cold plunge handles the cooling cycle on its own, and the swimming bridge can be removed from the configuration.
-      </div>
-      <div class="options">
-        <div class="opt" data-value="lake" onclick="selectOpt(this)">Lake or pond</div>
-        <div class="opt" data-value="river" onclick="selectOpt(this)">River or stream</div>
-        <div class="opt" data-value="coast" onclick="selectOpt(this)">Coastal / sea</div>
-        <div class="opt" data-value="none" onclick="selectOpt(this)">No natural water</div>
-      </div>
-      <div class="follow-up" id="water-followup">
-        <span>How far is the water from where you'd place the sauna? An approximate distance is fine.</span>
-        <label>Distance to water</label>
-        <input type="text" placeholder="e.g. 15 meters, directly at the shore, across the garden..." class="data-field" data-key="water_distance" name="water-distance">
-      </div>
-    </div>
-
-    <!-- Q2: Placement -->
-    <div class="q-block" data-q="placement">
-      <div class="q-header">
-        <div class="q-title">Where on the property would this go?</div>
-        <div class="q-why">Logistics</div>
-      </div>
-      <div class="q-context">
-        We need to understand the available space, the ground conditions, and how a crane would access the spot. The modules arrive pre-built and are crane-placed — the crane needs a path from the street to the installation point.
-      </div>
-      <div class="options">
-        <div class="opt" data-value="garden-rear" onclick="selectOpt(this)">Rear garden</div>
-        <div class="opt" data-value="garden-side" onclick="selectOpt(this)">Side of property</div>
-        <div class="opt" data-value="waterfront" onclick="selectOpt(this)">Waterfront / edge</div>
-        <div class="opt" data-value="unsure" onclick="selectOpt(this)">Not sure yet</div>
-      </div>
-      <div class="photo-hint">
-        <strong>A photo helps more than a description.</strong><br>
-        If you can, take a photo of the intended area from a few angles and email it to<br>
-        <strong style="color:var(--accent);">site@lyn.page</strong> with subject line <strong>GE-001</strong>.
-      </div>
-      <div class="follow-up" id="placement-followup">
-        <label>Estimated available area (rough is fine)</label>
-        <input type="text" placeholder="e.g. 8×5 meters, or 'large garden, plenty of space'" class="data-field" data-key="available_area" name="available-area">
-        <label>Crane path from street</label>
-        <select class="data-field" data-key="crane_path" name="crane-path">
-          <option value="" disabled selected>Can a crane reach the spot from the street?</option>
-          <option value="direct">Direct access — no obstacles</option>
-          <option value="driveway">Via driveway — should work</option>
-          <option value="narrow">Narrow or restricted access</option>
-          <option value="unsure">Not sure</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Q3: Electrical -->
-    <div class="q-block" data-q="electrical">
-      <div class="q-header">
-        <div class="q-title">What's the electrical situation?</div>
-        <div class="q-why">Sizing</div>
-      </div>
-      <div class="q-context">
-        The thermal module requires electrical capacity beyond the sauna's base heating needs. The more capacity available, the larger the thermal configuration can be. If you're unsure, your electricity provider or an electrician can check — the electrical panel (Zählerschrank) or house connection documentation will show the rated capacity.
-      </div>
-      <div class="options">
-        <div class="opt" data-value="3phase" onclick="selectOpt(this)">Three-phase (Drehstrom) — common in Germany</div>
-        <div class="opt" data-value="unsure-elec" onclick="selectOpt(this)">Not sure</div>
-      </div>
-      <div class="follow-up" id="elec-followup">
-        <label>Main fuse rating (Hauptsicherung), if known</label>
-        <input type="text" placeholder="e.g. 35A, 50A, 63A — or unsure" class="data-field" data-key="fuse_rating" name="fuse-rating">
-        <label>Distance from house/panel to sauna placement</label>
-        <input type="text" placeholder="e.g. 20 meters" class="data-field" data-key="elec_distance" name="elec-distance">
-      </div>
-    </div>
-
-    <!-- Q4: Solar -->
-    <div class="q-block" data-q="solar">
-      <div class="q-header">
-        <div class="q-title">Is there a solar (PV) system on the property?</div>
-        <div class="q-why">Economics</div>
-      </div>
-      <div class="q-context">
-        Electricity in Schleswig-Holstein costs around €0.35–0.40/kWh from the grid. Solar self-consumption reduces this to roughly €0.06–0.08/kWh — which significantly changes the thermal module economics. Even without an existing system, a new PV installation can be modeled as part of the project.
-      </div>
-      <div class="options">
-        <div class="opt" data-value="pv-yes" onclick="selectOpt(this)">Yes — solar panels installed</div>
-        <div class="opt" data-value="pv-battery" onclick="selectOpt(this)">Yes — solar + battery</div>
-        <div class="opt" data-value="pv-interested" onclick="selectOpt(this)">No — but open to it</div>
-        <div class="opt" data-value="pv-no" onclick="selectOpt(this)">No — not planned</div>
-      </div>
-      <div class="follow-up" id="solar-followup">
-        <label>System size (if installed)</label>
-        <input type="text" placeholder="e.g. 10 kWp, or 'not sure — about 20 panels'" class="data-field" data-key="pv_size" name="pv-size">
-        <label>Battery capacity (if installed)</label>
-        <input type="text" placeholder="e.g. 10 kWh, or 'no battery'" class="data-field" data-key="battery_size" name="battery-size">
-      </div>
-    </div>
-
-    <!-- Q5: Electricity provider -->
-    <div class="q-block" data-q="provider">
-      <div class="q-header">
-        <div class="q-title">Who is your electricity provider?</div>
-        <div class="q-why">Cost modeling</div>
-      </div>
-      <div class="q-context">
-        We need the current rate to model costs accurately. Some providers in the region offer dynamic tariffs (where the price varies by hour), which can substantially improve the economics — the thermal module can be configured to run during the cheapest hours.
-      </div>
-      <div style="margin-top: 8px;">
-        <input type="text" class="opt-input data-field" data-key="provider" name="provider" placeholder="e.g. Stadtwerke Kiel, SH Netz, E.ON, Tibber...">
-      </div>
-      <div style="margin-top: 8px;">
-        <input type="text" class="opt-input data-field" data-key="rate" name="rate" placeholder="Current rate if known, e.g. €0.36/kWh — or 'not sure'">
-      </div>
-    </div>
-
-    <!-- Q6: Usage -->
-    <div class="q-block" data-q="usage">
-      <div class="q-header">
-        <div class="q-title">How often would you use the sauna?</div>
-        <div class="q-why">Heat planning</div>
-      </div>
-      <div class="q-context">
-        Usage frequency determines how much of the thermal module's heat output serves a direct purpose (heating the sauna) versus running independently. Both modes generate bitcoin — but sessions where heat is actively used make the case simplest: it's a heater replacement, not an addition.
-      </div>
-      <div class="options">
-        <div class="opt" data-value="1-2x" onclick="selectOpt(this)">1–2× per week</div>
-        <div class="opt" data-value="3-4x" onclick="selectOpt(this)">3–4× per week</div>
-        <div class="opt" data-value="5x" onclick="selectOpt(this)">5+ per week</div>
-        <div class="opt" data-value="seasonal" onclick="selectOpt(this)">Seasonal — mainly winter</div>
-      </div>
-    </div>
-
-    <!-- Q7: Additional thermal -->
-    <div class="q-block" data-q="thermal">
-      <div class="q-header">
-        <div class="q-title">Are there other things on the property that need heat?</div>
-        <div class="q-why">Optimization</div>
-      </div>
-      <div class="q-context">
-        The thermal module can serve loads beyond the sauna itself. Every additional use of the heat it produces improves the economics. Common examples include heated outdoor showers, hot tubs, garden house heating, or pre-heating domestic hot water. Even a heated driveway for winter de-icing counts.
-      </div>
-      <div class="options">
-        <div class="opt" data-value="hot-tub" onclick="toggleOpt(this)">Hot tub (existing or planned)</div>
-        <div class="opt" data-value="heated-floor" onclick="toggleOpt(this)">Heated floor (garden house, workshop)</div>
-        <div class="opt" data-value="pool" onclick="toggleOpt(this)">Pool</div>
-        <div class="opt" data-value="dhw" onclick="toggleOpt(this)">Domestic hot water</div>
-        <div class="opt" data-value="greenhouse" onclick="toggleOpt(this)">Greenhouse</div>
-        <div class="opt" data-value="none-thermal" onclick="selectOpt(this)">None of these</div>
-      </div>
-      <div style="margin-top: 8px;">
-        <textarea class="opt-textarea data-field" data-key="thermal_notes" name="thermal-notes" placeholder="Anything else that uses heat, or ideas you've been considering..."></textarea>
-      </div>
-    </div>
-
-    <!-- Q8: Budget / Timeline -->
-    <div class="q-block" data-q="budget">
-      <div class="q-header">
-        <div class="q-title">Budget and timing</div>
-        <div class="q-why">Phasing</div>
-      </div>
-      <div class="q-context">
-        No commitment — this helps us understand whether to present a single-phase or phased approach. Some clients start with the core sauna modules and add the thermal module later. Both paths work.
-      </div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
-        <div>
-          <label style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-3);display:block;margin-bottom:6px;">Budget range</label>
-          <select class="opt-input data-field" data-key="budget" name="budget" style="margin-top:0;">
-            <option value="" disabled selected>Approximate</option>
-            <option value="<50k">Under €50,000</option>
-            <option value="50-100k">€50,000 – €100,000</option>
-            <option value="100-150k">€100,000 – €150,000</option>
-            <option value="150k+">€150,000+</option>
-            <option value="prefer-not">Prefer not to say</option>
-          </select>
-        </div>
-        <div>
-          <label style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-3);display:block;margin-bottom:6px;">Timeline</label>
-          <select class="opt-input data-field" data-key="timeline" name="timeline" style="margin-top:0;">
-            <option value="" disabled selected>When?</option>
-            <option value="asap">As soon as possible</option>
-            <option value="6mo">Within 6 months</option>
-            <option value="12mo">Within 12 months</option>
-            <option value="exploring">Exploring — no rush</option>
-          </select>
+        <div class="data-row">
+          <span class="data-key">proximity</span>
+          <span class="data-value">~10 km to Baltic coast (Eckernförder Bucht)</span>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Open notes -->
-    <div class="q-block" data-q="notes">
-      <div class="q-header">
-        <div class="q-title">Anything else we should know?</div>
+    <!-- THE INSTALLATION -->
+    <section>
+      <div class="label">proposed installation</div>
+      <h2>What the Basement Becomes</h2>
+      <p>A bespoke indoor sauna cabin designed to the space. KOERNER-built, same construction standard as every numbered LYN unit — red cedar lining, ash benches, mineral wool insulation, aluminum foil vapor barrier. Fitted to the existing room geometry.</p>
+      <p>Because this is a basement installation, ventilation and moisture management are critical. The sauna needs 6–8 air changes per hour, and the surrounding basement space needs adequate dehumidification to prevent condensation issues in the subgrade envelope.</p>
+
+      <div class="data-grid" style="margin-top: 24px;">
+        <div class="data-row">
+          <span class="data-key">M1 — sauna</span>
+          <span class="data-value">bespoke indoor installation</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key"></span>
+          <span class="data-value muted">KOERNER stove, red cedar, ash benches, fitted to basement</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">M4 — thermal module</span>
+          <span class="data-value">assessed below</span>
+        </div>
       </div>
-      <textarea class="opt-textarea data-field" data-key="open_notes" name="open-notes" placeholder="Questions, concerns, preferences, constraints, ideas — anything at all."></textarea>
-    </div>
 
-  </section>
+      <h3>Basement Considerations</h3>
+      <p>Indoor installations require some additional planning compared to outdoor units. We'll need to assess ceiling height (minimum 2,200 mm clear for the cabin), floor drainage, electrical capacity, and the ventilation path — fresh air intake and exhaust need a route to the exterior. A site visit or detailed photos and measurements are the next step.</p>
+    </section>
 
-  <!-- Submit -->
-  <section>
-    <div class="label">Submit</div>
-    <p class="prose">
-      Once you've filled in what you can, hit submit. We'll build the full site model — thermal module sizing, electricity strategy, and a 5-year projection — and update this page with the results.
-    </p>
+    <!-- PRODUCT COST -->
+    <section>
+      <div class="label">product</div>
+      <h2>LYN Installation</h2>
 
-    <div class="submit-section" id="submitSection">
-      <button type="submit" class="submit-btn">Submit Site Details →</button>
-      <p class="submit-note">You don't need to fill everything. We'll follow up on what's missing.</p>
-    </div>
+      <div class="data-grid">
+        <div class="data-row">
+          <span class="data-key">M1 sauna (bespoke indoor)</span>
+          <span class="data-value">from €55,555</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">M4 thermal module</span>
+          <span class="data-value">€3,111</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">delivery + installation</span>
+          <span class="data-value">~€7,777</span>
+        </div>
+      </div>
 
-    <div class="submit-success" id="submitSuccess">
-      <h3>Received</h3>
-      <p>We'll update this page with the full site model within a few days. You'll receive an email when it's ready.</p>
-    </div>
-  </section>
+      <hr class="divider">
 
-  </form>
+      <div class="data-grid">
+        <div class="data-row">
+          <span class="data-key">total</span>
+          <span class="data-value"><strong>from ~€66,443</strong></span>
+        </div>
+      </div>
 
-  <footer>
-    <div class="footer-mark">LYN.</div>
-    <p class="footer-note">design by groundwork studio. manufacture by koerner sauna.</p>
-    <p class="footer-note" style="margin-top:4px;">Confidential — prepared for Schulze-Berge, Gettorf.</p>
-  </footer>
+      <p style="margin-top: 16px;" class="note">Bespoke indoor pricing confirmed after design phase. Depends on cabin dimensions, complexity, and any site buildout required (ventilation, drainage, electrical upgrade). All prices indicative, excluding MwSt. Site buildout separate.</p>
+    </section>
 
-</div>
+    <!-- M4 -->
+    <section>
+      <div class="label">M4 thermal module</div>
+      <h2>The Honest Assessment</h2>
+      <p>The M4 replaces a conventional electric heater at the same wattage. All electrical energy in becomes heat energy out, and the unit also mines bitcoin. Same input, dual output. But the economics depend on two things: thermal demand and electricity price.</p>
+      <p>Germany has both the highest residential electricity price in mainland Europe and a strong heating season. These pull in opposite directions for M4.</p>
 
-<script>
-  // Password
-  function checkPassword() {
-    const input = document.getElementById('passwordInput');
-    if (input.value === 'lyn2100') {
-      document.getElementById('passwordGate').style.display = 'none';
-      document.getElementById('mainContent').style.display = 'block';
-    } else {
-      document.getElementById('passwordError').style.display = 'block';
-      input.value = '';
-      input.style.borderColor = '#E8590C';
-    }
-  }
+      <h3>Your Sauna Alone</h3>
+      <p>At 4 sessions per week, ~1.5 hours each, the sauna needs roughly 7.7 kWh/day. An S19k Pro produces 66 kWh/day. That's a 12% thermal match. On its own, the sauna doesn't absorb enough heat.</p>
 
-  // State
-  const state = {};
-  const totalQuestions = 8;
+      <h3>With the House Connected</h3>
+      <p>If the M4 heat routes into the house — floor heating, domestic hot water, or both — total thermal demand could reach 70–85 kWh/day. That would be a strong thermal match. But the electricity cost changes the equation.</p>
 
-  // Single-select: pick one
-  function selectOpt(el) {
-    const block = el.closest('.q-block');
-    const siblings = block.querySelectorAll('.opt');
-    siblings.forEach(s => s.classList.remove('selected'));
-    el.classList.add('selected');
+      <div class="data-grid" style="margin-top: 16px;">
+        <div class="data-row">
+          <span class="data-key">hardware</span>
+          <span class="data-value">1× Antminer S19k Pro</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">power draw</span>
+          <span class="data-value">2,760 W</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">heat output</span>
+          <span class="data-value">66.2 kWh/day</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">hashrate</span>
+          <span class="data-value">120 TH/s</span>
+        </div>
+      </div>
 
-    const q = block.dataset.q;
-    state[q] = el.dataset.value;
+      <h3>Annual Economics at German Rates</h3>
+      <p>At the current German residential rate of ~€0.35/kWh.</p>
 
-    // Show follow-ups based on selection
-    if (q === 'water' && el.dataset.value !== 'none') {
-      document.getElementById('water-followup').classList.add('visible');
-      document.getElementById('water-followup').style.display = 'block';
-    } else if (q === 'water') {
-      document.getElementById('water-followup').classList.remove('visible');
-      document.getElementById('water-followup').style.display = 'none';
+      <div class="data-grid" style="margin-top: 16px;">
+        <div class="data-row">
+          <span class="data-key">annual electricity</span>
+          <span class="data-value">€8,462</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">annual BTC mined</span>
+          <span class="data-value">~0.022 BTC (~€1,250)</span>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="data-grid">
+        <div class="data-row">
+          <span class="data-key">heating cost</span>
+          <span class="data-value">€8,462</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">BTC earned</span>
+          <span class="data-value">−€1,250</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">net heating cost</span>
+          <span class="data-value"><strong>€7,212</strong></span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">effective rate</span>
+          <span class="data-value">€0.298/kWh</span>
+        </div>
+      </div>
+
+      <h3>The Comparison That Matters</h3>
+      <p>A heat pump at COP 3.5 delivers the same heat for a fraction of the electricity.</p>
+
+      <div class="data-grid" style="margin-top: 16px;">
+        <div class="data-row">
+          <span class="data-key">direct electric</span>
+          <span class="data-value">€8,462/year</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">heat pump (COP 3.5)</span>
+          <span class="data-value">€2,418/year</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">M4 (net of BTC)</span>
+          <span class="data-value">€7,212/year</span>
+        </div>
+      </div>
+
+      <p style="margin-top: 16px;">
+      </p>
+
+      <div class="data-grid">
+        <div class="data-row">
+          <span class="data-key">M4 premium vs heat pump</span>
+          <span class="data-value">€4,794/year extra</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">for that you get</span>
+          <span class="data-value">~0.022 BTC/year</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">effective BTC cost</span>
+          <span class="data-value">~€218,000/BTC</span>
+        </div>
+      </div>
+
+      <p style="margin-top: 24px;">At €0.35/kWh, the marginal cost of acquiring bitcoin through M4 is roughly 4× the market price. This is not a good M4 site on pure economics. Germany's electricity price is the single biggest obstacle.</p>
+
+      <h3>What Would Need to Change</h3>
+      <p>The M4 starts making sense at German sites when the electricity rate drops below ~€0.20/kWh. Some pathways to get there:</p>
+      <p>A solar PV system on the roof with direct self-consumption could reduce effective cost to €0.08–0.12/kWh for surplus generation. A time-of-use or dynamic tariff could offer lower rates during off-peak hours when the M4 runs. Or the German government's planned electricity tax reduction to the EU minimum could lower rates by €0.02–0.05/kWh if extended to households.</p>
+      <p>If the effective rate drops to €0.18/kWh, the same M4 unit would yield a marginal BTC acquisition cost of ~€85,000/BTC — still above market, but within range if you expect BTC appreciation. At €0.12/kWh (achievable with solar self-consumption), it drops to ~€32,000/BTC — well below market.</p>
+
+      <p class="note" style="margin-top: 24px;">Economics based on current conditions (BTC ~€57k, difficulty 125.86 T, S19k Pro 120 TH/s, Feb 2026). We're being direct: at standard German residential rates, M4 doesn't justify itself on economics alone. If you have or plan solar PV, the picture changes — and we should model that scenario.</p>
+    </section>
+
+    <!-- ASSESSMENT -->
+    <section>
+      <div class="label">assessment</div>
+      <h2>Summary</h2>
+
+      <p><span class="status green"></span><strong>The site works for a bespoke indoor sauna.</strong> A basement installation is a strong use case — private, integrated into the home, usable year-round. KOERNER builds these to the same standard as every numbered outdoor unit. The key is getting the basement details right: ceiling height, ventilation path, drainage, and electrical capacity.</p>
+
+      <p><span class="status red"></span><strong>M4 doesn't make economic sense at current German rates.</strong> At €0.35/kWh, the marginal cost of BTC acquisition is ~4× the market price. We wouldn't recommend installing M4 under these conditions. However: if you have or plan a solar PV system with self-consumption, we should model that scenario — it could change the picture entirely.</p>
+    </section>
+
+    <!-- OPEN QUESTIONS -->
+    <section>
+      <div class="label">a few things we need</div>
+      <h2>Open Questions</h2>
+      <p>To move to the design phase for the indoor installation, we need some details about the basement space.</p>
+
+      <div class="question-item">
+        <div class="question-text">Basement dimensions and ceiling height?</div>
+        <div class="question-context">Floor plan of the basement room where the sauna would go. Minimum 2,200 mm clear ceiling height for the cabin. Photos of the space are very helpful.</div>
+      </div>
+      <div class="question-item">
+        <div class="question-text">Is there floor drainage in the basement?</div>
+        <div class="question-context">Indoor saunas need drainage for cleaning and condensation. If there's no existing drain, one can typically be added during buildout.</div>
+      </div>
+      <div class="question-item">
+        <div class="question-text">What's the electrical supply?</div>
+        <div class="question-context">The KOERNER stove draws 6–9 kW. We need to know if 3-phase is available and what the panel capacity is. A typical German residential connection (3×35A or 3×50A) is usually sufficient.</div>
+      </div>
+      <div class="question-item">
+        <div class="question-text">How does the basement ventilate?</div>
+        <div class="question-context">Sauna needs 6–8 air changes per hour. Fresh air in at floor level, exhaust out near the ceiling. Are there existing windows, light wells, or ducts that reach the exterior?</div>
+      </div>
+      <div class="question-item">
+        <div class="question-text">What's the current heating system in the house?</div>
+        <div class="question-context">Gas boiler, oil, heat pump, district heating? And is it hydronic (water-based radiators or floor heating)? This matters for the M4 assessment — if solar PV is already installed or planned, we'd want to model M4 with self-consumption rates.</div>
+      </div>
+      <div class="question-item">
+        <div class="question-text">Do you have or plan solar PV?</div>
+        <div class="question-context">A rooftop solar system with direct self-consumption is the most realistic path to M4 economics in Germany. If you already have one, share the system size (kWp) and your self-consumption rate — we'll model the M4 scenario.</div>
+      </div>
+    </section>
+
+    <!-- TIMELINE + NEXT STEPS -->
+    <section>
+      <div class="label">next steps</div>
+      <h2>From Here</h2>
+
+      <div class="data-grid" style="margin-top: 24px;">
+        <div class="data-row">
+          <span class="data-key">now</span>
+          <span class="data-value">answer open questions + share basement photos</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">next</span>
+          <span class="data-value">site visit — measure, assess ventilation + electrical</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">design</span>
+          <span class="data-value">Groundwork Studio — cabin layout, materials, finishes</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">buildout</span>
+          <span class="data-value">local contractors — ventilation, drainage, electrical</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">build + install</span>
+          <span class="data-value">KOERNER production → on-site assembly</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIGN-OFF -->
+    <section style="margin-bottom: 0;">
+      <hr class="divider">
+      <p>If anything here raises questions or you'd like to talk it through, just reach out anytime.</p>
+      <p style="margin-top: 24px;">Julius Schulze-Berge<br>
+      <span style="color: var(--muted);">LYN. — <a href="mailto:julius@lyn.page">julius@lyn.page</a></span></p>
+    </section>
+
+  </div>
+  </div>
+
+  <script>
+    const gate = document.getElementById('gate');
+    const content = document.getElementById('content');
+    const input = document.getElementById('passInput');
+
+    // Check if already authenticated
+    if (sessionStorage.getItem('lyn-auth') === 'true') {
+      gate.style.display = 'none';
+      content.classList.add('visible');
     }
 
-    if (q === 'electrical') {
-      document.getElementById('elec-followup').classList.add('visible');
-      document.getElementById('elec-followup').style.display = 'block';
-    }
-
-    if (q === 'placement') {
-      document.getElementById('placement-followup').classList.add('visible');
-      document.getElementById('placement-followup').style.display = 'block';
-    }
-
-    if (q === 'solar' && (el.dataset.value === 'pv-yes' || el.dataset.value === 'pv-battery')) {
-      document.getElementById('solar-followup').classList.add('visible');
-      document.getElementById('solar-followup').style.display = 'block';
-    } else if (q === 'solar') {
-      document.getElementById('solar-followup').classList.remove('visible');
-      document.getElementById('solar-followup').style.display = 'none';
-    }
-
-    updateProgress();
-  }
-
-  // Multi-select: toggle
-  function toggleOpt(el) {
-    el.classList.toggle('selected');
-    const block = el.closest('.q-block');
-    const q = block.dataset.q;
-    const selected = block.querySelectorAll('.opt.selected');
-    state[q] = Array.from(selected).map(s => s.dataset.value);
-
-    // Deselect "none" if selecting something else
-    if (el.dataset.value !== 'none-thermal') {
-      const noneOpt = block.querySelector('[data-value="none-thermal"]');
-      if (noneOpt) noneOpt.classList.remove('selected');
-    } else {
-      block.querySelectorAll('.opt').forEach(o => {
-        if (o.dataset.value !== 'none-thermal') o.classList.remove('selected');
-      });
-      state[q] = ['none'];
-    }
-
-    updateProgress();
-  }
-
-  function updateProgress() {
-    let answered = 0;
-    document.querySelectorAll('.q-block').forEach(block => {
-      const hasSelection = block.querySelector('.opt.selected');
-      const hasText = Array.from(block.querySelectorAll('input, textarea, select')).some(f => f.value && f.value.trim());
-      if (hasSelection || hasText) answered++;
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        if (input.value === 'lyn2100') {
+          sessionStorage.setItem('lyn-auth', 'true');
+          gate.style.display = 'none';
+          content.classList.add('visible');
+        } else {
+          input.classList.add('error');
+          input.value = '';
+          setTimeout(() => input.classList.remove('error'), 1000);
+        }
+      }
     });
-    const pct = Math.round((answered / totalQuestions) * 100);
-    document.getElementById('progressBar').style.width = pct + '%';
-  }
-
-  // Track all inputs
-  document.querySelectorAll('.data-field').forEach(field => {
-    field.addEventListener('input', () => updateProgress());
-    field.addEventListener('change', () => updateProgress());
-  });
-
-  function submitForm(e) {
-    e.preventDefault();
-
-    // Write pill selections to hidden fields
-    document.getElementById('field-water').value = state.water || '';
-    document.getElementById('field-placement').value = state.placement || '';
-    document.getElementById('field-electrical').value = state.electrical || '';
-    document.getElementById('field-solar').value = state.solar || '';
-    document.getElementById('field-usage').value = state.usage || '';
-    document.getElementById('field-thermal').value = Array.isArray(state.thermal) ? state.thermal.join(', ') : (state.thermal || '');
-
-    const form = document.getElementById('siteForm');
-    const formData = new FormData(form);
-
-    fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(formData).toString()
-    })
-    .then(() => {
-      document.getElementById('submitSection').style.display = 'none';
-      document.getElementById('submitSuccess').style.display = 'block';
-      document.getElementById('progressBar').style.width = '100%';
-      document.getElementById('progressBar').style.background = '#2B8A3E';
-    })
-    .catch(() => {
-      document.getElementById('submitSection').style.display = 'none';
-      document.getElementById('submitSuccess').style.display = 'block';
-      document.getElementById('progressBar').style.width = '100%';
-      document.getElementById('progressBar').style.background = '#2B8A3E';
-    });
-  }
-
-  document.getElementById('siteForm').addEventListener('submit', submitForm);
-</script>
-
+  </script>
 </body>
 </html>
