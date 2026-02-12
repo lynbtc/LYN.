@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LYN. — Teglholmen Site Study</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23262624' width='100' height='100' rx='12'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400&family=IBM+Plex+Mono:wght@400&family=Inter:wght@600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --text: #37352f;
+      --muted: #a0a0a0;
+      --bg: #fafafa;
+      --border: #e0e0e0;
+      --green: #2d6a4f;
+    }
+
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 300;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 80px 24px 120px;
+    }
+
+    .logo {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      margin-bottom: 64px;
+    }
+
+    section { margin-bottom: 72px; }
+
+    .label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      text-transform: lowercase;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 400;
+      font-size: 28px;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    h3 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 400;
+      font-size: 17px;
+      margin-bottom: 6px;
+      margin-top: 32px;
+    }
+
+    p {
+      margin-bottom: 16px;
+      max-width: 600px;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 32px;
+      max-width: 520px;
+    }
+
+    .data-grid { margin-top: 24px; }
+
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 15px;
+    }
+
+    .data-row:last-child { border-bottom: none; }
+
+    .data-key {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      min-width: 180px;
+      flex-shrink: 0;
+    }
+
+    .data-value {
+      text-align: right;
+      font-weight: 300;
+    }
+
+    .data-value.muted {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .status {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+      position: relative;
+      top: -1px;
+    }
+
+    .status.green { background: var(--green); }
+
+    .question-item {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .question-item:last-child { border-bottom: none; }
+
+    .question-text {
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+
+    .question-context {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 560px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    .note {
+      font-size: 14px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    a {
+      color: var(--text);
+    }
+
+    /* Password gate */
+    .gate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    .gate .logo {
+      margin-bottom: 32px;
+    }
+
+    .gate input {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      padding: 10px 16px;
+      width: 200px;
+      text-align: center;
+      outline: none;
+      letter-spacing: 0.05em;
+    }
+
+    .gate input::placeholder {
+      color: var(--muted);
+    }
+
+    .gate input.error {
+      border-color: #a33;
+    }
+
+    .content {
+      display: none;
+    }
+
+    .content.visible {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 48px 20px 80px; }
+      h1 { font-size: 24px; }
+      .data-key { min-width: 140px; font-size: 12px; }
+      .data-value { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Password gate -->
+  <div class="gate" id="gate">
+    <div class="logo">LYN.</div>
+    <input type="password" id="passInput" placeholder="password" autofocus>
+  </div>
+
+  <!-- Content (hidden until authenticated) -->
+  <div class="content" id="content">
+  <div class="container">
+    <div class="logo">LYN.</div>
+
+    <!-- GREETING -->
+    <section>
+      <div class="label">site study — CPH-001</div>
+      <h1>Teglholmen Indoor Spa</h1>
+      <p>Thank you for your submission. We've reviewed the site and put together an initial study of what a LYN installation could look like at Teglholmens Østkaj 9. This page is yours — it will update as we refine the model together.</p>
+    </section>
+
+    <!-- LYN -->
+    <section>
+      <div class="label">about lyn</div>
+      <h2>What We Build</h2>
+      <p>LYN is a system of 7 modular components for outdoor and indoor saunas — designed by Morten Bo Jensen (Groundwork Studio, formerly 16 years Chief Designer at Vipp) and manufactured by KOERNER Saunabau, the first sauna builder in the DACH region, founded 1949.</p>
+      <p>2,100 numbered outdoor units, then production closes. Unlimited bespoke indoor installations. Each unit includes an optional thermal module that replaces conventional electric heating with a bitcoin miner — same electricity, same heat, dual output.</p>
+    </section>
+
+    <!-- PRODUCT IMAGE -->
+    <section>
+      <img src="images/indoor.png" alt="LYN bespoke indoor sauna" style="width: 100%; display: block;">
+    </section>
+
+    <!-- THE SITE -->
+    <section>
+      <div class="label">your site</div>
+      <h2>Teglholmens Østkaj 9</h2>
+      <p>Ground-floor commercial unit in a 2017 residential building on Teglholmen's east quay. Former café. Direct canal frontage with floor-to-ceiling glazing. Separate electricity meter. Currently no private indoor sauna in Sydhavn.</p>
+
+      <div class="data-grid">
+        <div class="data-row">
+          <span class="data-key">address</span>
+          <span class="data-value">Teglholmens Østkaj 9, 2450 KBH SV</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">total area</span>
+          <span class="data-value">163 m²</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">ceiling height</span>
+          <span class="data-value">3.55 m</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">layout</span>
+          <span class="data-value">open room + back room + 2 WC</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">energy label</span>
+          <span class="data-value">A2015</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">built</span>
+          <span class="data-value">2017</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE INSTALLATION -->
+    <section>
+      <div class="label">proposed installation</div>
+      <h2>What the Space Becomes</h2>
+      <p>Main room (~70 m²): lounge, cold plunge, reception — guests face the canal. Back room (~45 m²): bespoke M1 sauna with changing corridor. Utility area: M4 thermal module. Existing WCs retained, one converted to shower.</p>
+
+      <div class="data-grid" style="margin-top: 24px;">
+        <div class="data-row">
+          <span class="data-key">M1 — sauna</span>
+          <span class="data-value">bespoke indoor installation</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key"></span>
+          <span class="data-value muted">KOERNER stove, panoramic glass, red cedar, ash benches</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">M7 — cold plunge</span>
+          <span class="data-value">insulated basin, optional chiller</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">M5 — shower</span>
+          <span class="data-value">stainless steel 316L, wall-mounted</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">M4 — thermal module</span>
+          <span class="data-value">bitcoin miner as heater</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCT COST -->
+    <section>
+      <div class="label">product</div>
+      <h2>LYN Installation</h2>
+
+      <div class="data-grid">
+        <div class="data-row">
+          <span class="data-key">M1 sauna (bespoke indoor)</span>
+          <span class="data-value">from €100,000</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">M7 cold plunge</span>
+          <span class="data-value">€12,111</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">M5 shower</span>
+          <span class="data-value">€3,111</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">M4 thermal module</span>
+          <span class="data-value">€3,111</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">delivery + installation</span>
+          <span class="data-value">~€7,777</span>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="data-grid">
+        <div class="data-row">
+          <span class="data-key">total</span>
+          <span class="data-value"><strong>from ~€126,000</strong></span>
+        </div>
+      </div>
+
+      <p style="margin-top: 16px;" class="note">Bespoke indoor pricing confirmed after design phase. All prices indicative, excluding moms. Site buildout separate.</p>
+    </section>
+
+    <!-- M4 -->
+    <section>
+      <div class="label">M4 thermal module</div>
+      <h2>A Different Type of Heater</h2>
+      <p>The space needs heat. A commercial spa runs sessions all day — the building needs to stay warm, the sauna cabin needs to reach temperature, hot water needs to flow. That energy has to come from somewhere.</p>
+      <p>The M4 is a direct replacement for a conventional electric heater at the same wattage. All electrical energy in is converted to heat energy out. It heats the building, the sauna cabin starts warm so the stove covers a smaller delta, and excess routes to hot water. The difference: it also mines bitcoin.</p>
+      <p>Same input. Dual output.</p>
+
+      <h3>At Your Site</h3>
+      <div class="data-grid" style="margin-top: 16px;">
+        <div class="data-row">
+          <span class="data-key">hardware</span>
+          <span class="data-value">1× Antminer S21</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">power draw</span>
+          <span class="data-value">3,500 W</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">heat output</span>
+          <span class="data-value">84 kWh/day</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">hashrate</span>
+          <span class="data-value">200 TH/s</span>
+        </div>
+      </div>
+
+      <h3>Annual Economics</h3>
+      <p>At the Danish business electricity rate of ~€0.20/kWh.</p>
+
+      <div class="data-grid" style="margin-top: 16px;">
+        <div class="data-row">
+          <span class="data-key">annual electricity</span>
+          <span class="data-value">€6,132</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">annual BTC mined</span>
+          <span class="data-value">~0.036 BTC (~€2,060)</span>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="data-grid">
+        <div class="data-row">
+          <span class="data-key">heating cost</span>
+          <span class="data-value">€6,132</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">BTC earned</span>
+          <span class="data-value">−€2,060</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">net heating cost</span>
+          <span class="data-value"><strong>€4,072</strong></span>
+        </div>
+      </div>
+
+      <p style="margin-top: 24px;">An electric heater at this wattage costs €6,132/year. The M4 costs the same to run but earns ~€2,060 back in bitcoin. The heating bill is lower. The bitcoin accumulates on the balance sheet.</p>
+
+      <p class="note">Economics based on current conditions (BTC ~€57k, difficulty 125.86 T, Feb 2026). Once you confirm your actual electricity rate, we refine these numbers and build a detailed projection for your site.</p>
+    </section>
+
+    <!-- ASSESSMENT -->
+    <section>
+      <div class="label">assessment</div>
+      <h2>Summary</h2>
+
+      <p><span class="status green"></span><strong>The site works.</strong> 163 m², canal frontage, 3.55 m ceilings, existing plumbing, separate meter. The layout supports a full LYN installation with clear guest flow.</p>
+
+      <p><span class="status green"></span><strong>M4 makes sense here.</strong> A commercial spa needs consistent heat. The M4 is a 1:1 replacement for an electric heater — same wattage, same heat — that also mines bitcoin. The net heating cost is lower and the site accumulates BTC.</p>
+    </section>
+
+    <!-- OPEN QUESTIONS -->
+    <section>
+      <div class="label">a few things we need from you</div>
+      <h2>Open Questions</h2>
+      <p>To refine the model and move to the next stage, we need a few data points.</p>
+
+      <div class="question-item">
+        <div class="question-text">What electricity rate can you get on a commercial contract?</div>
+        <div class="question-context">The model uses the Danish business average (€0.20/kWh). A provider quote for your address lets us calculate exact M4 economics.</div>
+      </div>
+      <div class="question-item">
+        <div class="question-text">Is 3-phase power available, and what capacity?</div>
+        <div class="question-context">Required for commercial stove + M4. Total draw 15–20 kW.</div>
+      </div>
+      <div class="question-item">
+        <div class="question-text">What's the ventilation setup?</div>
+        <div class="question-context">Sauna needs 6–8 air changes/hour. Existing ducts are visible — can they extend?</div>
+      </div>
+
+    </section>
+
+    <!-- TIMELINE + NEXT STEPS -->
+    <section>
+      <div class="label">next steps</div>
+      <h2>From Here</h2>
+
+      <div class="data-grid" style="margin-top: 24px;">
+        <div class="data-row">
+          <span class="data-key">now</span>
+          <span class="data-value">answer open questions above</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">next</span>
+          <span class="data-value">site visit — electrical, ventilation, structure</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">then</span>
+          <span class="data-value">refined model with your actual data</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">design</span>
+          <span class="data-value">Groundwork Studio — layout, materials, finishes</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">build + install</span>
+          <span class="data-value">KOERNER production + on-site contractors</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIGN-OFF -->
+    <section style="margin-bottom: 0;">
+      <hr class="divider">
+      <p>If anything here raises questions or you'd like to talk it through, reply directly to the email this came with or reach out anytime.</p>
+      <p style="margin-top: 24px;">Julius Schulze-Berge<br>
+      <span style="color: var(--muted);">LYN. — <a href="mailto:julius@lyn.page">julius@lyn.page</a></span></p>
+    </section>
+
+  </div>
+  </div>
+
+  <script>
+    const gate = document.getElementById('gate');
+    const content = document.getElementById('content');
+    const input = document.getElementById('passInput');
+
+    // Check if already authenticated
+    if (sessionStorage.getItem('lyn-auth') === 'true') {
+      gate.style.display = 'none';
+      content.classList.add('visible');
+    }
+
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        if (input.value === 'lyn2100') {
+          sessionStorage.setItem('lyn-auth', 'true');
+          gate.style.display = 'none';
+          content.classList.add('visible');
+        } else {
+          input.classList.add('error');
+          input.value = '';
+          setTimeout(() => input.classList.remove('error'), 1000);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
