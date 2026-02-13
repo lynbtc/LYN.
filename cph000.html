@@ -531,6 +531,12 @@
     const passwordInput = document.getElementById('password');
     const gateError = document.getElementById('gate-error');
 
+    // check for existing session
+    if (sessionStorage.getItem('lyn-project-auth') === 'true') {
+        gate.classList.add('hidden');
+        main.classList.add('visible');
+    }
+
     passwordInput.addEventListener('keyup', (e) => {
         if (e.key === 'Enter') {
             if (passwordInput.value === CONFIG.password) {
@@ -538,6 +544,7 @@
                 main.classList.add('visible');
                 sessionStorage.setItem('lyn-project-auth', 'true');
             } else {
+                gateError.textContent = 'try again';
                 gateError.classList.add('visible');
                 passwordInput.value = '';
                 setTimeout(() => gateError.classList.remove('visible'), 2000);
@@ -545,10 +552,7 @@
         }
     });
 
-    if (sessionStorage.getItem('lyn-project-auth') === 'true') {
-        gate.classList.add('hidden');
-        main.classList.add('visible');
-    }
+    passwordInput.focus();
 </script>
 
 </body>
