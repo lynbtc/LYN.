@@ -1,3 +1,4 @@
 # Redirect lynbitcoin.com to lyn.page
+https://lynbitcoin.com/lynsauna https://lyn.page/sauna 302
 https://lynbitcoin.com/* https://lyn.page/:splat 301!
 https://www.lynbitcoin.com/* https://lyn.page/:splat 301!
