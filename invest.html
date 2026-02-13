@@ -405,7 +405,7 @@
     <section>
         <div class="cta">
             <a href="https://cal.com/lynmeet">Book a Call</a>
-            <a href="/cdn-cgi/l/email-protection#59332a3b193520377729383e3c" class="secondary"><span class="__cf_email__" data-cfemail="5b3128391b372235752b3a3c3e">[email&#160;protected]</span></a>
+            <a href="mailto:jsb@lyn.page" class="secondary">jsb@lyn.page</a>
         </div>
     </section>
 
@@ -413,12 +413,18 @@
 
 </main>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
     const CONFIG = { password: 'lyn2100' };
     const gate = document.getElementById('gate');
     const main = document.getElementById('main');
     const passwordInput = document.getElementById('password');
     const gateError = document.getElementById('gate-error');
+
+    // check for existing session
+    if (sessionStorage.getItem('lyn-invest-auth') === 'true') {
+        gate.classList.add('hidden');
+        main.classList.add('visible');
+    }
 
     passwordInput.addEventListener('keyup', (e) => {
         if (e.key === 'Enter') {
@@ -427,6 +433,16 @@
                 main.classList.add('visible');
                 sessionStorage.setItem('lyn-invest-auth', 'true');
             } else {
+                gateError.textContent = 'try again';
                 gateError.classList.add('visible');
                 passwordInput.value = '';
-                setTimeout(() => gateError.classList.remo
+                setTimeout(() => gateError.classList.remove('visible'), 2000);
+            }
+        }
+    });
+
+    passwordInput.focus();
+</script>
+
+</body>
+</html>
