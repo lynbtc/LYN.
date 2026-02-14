@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>product sheet</title>
+    <title>LYN — Product Sheet</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23262624' width='100' height='100' rx='12'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,6 +12,7 @@
         :root { --bg: #fafafa; --text: #1a1a1a; --text-muted: #a0a0a0; }
         [data-theme="dark"] { --bg: #1a1a1a; --text: #ffffff; --text-muted: #999999; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body { font-family: 'IBM Plex Sans', -apple-system, sans-serif; font-weight: 300; font-size: 16px; line-height: 1.6; background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s; }
         a { color: inherit; text-decoration: none; }
         a:hover { opacity: 0.6; }
@@ -20,7 +21,17 @@
         section { padding: 80px 0; border-bottom: 1px solid rgba(128,128,128,0.2); }
         section:last-of-type { border-bottom: none; }
 
-        /* cover */
+        /* ---- anchor nav ---- */
+        .section-nav { position: fixed; top: 50%; right: 20px; transform: translateY(-50%); z-index: 8; display: flex; flex-direction: column; gap: 6px; }
+        .section-nav a { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+        .section-nav a:hover { opacity: 1; }
+        .section-nav .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); transition: background 0.2s, transform 0.2s; flex-shrink: 0; }
+        .section-nav a.active .dot { background: var(--text); transform: scale(1.4); }
+        .section-nav .dot-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.5625rem; color: var(--text-muted); opacity: 0; transition: opacity 0.15s; white-space: nowrap; pointer-events: none; }
+        .section-nav a:hover .dot-label { opacity: 1; }
+        .section-nav a.active .dot-label { opacity: 1; color: var(--text); }
+
+        /* ---- cover ---- */
         .cover { min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: 80px 0 60px; border-bottom: 1px solid rgba(128,128,128,0.2); }
         .cover-logo { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 2.4rem; letter-spacing: -0.02em; margin-bottom: 6px; }
         .cover-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--text-muted); }
@@ -29,7 +40,7 @@
         .cover-hero img.loaded { opacity: 1; }
         .cover-footer { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.8; }
 
-        /* typography */
+        /* ---- typography ---- */
         .label { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); letter-spacing: 0.03em; margin-bottom: 20px; }
         h2 { font-weight: 400; font-size: 1.4rem; letter-spacing: -0.01em; margin-bottom: 6px; }
         .sub { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 28px; }
@@ -38,43 +49,55 @@
         .muted { color: var(--text-muted); }
         .sep { margin-top: 48px; }
 
-        /* images */
+        /* ---- images ---- */
         .img-full { margin: 32px 0; }
         .img-full img, .img-pair img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.4s; }
         .img-full img.loaded, .img-pair img.loaded { opacity: 1; }
         .img-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 32px 0; }
 
-        /* gallery */
+        /* ---- gallery ---- */
         .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 32px 0; }
-        .gallery img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.4s; aspect-ratio: 4/3; object-fit: cover; }
+        .gallery img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.4s; aspect-ratio: 4/3; object-fit: cover; cursor: pointer; }
         .gallery img.loaded { opacity: 1; }
         .gallery-caption { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); margin-top: 4px; }
         .gallery-item { display: flex; flex-direction: column; }
 
-        /* credentials */
+        /* ---- lightbox ---- */
+        .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s; cursor: pointer; }
+        .lightbox.open { opacity: 1; visibility: visible; }
+        .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; }
+        .lightbox-close { position: absolute; top: 20px; right: 24px; font-family: 'Inter', sans-serif; font-size: 18px; color: #fff; background: none; border: none; cursor: pointer; opacity: 0.6; transition: opacity 0.15s; }
+        .lightbox-close:hover { opacity: 1; }
+
+        /* ---- credentials ---- */
         .creds { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 28px; }
         .cred-name { font-weight: 400; font-size: 0.875rem; margin-bottom: 4px; }
         .cred-detail { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; }
 
-        /* spec table */
+        /* ---- spec table ---- */
         .specs { margin-top: 20px; }
         .spec-row { display: grid; grid-template-columns: 160px 1fr; gap: 12px; padding: 6px 0; font-size: 0.8125rem; border-bottom: 1px solid rgba(128,128,128,0.15); }
         .spec-row:last-child { border-bottom: none; }
         .spec-key { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); padding-top: 1px; }
 
-        /* modules */
+        /* ---- modules ---- */
         .module-entry { padding: 48px 0; border-bottom: 1px solid rgba(128,128,128,0.15); }
         .module-entry:last-child { border-bottom: none; }
-        .module-grid { display: grid; grid-template-columns: 220px 1fr; gap: 32px; align-items: start; }
-        .module-img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.4s; }
+        .module-header { display: grid; grid-template-columns: 220px 1fr; gap: 32px; align-items: start; cursor: pointer; }
+        .module-header:hover .module-toggle { opacity: 1; }
+        .module-img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.4s; cursor: pointer; }
         .module-img.loaded { opacity: 1; }
         .module-code { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); margin-bottom: 4px; }
         .module-name { font-weight: 400; font-size: 1rem; margin-bottom: 10px; }
-        .module-desc { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; max-width: 420px; margin-bottom: 16px; }
-        .module-specs { margin-top: 12px; }
+        .module-desc { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; max-width: 420px; }
+        .module-toggle { font-family: 'IBM Plex Mono', monospace; font-size: 0.625rem; color: var(--text-muted); margin-top: 10px; opacity: 0.5; transition: opacity 0.15s; }
+        .module-detail { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+        .module-entry.open .module-detail { max-height: 600px; }
+        .module-entry.open .module-toggle { opacity: 1; }
+        .module-specs { margin-top: 16px; padding-top: 12px; }
         .module-specs .spec-row { grid-template-columns: 120px 1fr; }
 
-        /* pricing */
+        /* ---- pricing ---- */
         .price-table { max-width: 500px; margin-top: 20px; }
         .price-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; font-size: 0.8125rem; border-bottom: 1px solid rgba(128,128,128,0.15); }
         .price-row:last-of-type { border-bottom: none; }
@@ -82,20 +105,20 @@
         .price-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; }
         .price-note { font-size: 0.75rem; color: var(--text-muted); margin-top: 14px; line-height: 1.6; }
 
-        /* flow grid */
+        /* ---- flow grid ---- */
         .flow { margin-top: 20px; }
         .flow-row { display: grid; grid-template-columns: 130px 1fr; gap: 12px; padding: 8px 0; font-size: 0.8125rem; border-bottom: 1px solid rgba(128,128,128,0.15); }
         .flow-row:last-child { border-bottom: none; }
         .flow-key { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); padding-top: 2px; }
 
-        /* steps */
+        /* ---- steps ---- */
         .step { display: grid; grid-template-columns: 80px 1fr; gap: 16px; padding: 18px 0; border-bottom: 1px solid rgba(128,128,128,0.15); }
         .step:last-child { border-bottom: none; }
         .step-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); padding-top: 2px; }
         .step-title { font-weight: 400; font-size: 0.875rem; margin-bottom: 4px; }
         .step-desc { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; }
 
-        /* contact */
+        /* ---- contact ---- */
         .contact-name { font-weight: 400; font-size: 0.9375rem; margin-bottom: 2px; }
         .contact-detail { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.8; }
         .contact-detail a { color: var(--text); text-decoration: underline; text-underline-offset: 2px; }
@@ -104,7 +127,7 @@
         .cta-row a:hover { background: var(--text); color: var(--bg); opacity: 1; }
         .footer-mark { font-family: 'IBM Plex Mono', monospace; font-size: 0.625rem; color: var(--text-muted); margin-top: 80px; padding-top: 20px; border-top: 1px solid rgba(128,128,128,0.15); padding-bottom: 40px; }
 
-        /* nav */
+        /* ---- site nav ---- */
         .nav-trigger { position: fixed; top: 12px; right: 12px; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--text); background: none; border: none; cursor: pointer; z-index: 10; min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; transition: opacity 0.2s; }
         .nav-trigger:hover, .nav-trigger.active { opacity: 0.6; }
         .nav-menu { position: fixed; top: 48px; right: 20px; background: var(--bg); border: 1px solid var(--text-muted); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: opacity 0.2s, transform 0.2s, visibility 0.2s; padding: 12px 16px; min-width: 140px; z-index: 10; }
@@ -119,28 +142,36 @@
         .nav-menu .nav-external { font-family: 'IBM Plex Sans', sans-serif; font-weight: 300; font-size: 14px; color: var(--text); display: block; transition: opacity 0.15s; }
         .nav-menu .nav-external:hover { opacity: 0.6; }
 
+        /* ---- mobile ---- */
         @media (max-width: 700px) {
             .sheet { padding: 0 24px; }
             section { padding: 56px 0; }
             .cover { padding: 56px 0 40px; min-height: auto; }
             .cover-logo { font-size: 2rem; }
             h2 { font-size: 1.2rem; }
-            .module-grid { grid-template-columns: 140px 1fr; gap: 20px; }
+            .module-header { grid-template-columns: 140px 1fr; gap: 20px; }
             .creds { grid-template-columns: 1fr; gap: 24px; }
             .img-pair { grid-template-columns: 1fr; }
             .gallery { grid-template-columns: 1fr; }
             .spec-row { grid-template-columns: 130px 1fr; }
             .module-specs .spec-row { grid-template-columns: 100px 1fr; }
+            .section-nav { display: none; }
         }
 
+        /* ---- print ---- */
         @media print {
             body { background: white; color: #1a1a1a; font-size: 10pt; }
             .cover { min-height: auto; page-break-after: always; }
             section { page-break-before: always; border-bottom: none; padding: 32px 0; }
             .module-entry { page-break-inside: avoid; }
+            .module-detail { max-height: none !important; overflow: visible !important; }
+            .module-toggle { display: none; }
+            .module-header { cursor: default; }
             .step { page-break-inside: avoid; }
-            .nav-trigger, .nav-menu { display: none; }
+            .nav-trigger, .nav-menu, .section-nav, .lightbox { display: none !important; }
             img { max-width: 100%; page-break-inside: avoid; opacity: 1 !important; }
+            .module-img { opacity: 1 !important; }
+            .gallery img { opacity: 1 !important; cursor: default; }
             .cta-row a { border: 1px solid #1a1a1a; }
             a { color: #1a1a1a; }
             @page { margin: 1.8cm; size: A4; }
@@ -149,6 +180,24 @@
     <script>(function(){var s=localStorage.getItem('lyn-theme'),d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.setAttribute('data-theme',s||(d?'dark':'light'));})()</script>
 </head>
 <body>
+
+<!-- ---- LIGHTBOX ---- -->
+<div class="lightbox" id="lightbox">
+    <button class="lightbox-close" aria-label="Close">&#10005;</button>
+    <img src="" alt="">
+</div>
+
+<!-- ---- SECTION NAV ---- -->
+<nav class="section-nav" id="sectionNav">
+    <a href="#about"><span class="dot"></span><span class="dot-label">about</span></a>
+    <a href="#modules"><span class="dot"></span><span class="dot-label">modules</span></a>
+    <a href="#outdoor"><span class="dot"></span><span class="dot-label">outdoor</span></a>
+    <a href="#indoor"><span class="dot"></span><span class="dot-label">indoor</span></a>
+    <a href="#heater"><span class="dot"></span><span class="dot-label">heater</span></a>
+    <a href="#configuration"><span class="dot"></span><span class="dot-label">configuration</span></a>
+    <a href="#process"><span class="dot"></span><span class="dot-label">process</span></a>
+</nav>
+
 <div class="sheet">
 
 <!-- ============================================================
@@ -171,7 +220,7 @@
 <!-- ============================================================
      ABOUT
      ============================================================ -->
-<section>
+<section id="about">
     <div class="label">About</div>
     <h2>A system, not a product.</h2>
     <div class="sub">Seven modules that configure to site, climate, and use.</div>
@@ -199,9 +248,9 @@
 
     <div class="label">Materials</div>
     <div class="specs">
-        <div class="spec-row"><div class="spec-key">Natural wood strips</div><div>Bench, back wall, and cladding in 30 × 30 mm natural colour wooden strips. Interior warmth, tactile surface.</div></div>
+        <div class="spec-row"><div class="spec-key">Natural wood strips</div><div>Bench, back wall, and cladding in 30 x 30 mm natural colour wooden strips. Interior warmth, tactile surface.</div></div>
         <div class="spec-row"><div class="spec-key">Wood planks</div><div>Floor in 100 mm wide natural colour wooden planks throughout cabin and changing room.</div></div>
-        <div class="spec-row"><div class="spec-key">Black painted strips</div><div>Exterior and changing room bench in 30 × 30 mm black painted wooden strips. Matching cabin aesthetic.</div></div>
+        <div class="spec-row"><div class="spec-key">Black painted strips</div><div>Exterior and changing room bench in 30 x 30 mm black painted wooden strips. Matching cabin aesthetic.</div></div>
         <div class="spec-row"><div class="spec-key">Frameless glass</div><div>Load-supporting glass slabs. Panoramic wall with sliding glass door and black handle. Left or right side option.</div></div>
         <div class="spec-row"><div class="spec-key">Powder-coated steel</div><div>Black steel wrapped bottom rim on all modules. Steel guard on swimming bridge. Steel frame on changing room entrance door.</div></div>
         <div class="spec-row"><div class="spec-key">Slate roof</div><div>Double side pitched slate roof on main sauna module.</div></div>
@@ -213,152 +262,173 @@
 <!-- ============================================================
      MODULE SYSTEM
      ============================================================ -->
-<section>
+<section id="modules">
     <div class="label">Module System</div>
     <h2>Seven modules.</h2>
     <div class="sub">Configure to site, climate, and use.</div>
 
     <!-- M1 Sauna -->
     <div class="module-entry">
-        <div class="module-grid">
-            <img class="module-img" src="images/m1-sauna.png" alt="M1 Sauna Cabin">
+        <div class="module-header" onclick="toggleModule(this)">
+            <img class="module-img" src="images/m1-sauna.png" alt="M1 Sauna Cabin" data-lightbox>
             <div>
                 <div class="module-code">M1</div>
                 <div class="module-name">Sauna</div>
-                <div class="module-desc">The core module. Sauna heater with infusion stones heats the cabin to 80–110°C for Finnish sauna operation. Panoramic glass wall with sliding door, bench and back wall in natural colour 30 × 30 mm wooden strips, floor in 100 mm wide natural colour planks. Double side pitched slate roof. Powder-coated black steel wrapped bottom rim.</div>
-                <div class="module-specs">
-                    <div class="spec-row"><div class="spec-key">Dimensions</div><div>3300 × 2200 × 2500 mm (L × W × H)</div></div>
-                    <div class="spec-row"><div class="spec-key">Interior</div><div>Bench and back wall: 30 × 30 mm natural colour wooden strips. Floor: 100 mm wide natural colour planks.</div></div>
-                    <div class="spec-row"><div class="spec-key">Glass</div><div>Frameless load-supporting glass slabs. Sliding glass door with black handle, left or right side option.</div></div>
-                    <div class="spec-row"><div class="spec-key">Heater</div><div>Sauna heater specified to cabin volume during design phase. Curated selection — the use case determines the stove.</div></div>
-                    <div class="spec-row"><div class="spec-key">Roof</div><div>Double side pitched slate roof</div></div>
-                    <div class="spec-row"><div class="spec-key">Exterior</div><div>Black painted 30 × 30 mm wooden strips. Powder-coated black steel wrapped bottom rim.</div></div>
-                    <div class="spec-row"><div class="spec-key">Capacity</div><div>4–6 persons (outdoor). Indoor scaled to architecture.</div></div>
-                    <div class="spec-row"><div class="spec-key">Electrical</div><div>400V three-phase. Wattage specified to cabin volume.</div></div>
-                    <div class="spec-row"><div class="spec-key">Edition</div><div>Outdoor: numbered 0001–2100. Indoor: unlimited bespoke.</div></div>
-                </div>
+                <div class="module-desc">The core module. Sauna heater with infusion stones heats the cabin to 80-110 C for Finnish sauna operation. Panoramic glass wall with sliding door, bench and back wall in natural colour 30 x 30 mm wooden strips, floor in 100 mm wide natural colour planks. Double side pitched slate roof. Powder-coated black steel wrapped bottom rim.</div>
+                <div class="module-toggle">+ specs</div>
+            </div>
+        </div>
+        <div class="module-detail">
+            <div class="module-specs">
+                <div class="spec-row"><div class="spec-key">Dimensions</div><div>3300 x 2200 x 2500 mm (L x W x H)</div></div>
+                <div class="spec-row"><div class="spec-key">Interior</div><div>Bench and back wall: 30 x 30 mm natural colour wooden strips. Floor: 100 mm wide natural colour planks.</div></div>
+                <div class="spec-row"><div class="spec-key">Glass</div><div>Frameless load-supporting glass slabs. Sliding glass door with black handle, left or right side option.</div></div>
+                <div class="spec-row"><div class="spec-key">Heater</div><div>Sauna heater specified to cabin volume during design phase. Curated selection — the use case determines the stove.</div></div>
+                <div class="spec-row"><div class="spec-key">Roof</div><div>Double side pitched slate roof</div></div>
+                <div class="spec-row"><div class="spec-key">Exterior</div><div>Black painted 30 x 30 mm wooden strips. Powder-coated black steel wrapped bottom rim.</div></div>
+                <div class="spec-row"><div class="spec-key">Capacity</div><div>4-6 persons (outdoor). Indoor scaled to architecture.</div></div>
+                <div class="spec-row"><div class="spec-key">Electrical</div><div>400V three-phase. Wattage specified to cabin volume.</div></div>
+                <div class="spec-row"><div class="spec-key">Edition</div><div>Outdoor: numbered 0001-2100. Indoor: unlimited bespoke.</div></div>
             </div>
         </div>
     </div>
 
     <!-- M2 Swimming Bridge -->
     <div class="module-entry">
-        <div class="module-grid">
-            <img class="module-img" src="images/m2-bridge.png" alt="M2 Swimming Bridge">
+        <div class="module-header" onclick="toggleModule(this)">
+            <img class="module-img" src="images/m2-bridge.png" alt="M2 Swimming Bridge" data-lightbox>
             <div>
                 <div class="module-code">M2</div>
                 <div class="module-name">Swimming Bridge</div>
                 <div class="module-desc">Direct water access. Powder-coated black steel structure with stairs and guard rail. Floor in 100 mm wide natural colour wooden planks.</div>
-                <div class="module-specs">
-                    <div class="spec-row"><div class="spec-key">Dimensions</div><div>1500 × 2000 × 300 mm (L × W × H)</div></div>
-                    <div class="spec-row"><div class="spec-key">Structure</div><div>Powder-coated black steel stairs and guard (left or right side option)</div></div>
-                    <div class="spec-row"><div class="spec-key">Deck</div><div>100 mm wide natural colour wooden planks</div></div>
-                    <div class="spec-row"><div class="spec-key">Rim</div><div>Powder-coated black steel wrapped bottom rim</div></div>
-                    <div class="spec-row"><div class="spec-key">Installation</div><div>Bolted to foundation or dock. Waterside placement.</div></div>
-                </div>
+                <div class="module-toggle">+ specs</div>
+            </div>
+        </div>
+        <div class="module-detail">
+            <div class="module-specs">
+                <div class="spec-row"><div class="spec-key">Dimensions</div><div>1500 x 2000 x 300 mm (L x W x H)</div></div>
+                <div class="spec-row"><div class="spec-key">Structure</div><div>Powder-coated black steel stairs and guard (left or right side option)</div></div>
+                <div class="spec-row"><div class="spec-key">Deck</div><div>100 mm wide natural colour wooden planks</div></div>
+                <div class="spec-row"><div class="spec-key">Rim</div><div>Powder-coated black steel wrapped bottom rim</div></div>
+                <div class="spec-row"><div class="spec-key">Installation</div><div>Bolted to foundation or dock. Waterside placement.</div></div>
             </div>
         </div>
     </div>
 
     <!-- M3 Changing Room -->
     <div class="module-entry">
-        <div class="module-grid">
-            <img class="module-img" src="images/m3-changing.png" alt="M3 Changing Room">
+        <div class="module-header" onclick="toggleModule(this)">
+            <img class="module-img" src="images/m3-changing.png" alt="M3 Changing Room" data-lightbox>
             <div>
                 <div class="module-code">M3</div>
                 <div class="module-name">Changing Room</div>
-                <div class="module-desc">Transitional space between exterior and sauna. Skylit. Bench and back wall in black painted 30 × 30 mm wooden strips. Floor in 100 mm wide natural colour planks. Powder-coated black steel hooks, locker shelving with mounting storage for M4 thermal module. Entrance door recessed in protruding powder-coated steel frame, clad with black painted wooden strips and black handle.</div>
-                <div class="module-specs">
-                    <div class="spec-row"><div class="spec-key">Dimensions</div><div>1500 × 2000 × 2500 mm (L × W × H)</div></div>
-                    <div class="spec-row"><div class="spec-key">Interior</div><div>Bench and back wall: 30 × 30 mm black painted wooden strips. Floor: 100 mm wide natural colour planks.</div></div>
-                    <div class="spec-row"><div class="spec-key">Skylight</div><div>Flat mounted skylight</div></div>
-                    <div class="spec-row"><div class="spec-key">Storage</div><div>Powder-coated black steel locker shelving with mounting storage for M4</div></div>
-                    <div class="spec-row"><div class="spec-key">Hooks</div><div>Powder-coated black steel hooks</div></div>
-                    <div class="spec-row"><div class="spec-key">Door</div><div>Recessed in protruding powder-coated steel frame. Clad with black painted 30 mm strips, black handle.</div></div>
-                    <div class="spec-row"><div class="spec-key">Exterior</div><div>Black painted 30 × 30 mm wooden strips. Powder-coated black steel wrapped bottom rim.</div></div>
-                    <div class="spec-row"><div class="spec-key">Heating</div><div>Via M4 thermal module mounted in locker shelving (optional)</div></div>
-                </div>
+                <div class="module-desc">Transitional space between exterior and sauna. Skylit. Bench and back wall in black painted 30 x 30 mm wooden strips. Floor in 100 mm wide natural colour planks. Powder-coated black steel hooks, locker shelving with mounting storage for M4 thermal module. Entrance door recessed in protruding powder-coated steel frame, clad with black painted wooden strips and black handle.</div>
+                <div class="module-toggle">+ specs</div>
+            </div>
+        </div>
+        <div class="module-detail">
+            <div class="module-specs">
+                <div class="spec-row"><div class="spec-key">Dimensions</div><div>1500 x 2000 x 2500 mm (L x W x H)</div></div>
+                <div class="spec-row"><div class="spec-key">Interior</div><div>Bench and back wall: 30 x 30 mm black painted wooden strips. Floor: 100 mm wide natural colour planks.</div></div>
+                <div class="spec-row"><div class="spec-key">Skylight</div><div>Flat mounted skylight</div></div>
+                <div class="spec-row"><div class="spec-key">Storage</div><div>Powder-coated black steel locker shelving with mounting storage for M4</div></div>
+                <div class="spec-row"><div class="spec-key">Hooks</div><div>Powder-coated black steel hooks</div></div>
+                <div class="spec-row"><div class="spec-key">Door</div><div>Recessed in protruding powder-coated steel frame. Clad with black painted 30 mm strips, black handle.</div></div>
+                <div class="spec-row"><div class="spec-key">Exterior</div><div>Black painted 30 x 30 mm wooden strips. Powder-coated black steel wrapped bottom rim.</div></div>
+                <div class="spec-row"><div class="spec-key">Heating</div><div>Via M4 thermal module mounted in locker shelving (optional)</div></div>
             </div>
         </div>
     </div>
 
     <!-- M4 Thermal Module -->
     <div class="module-entry">
-        <div class="module-grid">
-            <img class="module-img" src="images/m4-thermal.png" alt="M4 Thermal Module">
+        <div class="module-header" onclick="toggleModule(this)">
+            <img class="module-img" src="images/m4-thermal.png" alt="M4 Thermal Module" data-lightbox>
             <div>
                 <div class="module-code">M4</div>
                 <div class="module-name">Thermal Module</div>
-                <div class="module-desc">The space heating system. Mounts inside M3 changing room locker shelving. Replaces a conventional electric heater at the same wattage. Distributes excess heat into the changing room and cabin, holding the cabin at a warm baseline so the sauna heater covers only the delta to operating temperature. Also mines bitcoin. Same electricity, same heat — dual output. See dedicated section below.</div>
-                <div class="module-specs">
-                    <div class="spec-row"><div class="spec-key">Dimensions</div><div>Site-dependent. Mounted in M3 locker shelving.</div></div>
-                    <div class="spec-row"><div class="spec-key">Hardware</div><div>ASIC miner (current generation)</div></div>
-                    <div class="spec-row"><div class="spec-key">Power draw</div><div>3,500 W (typical configuration)</div></div>
-                    <div class="spec-row"><div class="spec-key">Heat output</div><div>3,500 W thermal. 100% electrical-to-thermal conversion.</div></div>
-                    <div class="spec-row"><div class="spec-key">Daily output</div><div>84 kWh heat / day (continuous operation)</div></div>
-                    <div class="spec-row"><div class="spec-key">Electrical</div><div>230V single-phase. Dedicated circuit.</div></div>
-                    <div class="spec-row"><div class="spec-key">Network</div><div>Ethernet or WiFi. Mining pool connection and monitoring.</div></div>
-                    <div class="spec-row"><div class="spec-key">Sound</div><div>Soundproofed enclosure within M3 locker shelving</div></div>
-                    <div class="spec-row"><div class="spec-key">Note</div><div>Optional. Configured per site based on thermal demand, electricity cost, climate.</div></div>
-                </div>
+                <div class="module-desc">The space heating system. Mounts inside M3 changing room locker shelving. Replaces a conventional electric heater at the same wattage. Distributes excess heat into the changing room and cabin, holding the cabin at a warm baseline so the sauna heater covers only the delta to operating temperature. Also mines bitcoin. Same electricity, same heat — dual output.</div>
+                <div class="module-toggle">+ specs</div>
+            </div>
+        </div>
+        <div class="module-detail">
+            <div class="module-specs">
+                <div class="spec-row"><div class="spec-key">Dimensions</div><div>Site-dependent. Mounted in M3 locker shelving.</div></div>
+                <div class="spec-row"><div class="spec-key">Hardware</div><div>ASIC miner (current generation)</div></div>
+                <div class="spec-row"><div class="spec-key">Power draw</div><div>3,500 W (typical configuration)</div></div>
+                <div class="spec-row"><div class="spec-key">Heat output</div><div>3,500 W thermal. 100% electrical-to-thermal conversion.</div></div>
+                <div class="spec-row"><div class="spec-key">Daily output</div><div>84 kWh heat / day (continuous operation)</div></div>
+                <div class="spec-row"><div class="spec-key">Electrical</div><div>230V single-phase. Dedicated circuit.</div></div>
+                <div class="spec-row"><div class="spec-key">Network</div><div>Ethernet or WiFi. Mining pool connection and monitoring.</div></div>
+                <div class="spec-row"><div class="spec-key">Sound</div><div>Soundproofed enclosure within M3 locker shelving</div></div>
+                <div class="spec-row"><div class="spec-key">Note</div><div>Optional. Configured per site based on thermal demand, electricity cost, climate.</div></div>
             </div>
         </div>
     </div>
 
     <!-- M5 Shower -->
     <div class="module-entry">
-        <div class="module-grid">
-            <img class="module-img" src="images/m5-shower.png" alt="M5 Outdoor Shower">
+        <div class="module-header" onclick="toggleModule(this)">
+            <img class="module-img" src="images/m5-shower.png" alt="M5 Outdoor Shower" data-lightbox>
             <div>
                 <div class="module-code">M5</div>
                 <div class="module-name">Outdoor Shower</div>
                 <div class="module-desc">Wall-mounted outdoor shower for cool-down between sauna sessions. For water hose connection or plumbed installation.</div>
-                <div class="module-specs">
-                    <div class="spec-row"><div class="spec-key">Dimensions</div><div>500 × 100 × 2000 mm (W × D × H)</div></div>
-                    <div class="spec-row"><div class="spec-key">Material</div><div>Stainless steel 316L, marine-grade</div></div>
-                    <div class="spec-row"><div class="spec-key">Mount</div><div>Wall-mounted to cabin or changing room exterior</div></div>
-                    <div class="spec-row"><div class="spec-key">Supply A</div><div>Water hose connection</div></div>
-                    <div class="spec-row"><div class="spec-key">Supply B</div><div>Plumbed installation with mixer valve</div></div>
-                    <div class="spec-row"><div class="spec-key">Drainage</div><div>Surface to ground or plumbed to waste</div></div>
-                </div>
+                <div class="module-toggle">+ specs</div>
+            </div>
+        </div>
+        <div class="module-detail">
+            <div class="module-specs">
+                <div class="spec-row"><div class="spec-key">Dimensions</div><div>500 x 100 x 2000 mm (W x D x H)</div></div>
+                <div class="spec-row"><div class="spec-key">Material</div><div>Stainless steel 316L, marine-grade</div></div>
+                <div class="spec-row"><div class="spec-key">Mount</div><div>Wall-mounted to cabin or changing room exterior</div></div>
+                <div class="spec-row"><div class="spec-key">Supply A</div><div>Water hose connection</div></div>
+                <div class="spec-row"><div class="spec-key">Supply B</div><div>Plumbed installation with mixer valve</div></div>
+                <div class="spec-row"><div class="spec-key">Drainage</div><div>Surface to ground or plumbed to waste</div></div>
             </div>
         </div>
     </div>
 
     <!-- M6 Storage -->
     <div class="module-entry">
-        <div class="module-grid">
-            <img class="module-img" src="images/m6-storage.png" alt="M6 Storage">
+        <div class="module-header" onclick="toggleModule(this)">
+            <img class="module-img" src="images/m6-storage.png" alt="M6 Storage" data-lightbox>
             <div>
                 <div class="module-code">M6</div>
                 <div class="module-name">Storage</div>
                 <div class="module-desc">Robes. Towels. Slippers. Compact weather-sealed storage integrated into the outdoor configuration.</div>
-                <div class="module-specs">
-                    <div class="spec-row"><div class="spec-key">Dimensions</div><div>600 × 300 × 1500 mm (W × D × H)</div></div>
-                    <div class="spec-row"><div class="spec-key">Construction</div><div>Matching exterior cladding</div></div>
-                    <div class="spec-row"><div class="spec-key">Access</div><div>Front access</div></div>
-                    <div class="spec-row"><div class="spec-key">Seal</div><div>Weather-sealed, ventilated</div></div>
-                </div>
+                <div class="module-toggle">+ specs</div>
+            </div>
+        </div>
+        <div class="module-detail">
+            <div class="module-specs">
+                <div class="spec-row"><div class="spec-key">Dimensions</div><div>600 x 300 x 1500 mm (W x D x H)</div></div>
+                <div class="spec-row"><div class="spec-key">Construction</div><div>Matching exterior cladding</div></div>
+                <div class="spec-row"><div class="spec-key">Access</div><div>Front access</div></div>
+                <div class="spec-row"><div class="spec-key">Seal</div><div>Weather-sealed, ventilated</div></div>
             </div>
         </div>
     </div>
 
     <!-- M7 Cold Plunge -->
     <div class="module-entry">
-        <div class="module-grid">
-            <img class="module-img" src="images/m7-plunge.png" alt="M7 Cold Plunge">
+        <div class="module-header" onclick="toggleModule(this)">
+            <img class="module-img" src="images/m7-plunge.png" alt="M7 Cold Plunge" data-lightbox>
             <div>
                 <div class="module-code">M7</div>
                 <div class="module-name">Cold Plunge</div>
                 <div class="module-desc">Self-contained basin for cold immersion between sauna sessions.</div>
-                <div class="module-specs">
-                    <div class="spec-row"><div class="spec-key">Dimensions</div><div>1500 × 2000 × 2500 mm (L × W × H)</div></div>
-                    <div class="spec-row"><div class="spec-key">Construction</div><div>Insulated basin, watertight inner shell</div></div>
-                    <div class="spec-row"><div class="spec-key">Capacity</div><div>Single person full immersion</div></div>
-                    <div class="spec-row"><div class="spec-key">Fill</div><div>Manual hose fill or plumbed supply with overflow drain</div></div>
-                    <div class="spec-row"><div class="spec-key">Chiller</div><div>Optional. Not needed where ambient water is cold.</div></div>
-                    <div class="spec-row"><div class="spec-key">Drainage</div><div>Bottom drain to waste or ground soak-away</div></div>
-                </div>
+                <div class="module-toggle">+ specs</div>
+            </div>
+        </div>
+        <div class="module-detail">
+            <div class="module-specs">
+                <div class="spec-row"><div class="spec-key">Dimensions</div><div>1500 x 2000 x 2500 mm (L x W x H)</div></div>
+                <div class="spec-row"><div class="spec-key">Construction</div><div>Insulated basin, watertight inner shell</div></div>
+                <div class="spec-row"><div class="spec-key">Capacity</div><div>Single person full immersion</div></div>
+                <div class="spec-row"><div class="spec-key">Fill</div><div>Manual hose fill or plumbed supply with overflow drain</div></div>
+                <div class="spec-row"><div class="spec-key">Chiller</div><div>Optional. Not needed where ambient water is cold.</div></div>
+                <div class="spec-row"><div class="spec-key">Drainage</div><div>Bottom drain to waste or ground soak-away</div></div>
             </div>
         </div>
     </div>
@@ -368,31 +438,31 @@
 <!-- ============================================================
      OUTDOOR
      ============================================================ -->
-<section>
+<section id="outdoor">
     <div class="label">Outdoor</div>
     <h2>Numbered outdoor unit.</h2>
     <div class="sub">2,100 units. Then production closes.</div>
 
-    <div class="img-full"><img src="images/spa.png" alt="LYN outdoor sauna"></div>
+    <div class="img-full"><img src="images/spa.png" alt="LYN outdoor sauna" data-lightbox></div>
 
-    <p>A complete sauna installation delivered and assembled on site. The cabin, changing room, and storage form the core. Swimming bridge, shower, cold plunge, and thermal module add to the configuration. Each unit receives a production number (0001–2100) stamped into the hardware.</p>
+    <p>A complete sauna installation delivered and assembled on site. The cabin, changing room, and storage form the core. Swimming bridge, shower, cold plunge, and thermal module add to the configuration. Each unit receives a production number (0001-2100) stamped into the hardware.</p>
 
     <div class="sep"></div>
 
     <div class="label">Base Configuration</div>
     <div class="price-table">
-        <div class="price-row"><span>Outdoor unit (M1 + M3 + M6)</span><span class="price-val">from €55,000</span></div>
+        <div class="price-row"><span>Outdoor unit (M1 + M3 + M6)</span><span class="price-val">from EUR 55,000</span></div>
     </div>
 
     <div class="sep"></div>
     <div class="label">Add-on Modules</div>
     <div class="price-table">
-        <div class="price-row"><span>M2 Swimming bridge</span><span class="price-val">€3,111</span></div>
-        <div class="price-row"><span>M4 Thermal module</span><span class="price-val">€3,111</span></div>
-        <div class="price-row"><span>M5 Outdoor shower</span><span class="price-val">€3,111</span></div>
-        <div class="price-row"><span>M7 Cold plunge</span><span class="price-val">€12,111</span></div>
-        <div class="price-row"><span>Delivery + installation</span><span class="price-val">~€7,777</span></div>
-        <div class="price-row total"><span>Total (full configuration)</span><span class="price-val">from ~€84,221</span></div>
+        <div class="price-row"><span>M2 Swimming bridge</span><span class="price-val">EUR 3,111</span></div>
+        <div class="price-row"><span>M4 Thermal module</span><span class="price-val">EUR 3,111</span></div>
+        <div class="price-row"><span>M5 Outdoor shower</span><span class="price-val">EUR 3,111</span></div>
+        <div class="price-row"><span>M7 Cold plunge</span><span class="price-val">EUR 12,111</span></div>
+        <div class="price-row"><span>Delivery + installation</span><span class="price-val">~EUR 7,777</span></div>
+        <div class="price-row total"><span>Total (full configuration)</span><span class="price-val">from ~EUR 84,221</span></div>
     </div>
     <div class="price-note">Final price confirmed after design phase. All prices excluding VAT. Foundation and site preparation separate.</div>
 
@@ -400,7 +470,7 @@
 
     <div class="label">Installation Requirements</div>
     <div class="specs">
-        <div class="spec-row"><div class="spec-key">Footprint</div><div>Approximately 22 m² full configuration including all modules.</div></div>
+        <div class="spec-row"><div class="spec-key">Footprint</div><div>Approximately 22 m2 full configuration including all modules.</div></div>
         <div class="spec-row"><div class="spec-key">Foundation</div><div>Level concrete pad, screw piles, or timber frame. Prepared before delivery.</div></div>
         <div class="spec-row"><div class="spec-key">Electrical</div><div>400V three-phase for heater. 230V for M4 (3.5 kW) if configured. Dedicated circuits, certified electrician.</div></div>
         <div class="spec-row"><div class="spec-key">Water</div><div>Optional. Water hose for basic M5/M7. Plumbed supply for installed M5 and continuous M7 fill.</div></div>
@@ -414,12 +484,12 @@
 <!-- ============================================================
      INDOOR
      ============================================================ -->
-<section>
+<section id="indoor">
     <div class="label">Indoor</div>
     <h2>Bespoke indoor installation.</h2>
     <div class="sub">Unlimited. Designed to the architecture.</div>
 
-    <div class="img-full"><img src="images/indoor.png" alt="LYN indoor sauna in concrete space"></div>
+    <div class="img-full"><img src="images/indoor.png" alt="LYN indoor sauna in concrete space" data-lightbox></div>
 
     <p>Indoor installations are designed to the specific space — dimensions, materials, and configuration adapted to the architecture. The sauna cabin is built into the room. Supporting modules integrate with existing building systems.</p>
     <p>Suitable for residences, hotels, spas, commercial spaces, and wellness facilities. The M4 thermal module replaces conventional building heating — particularly effective in spaces with continuous thermal demand.</p>
@@ -428,12 +498,12 @@
 
     <div class="label">Typical Configuration</div>
     <div class="price-table">
-        <div class="price-row"><span>M1 Sauna (bespoke indoor)</span><span class="price-val">from €100,000</span></div>
-        <div class="price-row"><span>M4 Thermal module</span><span class="price-val">€3,111</span></div>
-        <div class="price-row"><span>M5 Shower</span><span class="price-val">€3,111</span></div>
-        <div class="price-row"><span>M7 Cold plunge</span><span class="price-val">€12,111</span></div>
-        <div class="price-row"><span>Delivery + installation</span><span class="price-val">~€7,777</span></div>
-        <div class="price-row total"><span>Total</span><span class="price-val">from ~€126,110</span></div>
+        <div class="price-row"><span>M1 Sauna (bespoke indoor)</span><span class="price-val">from EUR 100,000</span></div>
+        <div class="price-row"><span>M4 Thermal module</span><span class="price-val">EUR 3,111</span></div>
+        <div class="price-row"><span>M5 Shower</span><span class="price-val">EUR 3,111</span></div>
+        <div class="price-row"><span>M7 Cold plunge</span><span class="price-val">EUR 12,111</span></div>
+        <div class="price-row"><span>Delivery + installation</span><span class="price-val">~EUR 7,777</span></div>
+        <div class="price-row total"><span>Total</span><span class="price-val">from ~EUR 126,110</span></div>
     </div>
     <div class="price-note">Bespoke pricing confirmed after design phase. Indicative, excluding VAT. Site build-out separate.</div>
 </section>
@@ -442,12 +512,12 @@
 <!-- ============================================================
      HEATER SYSTEM
      ============================================================ -->
-<section>
+<section id="heater">
     <div class="label">Heater System</div>
     <h2>The stove and the thermal module.</h2>
     <div class="sub">Two kinds of heat. One system.</div>
 
-    <p>A sauna installation needs two kinds of heat. The sauna heater heats the cabin itself — it brings the room to sauna temperature (80–110°C) and holds infusion stones for steam. The heater is specified to the cabin volume during the design phase.</p>
+    <p>A sauna installation needs two kinds of heat. The sauna heater heats the cabin itself — it brings the room to sauna temperature (80-110 C) and holds infusion stones for steam. The heater is specified to the cabin volume during the design phase.</p>
 
     <p>But the cabin sits inside a larger space. In a commercial building, the surrounding space needs continuous heating. In an outdoor installation, the changing room needs warmth and the cabin needs a warm baseline before the heater takes over. That ambient heat has to come from somewhere.</p>
 
@@ -469,8 +539,8 @@
     <div class="label">Heater and M4</div>
     <div class="flow">
         <div class="flow-row"><div class="flow-key">Sauna heater</div><div>Heats the sauna cabin to operating temperature. Finnish sauna, infusion stones, steam. Specified to cabin volume.</div></div>
-        <div class="flow-row"><div class="flow-key">M4 thermal</div><div>Heats the space around the cabin. Changing room warmth, cabin pre-warming to ~20°C baseline, hot water routing where applicable. Runs continuously or seasonally.</div></div>
-        <div class="flow-row"><div class="flow-key">Together</div><div>M4 holds the cabin at a warm baseline. The heater covers the delta to sauna temperature — not from ambient. In January without M4, the heater works from −5°C to 80°C. With M4, from 20°C to 80°C. Faster heat-up, better first session.</div></div>
+        <div class="flow-row"><div class="flow-key">M4 thermal</div><div>Heats the space around the cabin. Changing room warmth, cabin pre-warming to ~20 C baseline, hot water routing where applicable. Runs continuously or seasonally.</div></div>
+        <div class="flow-row"><div class="flow-key">Together</div><div>M4 holds the cabin at a warm baseline. The heater covers the delta to sauna temperature — not from ambient. In January without M4, the heater works from -5 C to 80 C. With M4, from 20 C to 80 C. Faster heat-up, better first session.</div></div>
     </div>
 
     <div class="sep"></div>
@@ -484,7 +554,7 @@
         <div class="flow-row"><div class="flow-key">Placement</div><div>Mounted in M3 changing room locker shelving (outdoor). Utility area (indoor).</div></div>
         <div class="flow-row"><div class="flow-key">Sound</div><div>Soundproofed enclosure. Negligible noise at property boundary.</div></div>
         <div class="flow-row"><div class="flow-key">Network</div><div>Ethernet or WiFi from site. Mining pool connection and monitoring.</div></div>
-        <div class="flow-row"><div class="flow-key">Hardware life</div><div>~4–5 years productive life. Simple swap — same enclosure, new unit.</div></div>
+        <div class="flow-row"><div class="flow-key">Hardware life</div><div>~4-5 years productive life. Simple swap — same enclosure, new unit.</div></div>
         <div class="flow-row"><div class="flow-key">Custody</div><div>Bitcoin mines to a wallet you control. Setup assistance included.</div></div>
     </div>
 
@@ -495,7 +565,7 @@
     <p class="muted" style="margin-bottom: 20px;">Runs 24/7 as primary building heating system. Continuous thermal demand means high utilisation. The space needs heat regardless — electricity is a heating cost you pay anyway. Bitcoin is upside. Net heating cost is lower and the site accumulates BTC on its balance sheet.</p>
 
     <p style="font-weight: 400; margin-bottom: 4px;">Private outdoor</p>
-    <p class="muted" style="margin-bottom: 20px;">Runs seasonally — heating season only, approximately October through April. Heats the changing room and holds the cabin at ~20°C baseline. Without M4 the heater works from −5°C to 80°C. With M4, from 20°C to 80°C. Faster heat-up, comfortable changing room on arrival.</p>
+    <p class="muted" style="margin-bottom: 20px;">Runs seasonally — heating season only, approximately October through April. Heats the changing room and holds the cabin at ~20 C baseline. Without M4 the heater works from -5 C to 80 C. With M4, from 20 C to 80 C. Faster heat-up, comfortable changing room on arrival.</p>
 
     <p class="muted" style="font-size: 0.8125rem;">The M4 is optional. Configured per site based on thermal demand, electricity cost, and climate. The <a href="https://siteplanning.lyn.page" style="text-decoration: underline; text-underline-offset: 2px;">site planning tool</a> evaluates each site individually.</p>
 </section>
@@ -504,21 +574,21 @@
 <!-- ============================================================
      CONFIGURATION
      ============================================================ -->
-<section>
+<section id="configuration">
     <div class="label">Configuration</div>
     <h2>Full outdoor configuration.</h2>
     <div class="sub">All seven modules assembled on site.</div>
 
-    <div class="img-full"><img src="images/config-preview.png" alt="LYN full outdoor configuration"></div>
+    <div class="img-full"><img src="images/config-preview.png" alt="LYN full outdoor configuration" data-lightbox></div>
 
     <div class="gallery">
-        <div class="gallery-item"><img src="images/m1-sauna.png" alt="M1 Sauna"><div class="gallery-caption">M1 Sauna</div></div>
-        <div class="gallery-item"><img src="images/m2-bridge.png" alt="M2 Swimming Bridge"><div class="gallery-caption">M2 Swimming Bridge</div></div>
-        <div class="gallery-item"><img src="images/m3-changing.png" alt="M3 Changing Room"><div class="gallery-caption">M3 Changing Room</div></div>
-        <div class="gallery-item"><img src="images/m4-thermal.png" alt="M4 Thermal Module"><div class="gallery-caption">M4 Thermal Module</div></div>
-        <div class="gallery-item"><img src="images/m5-shower.png" alt="M5 Outdoor Shower"><div class="gallery-caption">M5 Outdoor Shower</div></div>
-        <div class="gallery-item"><img src="images/m6-storage.png" alt="M6 Storage"><div class="gallery-caption">M6 Storage</div></div>
-        <div class="gallery-item"><img src="images/m7-plunge.png" alt="M7 Cold Plunge"><div class="gallery-caption">M7 Cold Plunge</div></div>
+        <div class="gallery-item"><img src="images/m1-sauna.png" alt="M1 Sauna" data-lightbox><div class="gallery-caption">M1 Sauna</div></div>
+        <div class="gallery-item"><img src="images/m2-bridge.png" alt="M2 Swimming Bridge" data-lightbox><div class="gallery-caption">M2 Swimming Bridge</div></div>
+        <div class="gallery-item"><img src="images/m3-changing.png" alt="M3 Changing Room" data-lightbox><div class="gallery-caption">M3 Changing Room</div></div>
+        <div class="gallery-item"><img src="images/m4-thermal.png" alt="M4 Thermal Module" data-lightbox><div class="gallery-caption">M4 Thermal Module</div></div>
+        <div class="gallery-item"><img src="images/m5-shower.png" alt="M5 Outdoor Shower" data-lightbox><div class="gallery-caption">M5 Outdoor Shower</div></div>
+        <div class="gallery-item"><img src="images/m6-storage.png" alt="M6 Storage" data-lightbox><div class="gallery-caption">M6 Storage</div></div>
+        <div class="gallery-item"><img src="images/m7-plunge.png" alt="M7 Cold Plunge" data-lightbox><div class="gallery-caption">M7 Cold Plunge</div></div>
     </div>
 </section>
 
@@ -526,7 +596,7 @@
 <!-- ============================================================
      PROCESS
      ============================================================ -->
-<section>
+<section id="process">
     <div class="label">Process</div>
     <h2>From interest to installation.</h2>
 
@@ -542,7 +612,7 @@
 
     <div class="label">Contact</div>
     <div class="contact-name">Julius Schulze-Berge</div>
-    <div class="contact-detail"><a href="mailto:julius@lyn.page">julius@lyn.page</a><br><a href="https://lyn.page">lyn.page</a></div>
+    <div class="contact-detail"><a href="/cdn-cgi/l/email-protection#4a203f26233f390a263324643a2b2d2f"><span class="__cf_email__" data-cfemail="4f253a23263a3c0f233621613f2e282a">[email&#160;protected]</span></a><br><a href="https://lyn.page">lyn.page</a></div>
 
     <div class="sep"></div>
 
@@ -551,7 +621,7 @@
 
     <div class="cta-row">
         <a href="#" onclick="window.print(); return false;">Download PDF</a>
-        <a href="mailto:julius@lyn.page">Email</a>
+        <a href="/cdn-cgi/l/email-protection#78120d14110d0b381401165608191f1d">Email</a>
     </div>
 
     <div class="footer-mark">LYN. — Modular sauna system. Finite by design.</div>
@@ -559,8 +629,8 @@
 
 </div>
 
-<!-- nav -->
-<button class="nav-trigger" onclick="toggleNav()" aria-label="Toggle navigation">–</button>
+<!-- site nav -->
+<button class="nav-trigger" onclick="toggleNav()" aria-label="Toggle navigation">-</button>
 <nav class="nav-menu" id="navMenu">
     <ul>
         <li><a href="sauna.html">sauna</a></li>
@@ -577,14 +647,48 @@
     <button class="theme-btn" onclick="toggleTheme()" id="themeBtn"></button>
 </nav>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ---- site nav ---- */
 var navMenu=document.getElementById('navMenu'),navTrigger=document.querySelector('.nav-trigger');
 function toggleNav(){navMenu.classList.toggle('open');navTrigger.classList.toggle('active')}
 function updateThemeBtn(){var c=document.documentElement.getAttribute('data-theme');document.getElementById('themeBtn').textContent=c==='dark'?'light mode':'dark mode'}
 function toggleTheme(){var h=document.documentElement,c=h.getAttribute('data-theme'),n=c==='dark'?'light':'dark';h.setAttribute('data-theme',n);localStorage.setItem('lyn-theme',n);updateThemeBtn()}
 document.addEventListener('click',function(e){if(!navMenu.contains(e.target)&&!navTrigger.contains(e.target)){navMenu.classList.remove('open');navTrigger.classList.remove('active')}});
 updateThemeBtn();
+
+/* ---- image loaded ---- */
 document.querySelectorAll('img').forEach(function(i){if(i.complete){i.classList.add('loaded')}else{i.addEventListener('load',function(){i.classList.add('loaded')})}});
-</script>
-</body>
-</html>
+
+/* ---- collapsible modules ---- */
+function toggleModule(header){
+    var entry = header.closest('.module-entry');
+    var toggle = entry.querySelector('.module-toggle');
+    entry.classList.toggle('open');
+    toggle.textContent = entry.classList.contains('open') ? '- specs' : '+ specs';
+}
+/* prevent image click from toggling module */
+document.querySelectorAll('.module-header .module-img').forEach(function(img){
+    img.addEventListener('click', function(e){ e.stopPropagation(); });
+});
+
+/* ---- lightbox ---- */
+var lightbox = document.getElementById('lightbox');
+var lightboxImg = lightbox.querySelector('img');
+document.querySelectorAll('[data-lightbox]').forEach(function(img){
+    img.style.cursor = 'pointer';
+    img.addEventListener('click', function(e){
+        e.preventDefault();
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('open');
+    });
+});
+lightbox.addEventListener('click', function(){ lightbox.classList.remove('open'); });
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') lightbox.classList.remove('open'); });
+
+/* ---- section nav active state ---- */
+var sections = document.querySelectorAll('section[id]');
+var navLinks = document.querySelectorAll('.section-nav a');
+var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+        var link = document.querySelector('.section-nav a[href="#'+entry.target.id+'"]');
