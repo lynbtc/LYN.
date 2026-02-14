@@ -21,16 +21,6 @@
         section { padding: 80px 0; border-bottom: 1px solid rgba(128,128,128,0.2); }
         section:last-of-type { border-bottom: none; }
 
-        /* ---- anchor nav ---- */
-        .section-nav { position: fixed; top: 50%; right: 20px; transform: translateY(-50%); z-index: 8; display: flex; flex-direction: column; gap: 6px; }
-        .section-nav a { display: flex; align-items: center; gap: 8px; text-decoration: none; }
-        .section-nav a:hover { opacity: 1; }
-        .section-nav .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); transition: background 0.2s, transform 0.2s; flex-shrink: 0; }
-        .section-nav a.active .dot { background: var(--text); transform: scale(1.4); }
-        .section-nav .dot-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.5625rem; color: var(--text-muted); opacity: 0; transition: opacity 0.15s; white-space: nowrap; pointer-events: none; }
-        .section-nav a:hover .dot-label { opacity: 1; }
-        .section-nav a.active .dot-label { opacity: 1; color: var(--text); }
-
         /* ---- cover ---- */
         .cover { min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: 80px 0 60px; border-bottom: 1px solid rgba(128,128,128,0.2); }
         .cover-logo { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 2.4rem; letter-spacing: -0.02em; margin-bottom: 6px; }
@@ -155,7 +145,6 @@
             .gallery { grid-template-columns: 1fr; }
             .spec-row { grid-template-columns: 130px 1fr; }
             .module-specs .spec-row { grid-template-columns: 100px 1fr; }
-            .section-nav { display: none; }
         }
 
         /* ---- print ---- */
@@ -169,9 +158,9 @@
             .module-toggle { display: none !important; }
             .module-header { cursor: default; }
             .step { page-break-inside: avoid; }
-            .nav-trigger, .nav-menu, .section-nav, .lightbox { display: none !important; }
+            .nav-trigger, .nav-menu, .lightbox { display: none !important; }
             .cta-row { display: none !important; }
-            .cover-footer + div { display: none !important; }
+            .cover-label + div { display: none !important; }
             img { max-width: 100%; page-break-inside: avoid; opacity: 1 !important; }
             .module-img { opacity: 1 !important; cursor: default; }
             .cover-hero img { opacity: 1 !important; }
@@ -194,16 +183,6 @@
     <img src="" alt="">
 </div>
 
-<!-- ---- SECTION NAV ---- -->
-<nav class="section-nav" id="sectionNav">
-    <a href="#about"><span class="dot"></span><span class="dot-label">about</span></a>
-    <a href="#modules"><span class="dot"></span><span class="dot-label">modules</span></a>
-    <a href="#outdoor"><span class="dot"></span><span class="dot-label">outdoor</span></a>
-    <a href="#indoor"><span class="dot"></span><span class="dot-label">indoor</span></a>
-    <a href="#heater"><span class="dot"></span><span class="dot-label">heater</span></a>
-    <a href="#configuration"><span class="dot"></span><span class="dot-label">configuration</span></a>
-    <a href="#process"><span class="dot"></span><span class="dot-label">process</span></a>
-</nav>
 
 <div class="sheet">
 
@@ -214,16 +193,13 @@
     <div>
         <div class="cover-logo">LYN.</div>
         <div class="cover-label">Product Sheet</div>
+        <div style="margin-top: 12px;"><a href="#" onclick="window.print(); return false;" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--text-muted); text-decoration: underline; text-underline-offset: 2px;">download pdf</a></div>
     </div>
     <div class="cover-hero"><img src="images/lake.png" alt="LYN outdoor sauna on lake"></div>
     <div class="cover-footer">
         2,100 numbered outdoor units. Unlimited bespoke indoor installations.<br>
         Designed by Morten Bo Jensen, Groundwork Studio.<br>
         Manufactured by KOERNER Saunabau, Albstadt — est. 1949.
-    </div>
-
-    <div style="margin-top: 24px;">
-        <a href="#" onclick="window.print(); return false;" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--text-muted); text-decoration: underline; text-underline-offset: 2px;">download pdf</a>
     </div>
 </div>
 
@@ -697,19 +673,6 @@ document.querySelectorAll('[data-lightbox]').forEach(function(img){
 lightbox.addEventListener('click', function(){ lightbox.classList.remove('open'); });
 document.addEventListener('keydown', function(e){ if(e.key==='Escape') lightbox.classList.remove('open'); });
 
-/* ---- section nav active state ---- */
-var sections = document.querySelectorAll('section[id]');
-var navLinks = document.querySelectorAll('.section-nav a');
-var observer = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-        var link = document.querySelector('.section-nav a[href="#'+entry.target.id+'"]');
-        if(link){
-            if(entry.isIntersecting){ link.classList.add('active'); }
-            else { link.classList.remove('active'); }
-        }
-    });
-}, { rootMargin: '-30% 0px -60% 0px' });
-sections.forEach(function(s){ observer.observe(s); });
 </script>
 </body>
 </html>
