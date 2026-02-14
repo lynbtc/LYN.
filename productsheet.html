@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LYN — Product Sheet</title>
+    <title>product sheet</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23262624' width='100' height='100' rx='12'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,6 +43,13 @@
         .img-full img, .img-pair img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.4s; }
         .img-full img.loaded, .img-pair img.loaded { opacity: 1; }
         .img-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 32px 0; }
+
+        /* gallery */
+        .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 32px 0; }
+        .gallery img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.4s; aspect-ratio: 4/3; object-fit: cover; }
+        .gallery img.loaded { opacity: 1; }
+        .gallery-caption { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); margin-top: 4px; }
+        .gallery-item { display: flex; flex-direction: column; }
 
         /* credentials */
         .creds { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 28px; }
@@ -121,6 +128,7 @@
             .module-grid { grid-template-columns: 140px 1fr; gap: 20px; }
             .creds { grid-template-columns: 1fr; gap: 24px; }
             .img-pair { grid-template-columns: 1fr; }
+            .gallery { grid-template-columns: 1fr; }
             .spec-row { grid-template-columns: 130px 1fr; }
             .module-specs .spec-row { grid-template-columns: 100px 1fr; }
         }
@@ -151,7 +159,7 @@
         <div class="cover-logo">LYN.</div>
         <div class="cover-label">Product Sheet</div>
     </div>
-    <div class="cover-hero"><img src="images/hero.png" alt="LYN outdoor sauna on coastline"></div>
+    <div class="cover-hero"><img src="images/lake.png" alt="LYN outdoor sauna on lake"></div>
     <div class="cover-footer">
         2,100 numbered outdoor units. Unlimited bespoke indoor installations.<br>
         Designed by Morten Bo Jensen, Groundwork Studio.<br>
@@ -503,9 +511,14 @@
 
     <div class="img-full"><img src="images/config-preview.png" alt="LYN full outdoor configuration"></div>
 
-    <div class="img-pair">
-        <img src="images/residence.png" alt="LYN residence — indoor installation">
-        <img src="images/indoor.png" alt="LYN indoor sauna in concrete architecture">
+    <div class="gallery">
+        <div class="gallery-item"><img src="images/m1-sauna.png" alt="M1 Sauna"><div class="gallery-caption">M1 Sauna</div></div>
+        <div class="gallery-item"><img src="images/m2-bridge.png" alt="M2 Swimming Bridge"><div class="gallery-caption">M2 Swimming Bridge</div></div>
+        <div class="gallery-item"><img src="images/m3-changing.png" alt="M3 Changing Room"><div class="gallery-caption">M3 Changing Room</div></div>
+        <div class="gallery-item"><img src="images/m4-thermal.png" alt="M4 Thermal Module"><div class="gallery-caption">M4 Thermal Module</div></div>
+        <div class="gallery-item"><img src="images/m5-shower.png" alt="M5 Outdoor Shower"><div class="gallery-caption">M5 Outdoor Shower</div></div>
+        <div class="gallery-item"><img src="images/m6-storage.png" alt="M6 Storage"><div class="gallery-caption">M6 Storage</div></div>
+        <div class="gallery-item"><img src="images/m7-plunge.png" alt="M7 Cold Plunge"><div class="gallery-caption">M7 Cold Plunge</div></div>
     </div>
 </section>
 
