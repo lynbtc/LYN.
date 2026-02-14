@@ -612,7 +612,7 @@
 
     <div class="label">Contact</div>
     <div class="contact-name">Julius Schulze-Berge</div>
-    <div class="contact-detail"><a href="/cdn-cgi/l/email-protection#4a203f26233f390a263324643a2b2d2f"><span class="__cf_email__" data-cfemail="4f253a23263a3c0f233621613f2e282a">[email&#160;protected]</span></a><br><a href="https://lyn.page">lyn.page</a></div>
+    <div class="contact-detail"><a href="mailto:julius@lyn.page">julius@lyn.page</a><br><a href="https://lyn.page">lyn.page</a></div>
 
     <div class="sep"></div>
 
@@ -621,7 +621,7 @@
 
     <div class="cta-row">
         <a href="#" onclick="window.print(); return false;">Download PDF</a>
-        <a href="/cdn-cgi/l/email-protection#78120d14110d0b381401165608191f1d">Email</a>
+        <a href="mailto:julius@lyn.page">Email</a>
     </div>
 
     <div class="footer-mark">LYN. — Modular sauna system. Finite by design.</div>
@@ -647,7 +647,7 @@
     <button class="theme-btn" onclick="toggleTheme()" id="themeBtn"></button>
 </nav>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ---- site nav ---- */
 var navMenu=document.getElementById('navMenu'),navTrigger=document.querySelector('.nav-trigger');
 function toggleNav(){navMenu.classList.toggle('open');navTrigger.classList.toggle('active')}
@@ -692,3 +692,13 @@ var navLinks = document.querySelectorAll('.section-nav a');
 var observer = new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
         var link = document.querySelector('.section-nav a[href="#'+entry.target.id+'"]');
+        if(link){
+            if(entry.isIntersecting){ link.classList.add('active'); }
+            else { link.classList.remove('active'); }
+        }
+    });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(function(s){ observer.observe(s); });
+</script>
+</body>
+</html>
