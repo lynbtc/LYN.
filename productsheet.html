@@ -48,6 +48,7 @@
         .img-full img, .img-pair img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.4s; }
         .img-full img.loaded, .img-pair img.loaded { opacity: 1; }
         .img-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 32px 0; }
+        .img-pair img { aspect-ratio: 3/2; object-fit: cover; }
         /* ---- lightbox ---- */
         .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; cursor: pointer; }
         .lightbox.open { opacity: 1; visibility: visible; }
