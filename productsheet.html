@@ -715,9 +715,19 @@ document.addEventListener('keydown', function(e) {
 
 /* ---- scroll hint fade ---- */
 var scrollHint = document.getElementById('scrollHint');
-window.addEventListener('scroll', function() {
-    if (window.scrollY > 60) { scrollHint.style.opacity = '0'; }
-}, { passive: true });
+var coverText = document.querySelector('.cover-text');
+var coverImage = document.querySelector('.cover-image');
+function updateScrollHint() {
+    if (window.scrollY > 60) { scrollHint.style.opacity = '0'; return; }
+    var hintTop = window.innerHeight - 140;
+    var textBottom = coverText.getBoundingClientRect().bottom;
+    var imgBottom = coverImage.getBoundingClientRect().bottom;
+    var contentBottom = Math.max(textBottom, imgBottom);
+    scrollHint.style.opacity = hintTop < contentBottom + 24 ? '0' : '0.4';
+}
+window.addEventListener('scroll', updateScrollHint, { passive: true });
+window.addEventListener('resize', updateScrollHint, { passive: true });
+updateScrollHint();
 
 /* ---- scroll reveal ---- */
 var reveals = document.querySelectorAll('section');
