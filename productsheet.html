@@ -27,8 +27,8 @@
 
         /* ---- cover ---- */
         .cover { padding: 350px 0 0; }
-        .cover-logo { display: none; }
         .cover-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--text-muted); }
+        .cover-title { font-family: 'IBM Plex Sans', -apple-system, sans-serif; font-weight: 300; font-size: 1.4rem; margin-bottom: 24px; }
         .cover-hero { margin: 48px 0; }
         .cover-hero img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.6s; }
         .cover-hero img.loaded { opacity: 1; }
@@ -133,7 +133,6 @@
             .sheet { padding: 0 24px; }
             section { padding: 56px 0; }
             .cover { padding: 120px 0 0; }
-            .cover-logo { display: none; }
             .cover-hero { margin: 32px 0; }
             .cover-footer { padding-bottom: 48px; }
             h2 { font-size: 1.2rem; }
@@ -211,11 +210,9 @@
      COVER
      ============================================================ -->
 <div class="cover">
-    <div>
-        <div class="cover-logo">Sauna</div>
-        <div class="cover-label">Product Sheet</div>
-    </div>
+    <div class="cover-label">Product Sheet</div>
     <div class="cover-hero"><img src="images/m1-sauna.png" alt="M1 Sauna Cabin — technical drawing"></div>
+    <div class="cover-title">Sauna</div>
     <div class="cover-footer">
         2,100 numbered outdoor units.<br>
         Designed by Morten Bo Jensen, Groundwork Studio.<br>
