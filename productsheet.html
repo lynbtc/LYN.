@@ -19,7 +19,7 @@
         a:hover { opacity: 0.6; }
 
         .sheet { max-width: 800px; margin: 0 auto; padding: 0 40px; }
-        section { padding: 80px 0; border-bottom: 1px solid rgba(128,128,128,0.2); }
+        section { padding: 80px 0; border-bottom: 1px solid rgba(128,128,128,0.2); scroll-margin-top: 24px; }
         section:last-of-type { border-bottom: none; }
         .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
         .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -115,24 +115,18 @@
         .contact-name { font-weight: 400; font-size: 0.9375rem; margin-bottom: 2px; }
         .contact-detail { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.8; }
         .contact-detail a { color: var(--text); text-decoration: underline; text-underline-offset: 2px; }
-        .cta-row { display: flex; gap: 16px; margin-top: 24px; }
-        .cta-row a { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; padding: 8px 24px; border: 1px solid var(--text); transition: background 0.2s, color 0.2s; }
-        .cta-row a:hover { background: var(--text); color: var(--bg); opacity: 1; }
-
         /* ---- site nav ---- */
-        .nav-trigger { position: fixed; top: 12px; right: 12px; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--text); background: none; border: none; cursor: pointer; z-index: 10; min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; transition: opacity 0.2s; }
+        .nav-trigger { position: fixed; top: 12px; right: 12px; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--text); background: none; border: none; cursor: pointer; z-index: 11; min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; transition: opacity 0.2s; }
         .nav-trigger:hover, .nav-trigger.active { opacity: 0.6; }
-        .nav-menu { position: fixed; top: 48px; right: 20px; background: var(--bg); border: 1px solid var(--text-muted); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: opacity 0.2s, transform 0.2s, visibility 0.2s; padding: 12px 16px; min-width: 140px; z-index: 10; }
+        .nav-menu { position: fixed; top: 48px; right: 20px; background: var(--bg); opacity: 0; visibility: hidden; transform: translateY(-8px); transition: opacity 0.2s, transform 0.2s, visibility 0.2s; padding: 12px 16px; min-width: 140px; z-index: 10; }
         .nav-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
-        .nav-menu ul { list-style: none; }
-        .nav-menu li { margin-bottom: 6px; }
-        .nav-menu li:last-child { margin-bottom: 0; }
+        .nav-group { list-style: none; margin-bottom: 16px; }
+        .nav-group:last-child { margin-bottom: 0; }
+        .nav-group li { margin-bottom: 5px; }
+        .nav-group li:last-child { margin-bottom: 0; }
         .nav-menu a, .nav-menu button { font-family: 'IBM Plex Sans', sans-serif; font-weight: 300; font-size: 14px; color: var(--text); background: none; border: none; cursor: pointer; padding: 0; transition: opacity 0.15s; display: block; }
         .nav-menu a:hover, .nav-menu button:hover { opacity: 0.6; }
-        .nav-menu .divider { height: 1px; background: var(--text-muted); opacity: 0.3; margin: 10px 0; }
-        .nav-menu .theme-btn { color: var(--text-muted); font-size: 13px; }
-        .nav-menu .nav-external { font-family: 'IBM Plex Sans', sans-serif; font-weight: 300; font-size: 14px; color: var(--text); display: block; transition: opacity 0.15s; }
-        .nav-menu .nav-external:hover { opacity: 0.6; }
+        .nav-menu .nav-muted { color: var(--text-muted); font-size: 13px; }
 
         /* ---- mobile ---- */
         @media (max-width: 700px) {
@@ -189,7 +183,7 @@
             .img-full img { opacity: 1 !important; }
             /* hide interactive elements */
             .nav-trigger, .nav-menu, .lightbox { display: none !important; }
-            .cta-row { display: none !important; }
+
 
             /* states */
             .reveal { opacity: 1 !important; transform: none !important; }
@@ -600,12 +594,6 @@
     <div class="contact-name">Julius Schulze-Berge</div>
     <div class="contact-detail"><a href="mailto:julius@lyn.page">julius@lyn.page</a><br><a href="https://lyn.page">lyn.page</a></div>
 
-    <div class="cta-row">
-        <a href="https://siteplanning.lyn.page" target="_blank">Site Planning Tool</a>
-        <a href="#" onclick="window.print(); return false;">Download PDF</a>
-        <a href="mailto:julius@lyn.page">Email</a>
-    </div>
-
 </section>
 
 </div>
@@ -613,28 +601,38 @@
 <!-- site nav -->
 <button class="nav-trigger" onclick="toggleNav()" aria-label="Toggle navigation">–</button>
 <nav class="nav-menu" id="navMenu">
-    <ul>
-        <li><a href="sauna.html">sauna</a></li>
-        <li><a href="spa.html">spa</a></li>
-        <li><a href="residence.html">residence</a></li>
-        <li><a href="onepager.html">onepager</a></li>
-        <li><a href="collaborate.html">collaborate</a></li>
-        <li><a href="documents.html">documents</a></li>
-        <li><a href="index.html">home</a></li>
+    <ul class="nav-group">
+        <li><a href="#about">about</a></li>
+        <li><a href="#modules">modules</a></li>
+        <li><a href="#outdoor">outdoor</a></li>
+        <li><a href="#indoor">indoor</a></li>
+        <li><a href="#heater">heater</a></li>
+        <li><a href="#process">process</a></li>
     </ul>
-    <div class="divider"></div>
-    <a href="https://siteplanning.lyn.page" target="_blank" class="nav-external">siteplanning</a>
-    <div class="divider"></div>
-    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn"></button>
+    <ul class="nav-group">
+        <li><a href="https://siteplanning.lyn.page" target="_blank">site planning tool</a></li>
+        <li><a href="#" onclick="window.print(); return false;">download pdf</a></li>
+        <li><a href="mailto:julius@lyn.page">email</a></li>
+    </ul>
+    <ul class="nav-group">
+        <li><a href="sauna.html">sauna</a></li>
+        <li><a href="documents.html">documents</a></li>
+    </ul>
+    <ul class="nav-group">
+        <li><button class="nav-muted" onclick="toggleTheme()" id="themeBtn"></button></li>
+    </ul>
 </nav>
 
 <script>
 /* ---- site nav ---- */
 var navMenu=document.getElementById('navMenu'),navTrigger=document.querySelector('.nav-trigger');
 function toggleNav(){navMenu.classList.toggle('open');navTrigger.classList.toggle('active')}
+function closeNav(){navMenu.classList.remove('open');navTrigger.classList.remove('active')}
 function updateThemeBtn(){var c=document.documentElement.getAttribute('data-theme');document.getElementById('themeBtn').textContent=c==='dark'?'light mode':'dark mode'}
 function toggleTheme(){var h=document.documentElement,c=h.getAttribute('data-theme'),n=c==='dark'?'light':'dark';h.setAttribute('data-theme',n);localStorage.setItem('lyn-theme',n);updateThemeBtn()}
-document.addEventListener('click',function(e){if(!navMenu.contains(e.target)&&!navTrigger.contains(e.target)){navMenu.classList.remove('open');navTrigger.classList.remove('active')}});
+document.addEventListener('click',function(e){if(!navMenu.contains(e.target)&&!navTrigger.contains(e.target)){closeNav()}});
+navMenu.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(){closeNav()})});
+navMenu.querySelectorAll('a:not([href^="#"])').forEach(function(a){a.addEventListener('click',function(){closeNav()})});
 updateThemeBtn();
 
 /* ---- image loaded ---- */

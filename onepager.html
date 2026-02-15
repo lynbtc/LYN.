@@ -86,13 +86,12 @@
             opacity: 0.6;
         }
         
-        /* Nav menu - opens downward from top right */
+        /* Nav menu */
         .nav-menu {
             position: fixed;
             top: 48px;
             right: 20px;
             background: var(--bg);
-            border: 1px solid var(--text-muted);
             opacity: 0;
             visibility: hidden;
             transform: translateY(-8px);
@@ -106,13 +105,17 @@
             visibility: visible;
             transform: translateY(0);
         }
-        .nav-menu ul {
+        .nav-group {
             list-style: none;
+            margin-bottom: 16px;
         }
-        .nav-menu li {
-            margin-bottom: 6px;
+        .nav-group:last-child {
+            margin-bottom: 0;
         }
-        .nav-menu li:last-child {
+        .nav-group li {
+            margin-bottom: 5px;
+        }
+        .nav-group li:last-child {
             margin-bottom: 0;
         }
         .nav-menu a,
@@ -132,27 +135,9 @@
         .nav-menu button:hover {
             opacity: 0.6;
         }
-        .nav-menu .divider {
-            height: 1px;
-            background: var(--text-muted);
-            opacity: 0.3;
-            margin: 10px 0;
-        }
-        .nav-menu .theme-btn {
+        .nav-menu .nav-muted {
             color: var(--text-muted);
             font-size: 13px;
-        }
-        .nav-menu .nav-external {
-            font-family: 'IBM Plex Sans', sans-serif;
-            font-weight: 300;
-            font-size: 14px;
-            color: var(--text);
-            display: block;
-            transition: opacity 0.15s;
-            text-decoration: none;
-        }
-        .nav-menu .nav-external:hover {
-            opacity: 0.6;
         }
         
         @media (max-width: 900px) {
@@ -216,19 +201,17 @@
     <button class="nav-trigger" onclick="toggleNav()" aria-label="Toggle navigation">–</button>
 
     <nav class="nav-menu" id="navMenu">
-        <ul>
+        <ul class="nav-group">
             <li><a href="sauna.html">sauna</a></li>
-            <li><a href="spa.html">spa</a></li>
-            <li><a href="residence.html">residence</a></li>
-            <li><a href="onepager.html">onepager</a></li>
-            <li><a href="collaborate.html">collaborate</a></li>
+            <li><a href="productsheet.html">product sheet</a></li>
             <li><a href="documents.html">documents</a></li>
-            <li><a href="index.html">home</a></li>
         </ul>
-        <div class="divider"></div>
-        <a href="https://siteplanning.lyn.page" target="_blank" class="nav-external">siteplanning</a>
-        <div class="divider"></div>
-        <button class="theme-btn" onclick="toggleTheme()" id="themeBtn"></button>
+        <ul class="nav-group">
+            <li><a href="https://siteplanning.lyn.page" target="_blank">site planning tool</a></li>
+        </ul>
+        <ul class="nav-group">
+            <li><button class="nav-muted" onclick="toggleTheme()" id="themeBtn"></button></li>
+        </ul>
     </nav>
 
     <script>
