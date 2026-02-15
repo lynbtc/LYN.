@@ -126,7 +126,7 @@
         .nav-group li:last-child { margin-bottom: 0; }
         .nav-menu a, .nav-menu button { font-family: 'IBM Plex Sans', sans-serif; font-weight: 300; font-size: 14px; color: var(--text); background: none; border: none; cursor: pointer; padding: 0; transition: opacity 0.15s; display: block; }
         .nav-menu a:hover, .nav-menu button:hover { opacity: 0.6; }
-        .nav-menu .nav-muted { color: var(--text-muted); font-size: 13px; }
+        .nav-menu .nav-muted { color: var(--text-muted); }
 
         /* ---- mobile ---- */
         @media (max-width: 700px) {
@@ -598,15 +598,16 @@
 <button class="nav-trigger" onclick="toggleNav()" aria-label="Toggle navigation">–</button>
 <nav class="nav-menu" id="navMenu">
     <ul class="nav-group">
-        <li><a href="https://siteplanning.lyn.page" target="_blank">site planning tool</a></li>
-        <li><a href="#" onclick="window.print(); return false;">download pdf</a></li>
-        <li><a href="mailto:julius@lyn.page">email</a></li>
+        <li><a href="index.html">lyn.</a></li>
     </ul>
     <ul class="nav-group">
         <li><a href="sauna.html">sauna</a></li>
         <li><a href="documents.html">documents</a></li>
     </ul>
     <ul class="nav-group">
+        <li><a class="nav-muted" href="https://siteplanning.lyn.page" target="_blank">site planning tool</a></li>
+        <li><a class="nav-muted" href="#" onclick="window.print(); return false;">download pdf</a></li>
+        <li><a class="nav-muted" href="mailto:julius@lyn.page">email</a></li>
         <li><button class="nav-muted" onclick="toggleTheme()" id="themeBtn"></button></li>
     </ul>
 </nav>
