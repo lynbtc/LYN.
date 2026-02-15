@@ -87,5 +87,3 @@ Seven modules: M1 (sauna), M2 (swimming bridge), M3 (changing room), M4 (thermal
 - Deliver code changes as specific find → replace edits unless building a new page.
 - Don't rewrite files unnecessarily. Minimal diffs.
 - Before starting work on any page, check its current live state — the repo may have changes not reflected in conversation history.
-
-This is a test line.
