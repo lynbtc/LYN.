@@ -48,10 +48,6 @@
         .img-full img, .img-pair img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.4s; }
         .img-full img.loaded, .img-pair img.loaded { opacity: 1; }
         .img-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 32px 0; }
-        .img-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; }
-        .img-strip img { width: 100%; height: 100%; object-fit: cover; display: block; aspect-ratio: 16/9; opacity: 0; transition: opacity 0.6s; }
-        .img-strip img.loaded { opacity: 1; }
-
         /* ---- lightbox ---- */
         .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; cursor: pointer; }
         .lightbox.open { opacity: 1; visibility: visible; }
@@ -149,7 +145,6 @@
             .module-header { grid-template-columns: 160px 1fr; gap: 24px; }
             .creds { grid-template-columns: 1fr; gap: 24px; }
             .img-pair { grid-template-columns: 1fr; }
-            .img-strip { gap: 2px; }
             .spec-row { grid-template-columns: 130px 1fr; }
             .module-specs .spec-row { grid-template-columns: 100px 1fr; }
         }
@@ -191,9 +186,6 @@
             img { max-width: 100%; page-break-inside: avoid; opacity: 1 !important; }
             .module-img { opacity: 1 !important; cursor: default; }
             .img-full img { opacity: 1 !important; }
-            .img-strip { width: 100%; left: auto; right: auto; margin-left: 0; margin-right: 0; position: static; gap: 4px; page-break-inside: avoid; }
-            .img-strip img { opacity: 1 !important; }
-
             /* hide interactive elements */
             .nav-trigger, .nav-menu, .lightbox { display: none !important; }
             .cta-row { display: none !important; }
@@ -582,25 +574,6 @@
     <p class="muted" style="font-size: 0.8125rem;">The M4 is optional. Configured per site based on thermal demand, electricity cost, and climate. The <a href="https://siteplanning.lyn.page" style="text-decoration: underline; text-underline-offset: 2px;">site planning tool</a> evaluates each site individually.</p>
 </section>
 
-<!-- ---- image strip ---- -->
-<div class="img-strip">
-    <img src="images/hero.png" alt="LYN sauna on coast" data-lightbox>
-    <img src="images/spa.png" alt="LYN outdoor sauna installation" data-lightbox>
-    <img src="images/indoor.png" alt="LYN indoor sauna" data-lightbox>
-</div>
-
-
-<!-- ============================================================
-     CONFIGURATION
-     ============================================================ -->
-<section id="configuration">
-    <div class="label">Configuration</div>
-    <h2>Full outdoor configuration.</h2>
-    <div class="sub">All seven modules assembled on site.</div>
-
-    <div class="img-full"><img src="images/config-preview.png" alt="LYN full outdoor configuration" data-lightbox></div>
-</section>
-
 
 <!-- ============================================================
      PROCESS
@@ -715,7 +688,7 @@ document.addEventListener('keydown', function(e) {
 });
 
 /* ---- scroll reveal ---- */
-var reveals = document.querySelectorAll('section, .img-strip');
+var reveals = document.querySelectorAll('section');
 reveals.forEach(function(s){ s.classList.add('reveal'); });
 var observer = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
