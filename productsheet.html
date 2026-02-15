@@ -142,9 +142,11 @@
             .cover-image { min-height: 60vh; padding: 20px; }
             .cover-image img { max-height: 45vh; }
             h2 { font-size: 1.2rem; }
-            .module-header { grid-template-columns: 160px 1fr; gap: 24px; }
+            .module-header { grid-template-columns: 1fr; gap: 16px; }
+            .module-img { aspect-ratio: 3/2; object-fit: contain; }
             .creds { grid-template-columns: 1fr; gap: 24px; }
-            .img-pair { grid-template-columns: 1fr; }
+            .img-full, .img-pair { margin-left: -24px; margin-right: -24px; background: #111; padding: 32px 24px; }
+            .img-pair { grid-template-columns: 1fr; gap: 16px; }
             .spec-row { grid-template-columns: 130px 1fr; }
             .module-specs .spec-row { grid-template-columns: 100px 1fr; }
         }
