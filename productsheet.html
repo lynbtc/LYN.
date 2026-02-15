@@ -46,7 +46,7 @@
         .img-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 32px 0; }
 
         /* ---- gallery ---- */
-        .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 32px 0; }
+        .gallery { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 24px 0; }
         .gallery img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.4s; aspect-ratio: 4/3; object-fit: cover; cursor: pointer; }
         .gallery img.loaded { opacity: 1; }
         .gallery-caption { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); margin-top: 4px; }
@@ -141,7 +141,7 @@
             .module-header { grid-template-columns: 140px 1fr; gap: 20px; }
             .creds { grid-template-columns: 1fr; gap: 24px; }
             .img-pair { grid-template-columns: 1fr; }
-            .gallery { grid-template-columns: 1fr; }
+            .gallery { grid-template-columns: 1fr 1fr; }
             .spec-row { grid-template-columns: 130px 1fr; }
             .module-specs .spec-row { grid-template-columns: 100px 1fr; }
         }
