@@ -14,7 +14,7 @@
         [data-theme="dark"] { --bg: #1a1a1a; --text: #e0e0e0; --text-muted: #666666; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'IBM Plex Sans', -apple-system, sans-serif; font-weight: 300; font-size: 16px; line-height: 1.6; background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s; }
+        body { font-family: 'IBM Plex Sans', -apple-system, sans-serif; font-weight: 300; font-size: 16px; line-height: 1.6; background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s; text-transform: lowercase; }
         a { color: inherit; text-decoration: none; }
         a:hover { opacity: 0.6; }
 
@@ -154,7 +154,7 @@
         /* ---- print ---- */
         @media print {
             @page { size: A4; margin: 2cm 2.2cm; }
-            body { background: white !important; color: #1a1a1a !important; font-size: 9.5pt; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            body { background: white !important; color: #1a1a1a !important; font-size: 9.5pt; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; text-transform: none; }
             :root { --bg: white; --text: #1a1a1a; --text-muted: #888; }
             .sheet { max-width: none; padding: 0; }
 
