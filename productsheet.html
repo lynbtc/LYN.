@@ -602,14 +602,6 @@
 <button class="nav-trigger" onclick="toggleNav()" aria-label="Toggle navigation">–</button>
 <nav class="nav-menu" id="navMenu">
     <ul class="nav-group">
-        <li><a href="#about">about</a></li>
-        <li><a href="#modules">modules</a></li>
-        <li><a href="#outdoor">outdoor</a></li>
-        <li><a href="#indoor">indoor</a></li>
-        <li><a href="#heater">heater</a></li>
-        <li><a href="#process">process</a></li>
-    </ul>
-    <ul class="nav-group">
         <li><a href="https://siteplanning.lyn.page" target="_blank">site planning tool</a></li>
         <li><a href="#" onclick="window.print(); return false;">download pdf</a></li>
         <li><a href="mailto:julius@lyn.page">email</a></li>
@@ -627,12 +619,9 @@
 /* ---- site nav ---- */
 var navMenu=document.getElementById('navMenu'),navTrigger=document.querySelector('.nav-trigger');
 function toggleNav(){navMenu.classList.toggle('open');navTrigger.classList.toggle('active')}
-function closeNav(){navMenu.classList.remove('open');navTrigger.classList.remove('active')}
 function updateThemeBtn(){var c=document.documentElement.getAttribute('data-theme');document.getElementById('themeBtn').textContent=c==='dark'?'light mode':'dark mode'}
 function toggleTheme(){var h=document.documentElement,c=h.getAttribute('data-theme'),n=c==='dark'?'light':'dark';h.setAttribute('data-theme',n);localStorage.setItem('lyn-theme',n);updateThemeBtn()}
-document.addEventListener('click',function(e){if(!navMenu.contains(e.target)&&!navTrigger.contains(e.target)){closeNav()}});
-navMenu.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(){closeNav()})});
-navMenu.querySelectorAll('a:not([href^="#"])').forEach(function(a){a.addEventListener('click',function(){closeNav()})});
+document.addEventListener('click',function(e){if(!navMenu.contains(e.target)&&!navTrigger.contains(e.target)){navMenu.classList.remove('open');navTrigger.classList.remove('active')}});
 updateThemeBtn();
 
 /* ---- image loaded ---- */
