@@ -34,8 +34,8 @@ This repo auto-deploys to Netlify on push to main. **This is a live production s
 | spa.html | Spa concept | Split layout |
 | residence.html | Residence concept | Split layout |
 | productsheet.html | Interactive product sheet | Collapsible specs, lightbox, print CSS |
-| invest.html | Growth Credit | **Password-protected (lyn2100)** |
-| koerner.html | Manufacturing partner | **Password-protected (lyn2100)** |
+| invest.html | Growth Credit | **Password-protected** |
+| koerner.html | Manufacturing partner | **Password-protected** |
 
 ### Subdomains
 - siteplanning.lyn.page — M4 thermal module feasibility configurator (separate repo/deploy)
@@ -65,7 +65,7 @@ Every word earns its place. Every line of code earns its place. If it doesn't ad
 - JS: only when static HTML can't do it. No libraries unless unavoidable.
 
 ## Password gate
-Pages using password protection use `lyn2100`. Implementation is inline JS — no server-side auth. The gate hides content until correct password entered.
+Pages using password protection are gated with inline JS — no server-side auth. The gate hides content until correct password entered.
 
 ## Module system
 Seven modules: M1 (sauna), M2 (swimming bridge), M3 (changing room), M4 (thermal module), M5 (outdoor shower), M6 (outdoor storage), M7 (cold plunge).
