@@ -26,12 +26,13 @@
         @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
 
         /* ---- cover ---- */
-        .cover { display: flex; min-height: calc(100vh - 80px); }
+        .cover { display: flex; min-height: 100vh; position: relative; }
         .cover-text { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 80px 60px; max-width: 50%; }
         .cover-image { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; }
         .cover-image img { max-width: 100%; max-height: 80vh; object-fit: contain; opacity: 0; transition: opacity 0.6s; }
         .cover-image img.loaded { opacity: 1; }
         [data-theme="dark"] .cover-image img { filter: invert(1); }
+        .scroll-hint { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); font-family: 'IBM Plex Mono', monospace; font-size: 0.625rem; color: var(--text-muted); letter-spacing: 0.05em; opacity: 0.4; transition: opacity 0.6s; }
         .cover-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 28px; }
         .cover-title { font-weight: 300; margin-bottom: 28px; }
         .cover-subtitle { color: var(--text-muted); margin-bottom: 28px; }
@@ -164,7 +165,7 @@
             .cover-footer { margin-top: 40px; font-size: 8pt; line-height: 1.7; }
 
             /* hide interactive elements + download links */
-            .nav-trigger, .nav-menu, .lightbox { display: none !important; }
+            .nav-trigger, .nav-menu, .lightbox, .scroll-hint { display: none !important; }
             a[onclick*="print"] { display: none !important; }
 
             /* states */
@@ -247,6 +248,7 @@
     <div class="cover-image">
         <img src="images/m1-sauna.png" alt="M1 Sauna Cabin — technical drawing">
     </div>
+    <div class="scroll-hint" id="scrollHint">scroll</div>
 </div>
 
 <div class="sheet">
@@ -710,6 +712,12 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'ArrowRight') lbNext(e);
     if (e.key === 'ArrowLeft') lbPrev(e);
 });
+
+/* ---- scroll hint fade ---- */
+var scrollHint = document.getElementById('scrollHint');
+window.addEventListener('scroll', function() {
+    if (window.scrollY > 60) { scrollHint.style.opacity = '0'; }
+}, { passive: true });
 
 /* ---- scroll reveal ---- */
 var reveals = document.querySelectorAll('section');
