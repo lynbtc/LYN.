@@ -11,9 +11,15 @@
     <style>
         :root {
             --text: #1a1a1a;
-            --muted: #a0a0a0;
+            --text-muted: #a0a0a0;
             --bg: #fafafa;
             --border: #e0e0e0;
+        }
+        [data-theme="dark"] {
+            --text: #e0e0e0;
+            --text-muted: #666666;
+            --bg: #1a1a1a;
+            --border: #333333;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,7 +59,7 @@
             font-size: 0.8125rem;
             padding: 10px 16px;
             border: 1px solid var(--border);
-            background: #fff;
+            background: var(--bg);
             color: var(--text);
             text-align: center;
             outline: none;
@@ -63,7 +69,7 @@
         .gate-error {
             font-family: 'IBM Plex Mono', monospace;
             font-size: 0.6875rem;
-            color: var(--muted);
+            color: var(--text-muted);
             height: 16px;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -100,7 +106,7 @@
             font-weight: 400;
             font-size: 0.6875rem;
             letter-spacing: 0.04em;
-            color: var(--muted);
+            color: var(--text-muted);
             margin-bottom: 16px;
         }
         p {
@@ -110,7 +116,7 @@
             font-size: 0.8125rem;
         }
         .muted {
-            color: var(--muted);
+            color: var(--text-muted);
         }
         a.ref {
             color: var(--text);
@@ -118,7 +124,7 @@
             text-underline-offset: 3px;
         }
         a.ref:hover {
-            color: var(--muted);
+            color: var(--text-muted);
         }
 
         /* sections */
@@ -148,7 +154,7 @@
             vertical-align: top;
         }
         .data-table td:first-child {
-            color: var(--muted);
+            color: var(--text-muted);
             width: 45%;
             padding-right: 16px;
         }
@@ -194,7 +200,7 @@
         }
         .cta a.secondary {
             border-color: var(--border);
-            color: var(--muted);
+            color: var(--text-muted);
         }
         .cta a.secondary:hover {
             border-color: var(--text);
@@ -206,10 +212,90 @@
         .confidential {
             font-family: 'IBM Plex Mono', monospace;
             font-size: 0.625rem;
-            color: var(--muted);
+            color: var(--text-muted);
             text-transform: lowercase;
             letter-spacing: 0.04em;
             margin-top: 64px;
+        }
+
+        /* Nav trigger - top right */
+        .nav-trigger {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: var(--text);
+            background: none;
+            border: none;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 0.2s;
+            z-index: 10;
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-trigger:hover,
+        .nav-trigger.active {
+            opacity: 0.6;
+        }
+
+        /* Nav menu */
+        .nav-menu {
+            position: fixed;
+            top: 48px;
+            right: 20px;
+            background: var(--bg);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+            padding: 12px 16px;
+            min-width: 140px;
+            z-index: 10;
+        }
+        .nav-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .nav-group {
+            list-style: none;
+            margin-bottom: 16px;
+        }
+        .nav-group:last-child {
+            margin-bottom: 0;
+        }
+        .nav-group li {
+            margin-bottom: 5px;
+        }
+        .nav-group li:last-child {
+            margin-bottom: 0;
+        }
+        .nav-menu a,
+        .nav-menu button {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+            color: var(--text);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: opacity 0.15s;
+            display: block;
+            text-decoration: none;
+        }
+        .nav-menu a:hover,
+        .nav-menu button:hover {
+            opacity: 0.6;
+        }
+        .nav-menu .nav-muted {
+            color: var(--text-muted);
+            font-size: 13px;
         }
 
         /* print */
@@ -217,8 +303,17 @@
             .gate { display: none !important; }
             main { display: block !important; padding: 40px 0; }
             .cta { display: none; }
+            .nav-trigger, .nav-menu { display: none !important; }
         }
     </style>
+    <script>
+        (function() {
+            const saved = localStorage.getItem('lyn-theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = saved || (prefersDark ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
 </head>
 <body>
 
@@ -228,6 +323,22 @@
     <input type="password" id="password" placeholder="" autocomplete="off">
     <div class="gate-error" id="gate-error"></div>
 </div>
+
+    <button class="nav-trigger" onclick="toggleNav()" aria-label="Toggle navigation">–</button>
+
+    <nav class="nav-menu" id="navMenu">
+        <ul class="nav-group">
+            <li><a href="sauna.html">sauna</a></li>
+            <li><a href="productsheet.html">product sheet</a></li>
+            <li><a href="documents.html">documents</a></li>
+        </ul>
+        <ul class="nav-group">
+            <li><a href="https://siteplanning.lyn.page" target="_blank">site planning tool</a></li>
+        </ul>
+        <ul class="nav-group">
+            <li><button class="nav-muted" onclick="toggleTheme()" id="themeBtn"></button></li>
+        </ul>
+    </nav>
 
 <!-- content -->
 <main id="main">
@@ -442,6 +553,39 @@
     });
 
     passwordInput.focus();
+</script>
+
+<script>
+    const navMenu = document.getElementById('navMenu');
+    const navTrigger = document.querySelector('.nav-trigger');
+
+    function toggleNav() {
+        navMenu.classList.toggle('open');
+        navTrigger.classList.toggle('active');
+    }
+
+    function updateThemeBtn() {
+        const current = document.documentElement.getAttribute('data-theme');
+        document.getElementById('themeBtn').textContent = current === 'dark' ? 'light mode' : 'dark mode';
+    }
+
+    function toggleTheme() {
+        const html = document.documentElement;
+        const current = html.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('lyn-theme', next);
+        updateThemeBtn();
+    }
+
+    document.addEventListener('click', (e) => {
+        if (!navMenu.contains(e.target) && !navTrigger.contains(e.target)) {
+            navMenu.classList.remove('open');
+            navTrigger.classList.remove('active');
+        }
+    });
+
+    updateThemeBtn();
 </script>
 
 </body>
