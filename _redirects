@@ -1,3 +1,14 @@
+# Pretty URLs
+/sauna          /sauna.html          200
+/spa            /spa.html            200
+/residence      /residence.html      200
+/productsheet   /productsheet.html   200
+/documents      /documents.html      200
+/onepager       /onepager.html       200
+/collaborate    /collaborate.html     200
+/invest         /invest.html         200
+/koerner        /koerner.html        200
+
 # Redirect lynbitcoin.com to lyn.page
 https://lynbitcoin.com/documents/casestudy-archlending https://lyn.page/sauna 302
 https://lynbitcoin.com/lynsauna https://lyn.page/sauna 302
