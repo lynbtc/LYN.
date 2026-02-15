@@ -36,7 +36,7 @@
 
         /* ---- typography ---- */
         .label { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); letter-spacing: 0.03em; margin-bottom: 24px; }
-        h2 { font-weight: 400; font-size: 1.4rem; letter-spacing: -0.01em; margin-bottom: 8px; }
+        h2 { font-weight: 300; font-size: 1.4rem; letter-spacing: -0.01em; margin-bottom: 8px; }
         .sub { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 32px; }
         p { font-size: 0.875rem; line-height: 1.65; max-width: 580px; }
         p + p { margin-top: 16px; }
@@ -63,7 +63,7 @@
 
         /* ---- credentials ---- */
         .creds { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 32px; }
-        .cred-name { font-weight: 400; font-size: 0.875rem; margin-bottom: 4px; }
+        .cred-name { font-weight: 300; font-size: 0.875rem; margin-bottom: 4px; }
         .cred-detail { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; }
 
         /* ---- spec table ---- */
@@ -80,7 +80,7 @@
         .module-img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.4s; cursor: pointer; }
         .module-img.loaded { opacity: 1; }
         .module-code { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); margin-bottom: 4px; }
-        .module-name { font-weight: 400; font-size: 1rem; margin-bottom: 8px; }
+        .module-name { font-weight: 300; font-size: 1rem; margin-bottom: 8px; }
         .module-desc { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; max-width: 420px; }
         .module-toggle { font-family: 'IBM Plex Mono', monospace; font-size: 0.625rem; color: var(--text-muted); margin-top: 8px; opacity: 0.5; transition: opacity 0.15s; }
         .module-detail { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s ease; }
@@ -94,7 +94,7 @@
         .price-table { max-width: 500px; margin-top: 24px; }
         .price-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; font-size: 0.8125rem; border-bottom: 1px solid rgba(128,128,128,0.15); }
         .price-row:last-of-type { border-bottom: none; }
-        .price-row.total { background: rgba(128,128,128,0.06); margin: 8px -12px 0; padding: 8px 12px; font-weight: 400; border-bottom: none; }
+        .price-row.total { background: rgba(128,128,128,0.06); margin: 8px -12px 0; padding: 8px 12px; border-bottom: none; }
         .price-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; }
         .price-note { font-size: 0.75rem; color: var(--text-muted); margin-top: 16px; line-height: 1.6; }
 
@@ -108,11 +108,11 @@
         .step { display: grid; grid-template-columns: 80px 1fr; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(128,128,128,0.15); }
         .step:last-child { border-bottom: none; }
         .step-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); padding-top: 2px; }
-        .step-title { font-weight: 400; font-size: 0.875rem; margin-bottom: 4px; }
+        .step-title { font-weight: 300; font-size: 0.875rem; margin-bottom: 4px; }
         .step-desc { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; }
 
         /* ---- contact ---- */
-        .contact-name { font-weight: 400; font-size: 0.9375rem; margin-bottom: 2px; }
+        .contact-name { font-weight: 300; font-size: 0.9375rem; margin-bottom: 2px; }
         .contact-detail { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.8; }
         .contact-detail a { color: var(--text); text-decoration: underline; text-underline-offset: 2px; }
         /* ---- site nav ---- */
@@ -212,7 +212,7 @@
 <div class="cover">
     <div class="cover-label">Product Sheet</div>
     <div class="cover-hero"><img src="images/m1-sauna.png" alt="M1 Sauna Cabin — technical drawing"></div>
-    <div class="cover-title">Sauna</div>
+    <div class="cover-title">sauna.</div>
     <div class="cover-footer">
         2,100 numbered outdoor units.<br>
         Designed by Morten Bo Jensen, Groundwork Studio.<br>
@@ -559,10 +559,10 @@
     <div class="sep"></div>
 
     <div class="label">Site Application</div>
-    <p style="font-weight: 400; margin-bottom: 4px;">Commercial indoor</p>
+    <p style="margin-bottom: 4px;">Commercial indoor</p>
     <p class="muted" style="margin-bottom: 24px;">Runs 24/7 as primary building heating system. Continuous thermal demand means high utilisation. The space needs heat regardless — electricity is a heating cost you pay anyway. Bitcoin is upside. Net heating cost is lower and the site accumulates BTC on its balance sheet.</p>
 
-    <p style="font-weight: 400; margin-bottom: 4px;">Private outdoor</p>
+    <p style="margin-bottom: 4px;">Private outdoor</p>
     <p class="muted" style="margin-bottom: 24px;">Runs seasonally — heating season only, approximately October through April. Heats the changing room and holds the cabin at ~20 C baseline. Without M4 the heater works from -5 C to 80 C. With M4, from 20 C to 80 C. Faster heat-up, comfortable changing room on arrival.</p>
 
     <p class="muted" style="font-size: 0.8125rem;">The M4 is optional. Configured per site based on thermal demand, electricity cost, and climate. The <a href="https://siteplanning.lyn.page" style="text-decoration: underline; text-underline-offset: 2px;">site planning tool</a> evaluates each site individually.</p>
