@@ -21,7 +21,8 @@ Minimal website for LYN — modular saunas, finite by design.
 ## Typography
 - IBM Plex Sans 300 — body
 - IBM Plex Mono 400 — labels, mono
-- Inter 600 — nav, logo
+- Inter 600 — nav trigger only
+- Nav links use IBM Plex Sans 300 (same as body)
 ## Colors
 | Token | Light mode | Dark mode |
 |-------|-----------|-----------|
@@ -30,6 +31,11 @@ Minimal website for LYN — modular saunas, finite by design.
 | `--text-muted` | `#a0a0a0` | `#666666` |
 
 Theme persists via `localStorage` (`lyn-theme`). Respects `prefers-color-scheme` on first visit.
+## Navigation
+Two groups on every page via `–` trigger (top right):
+- **Pages:** home, sauna, spa, residence, product sheet, documents
+- **Utilities** (muted): site planning tool, dark mode — plus download pdf and email on product sheet
+
 ## Development
 Open any HTML file directly or serve locally:
 ```bash

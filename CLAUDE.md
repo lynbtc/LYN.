@@ -43,7 +43,8 @@ This repo auto-deploys to Netlify on push to main. **This is a live production s
 ## Design system
 - **Body text:** IBM Plex Sans 300
 - **Labels/mono:** IBM Plex Mono 400
-- **Logo/nav:** Inter 600
+- **Nav trigger:** Inter 600 (the `–` button only)
+- **Nav links:** IBM Plex Sans 300 (same as body)
 - **Background:** #fafafa
 - **Text:** #1a1a1a (or near-black)
 - **Layout:** Minimal. No cards, no boxes. Whitespace over borders. Lowercase labels.
@@ -63,6 +64,20 @@ Every word earns its place. Every line of code earns its place. If it doesn't ad
 - HTML should read almost like a document. Semantic, obvious structure.
 - CSS: as few rules as needed. No utility class sprawl. Whitespace does most of the work.
 - JS: only when static HTML can't do it. No libraries unless unavoidable.
+
+## Brand architecture
+- **LYN** — the operating firm. jsb's entity.
+- **Sauna.** — the product brand. The sauna itself, the modules, the tools, the service. Whitelabel-able for collaboration partners.
+- The website already reflects this separation naturally. LYN appears as the firm; Sauna. appears as the product.
+
+## Site navigation
+Every page has a nav triggered by `–` (top right). Two groups:
+
+**Pages** (regular color): home, sauna, spa, residence, product sheet, documents
+**Utilities** (muted via `nav-muted` class): site planning tool, dark mode toggle — plus download pdf and email on product sheet
+
+Same list on every page, including the current page. No self-link removal.
+Collaborate, onepager, invest, koerner are not in the nav — accessible via documents page.
 
 ## Password gate
 Pages using password protection are gated with inline JS — no server-side auth. The gate hides content until correct password entered.
