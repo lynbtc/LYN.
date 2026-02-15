@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>product sheet</title>
+    <meta name="description" content="LYN Sauna. 2,100 numbered outdoor units. Seven modules. Designed by Morten Bo Jensen, manufactured by KOERNER Saunabau.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23262624' width='100' height='100' rx='12'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,22 +21,25 @@
         .sheet { max-width: 800px; margin: 0 auto; padding: 0 40px; }
         section { padding: 80px 0; border-bottom: 1px solid rgba(128,128,128,0.2); }
         section:last-of-type { border-bottom: none; }
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
 
         /* ---- cover ---- */
-        .cover { display: flex; flex-direction: column; padding: 80px 0 60px; border-bottom: 1px solid rgba(128,128,128,0.2); }
-        .cover-logo { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 2.4rem; letter-spacing: -0.02em; margin-bottom: 6px; }
+        .cover { padding: 80px 0 0; }
+        .cover-logo { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 2.4rem; letter-spacing: -0.02em; margin-bottom: 8px; }
         .cover-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--text-muted); }
-        .cover-hero { margin: 24px 0; }
-        .cover-hero img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.4s; }
+        .cover-hero { margin: 48px 0; width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; }
+        .cover-hero img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.6s; }
         .cover-hero img.loaded { opacity: 1; }
-        .cover-footer { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.8; }
+        .cover-footer { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.8; padding-bottom: 64px; border-bottom: 1px solid rgba(128,128,128,0.2); }
 
         /* ---- typography ---- */
-        .label { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); letter-spacing: 0.03em; margin-bottom: 20px; }
-        h2 { font-weight: 400; font-size: 1.4rem; letter-spacing: -0.01em; margin-bottom: 6px; }
-        .sub { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 28px; }
+        .label { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); letter-spacing: 0.03em; margin-bottom: 24px; }
+        h2 { font-weight: 400; font-size: 1.4rem; letter-spacing: -0.01em; margin-bottom: 8px; }
+        .sub { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 32px; }
         p { font-size: 0.875rem; line-height: 1.65; max-width: 580px; }
-        p + p { margin-top: 14px; }
+        p + p { margin-top: 16px; }
         .muted { color: var(--text-muted); }
         .sep { margin-top: 48px; }
 
@@ -45,64 +49,63 @@
         .img-full img.loaded, .img-pair img.loaded { opacity: 1; }
         .img-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 32px 0; }
 
-        /* ---- gallery ---- */
-        .gallery { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 24px 0; }
-        .gallery img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.4s; aspect-ratio: 4/3; object-fit: cover; cursor: pointer; }
-        .gallery img.loaded { opacity: 1; }
-        .gallery-caption { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); margin-top: 4px; }
-        .gallery-item { display: flex; flex-direction: column; }
-
         /* ---- lightbox ---- */
-        .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s; cursor: pointer; }
+        .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; cursor: pointer; }
         .lightbox.open { opacity: 1; visibility: visible; }
-        .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; }
-        .lightbox-close { position: absolute; top: 20px; right: 24px; font-family: 'Inter', sans-serif; font-size: 18px; color: #fff; background: none; border: none; cursor: pointer; opacity: 0.6; transition: opacity 0.15s; }
-        .lightbox-close:hover { opacity: 1; }
+        .lightbox img { max-width: 88vw; max-height: 88vh; object-fit: contain; transition: opacity 0.2s ease; }
+        .lightbox-close { position: absolute; top: 24px; right: 24px; font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: rgba(255,255,255,0.5); background: none; border: none; cursor: pointer; transition: color 0.15s; letter-spacing: 0.03em; }
+        .lightbox-close:hover { color: rgba(255,255,255,0.9); }
+        .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); font-family: 'Inter', sans-serif; font-size: 24px; color: rgba(255,255,255,0.3); background: none; border: none; cursor: pointer; transition: color 0.15s; padding: 16px; }
+        .lightbox-nav:hover { color: rgba(255,255,255,0.8); }
+        .lightbox-prev { left: 16px; }
+        .lightbox-next { right: 16px; }
+        .lightbox-counter { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: rgba(255,255,255,0.35); letter-spacing: 0.05em; }
 
         /* ---- credentials ---- */
-        .creds { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 28px; }
+        .creds { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 32px; }
         .cred-name { font-weight: 400; font-size: 0.875rem; margin-bottom: 4px; }
         .cred-detail { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; }
 
         /* ---- spec table ---- */
-        .specs { margin-top: 20px; }
-        .spec-row { display: grid; grid-template-columns: 160px 1fr; gap: 12px; padding: 6px 0; font-size: 0.8125rem; border-bottom: 1px solid rgba(128,128,128,0.15); }
+        .specs { margin-top: 24px; }
+        .spec-row { display: grid; grid-template-columns: 160px 1fr; gap: 16px; padding: 8px 0; font-size: 0.8125rem; border-bottom: 1px solid rgba(128,128,128,0.15); }
         .spec-row:last-child { border-bottom: none; }
         .spec-key { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); padding-top: 1px; }
 
         /* ---- modules ---- */
         .module-entry { padding: 48px 0; border-bottom: 1px solid rgba(128,128,128,0.15); }
         .module-entry:last-child { border-bottom: none; }
-        .module-header { display: grid; grid-template-columns: 220px 1fr; gap: 32px; align-items: start; cursor: pointer; }
+        .module-header { display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: start; cursor: pointer; }
         .module-header:hover .module-toggle { opacity: 1; }
         .module-img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.4s; cursor: pointer; }
         .module-img.loaded { opacity: 1; }
         .module-code { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); margin-bottom: 4px; }
-        .module-name { font-weight: 400; font-size: 1rem; margin-bottom: 10px; }
+        .module-name { font-weight: 400; font-size: 1rem; margin-bottom: 8px; }
         .module-desc { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.6; max-width: 420px; }
-        .module-toggle { font-family: 'IBM Plex Mono', monospace; font-size: 0.625rem; color: var(--text-muted); margin-top: 10px; opacity: 0.5; transition: opacity 0.15s; }
-        .module-detail { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
-        .module-entry.open .module-detail { max-height: 600px; }
+        .module-toggle { font-family: 'IBM Plex Mono', monospace; font-size: 0.625rem; color: var(--text-muted); margin-top: 8px; opacity: 0.5; transition: opacity 0.15s; }
+        .module-detail { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s ease; }
+        .module-detail > div { overflow: hidden; }
+        .module-entry.open .module-detail { grid-template-rows: 1fr; }
         .module-entry.open .module-toggle { opacity: 1; }
-        .module-specs { margin-top: 16px; padding-top: 12px; }
+        .module-specs { margin-top: 16px; padding-top: 16px; }
         .module-specs .spec-row { grid-template-columns: 120px 1fr; }
 
         /* ---- pricing ---- */
-        .price-table { max-width: 500px; margin-top: 20px; }
+        .price-table { max-width: 500px; margin-top: 24px; }
         .price-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; font-size: 0.8125rem; border-bottom: 1px solid rgba(128,128,128,0.15); }
         .price-row:last-of-type { border-bottom: none; }
-        .price-row.total { background: rgba(128,128,128,0.08); margin: 8px -10px 0; padding: 10px; font-weight: 400; border-bottom: none; }
+        .price-row.total { background: rgba(128,128,128,0.06); margin: 8px -12px 0; padding: 8px 12px; font-weight: 400; border-bottom: none; }
         .price-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.8125rem; }
-        .price-note { font-size: 0.75rem; color: var(--text-muted); margin-top: 14px; line-height: 1.6; }
+        .price-note { font-size: 0.75rem; color: var(--text-muted); margin-top: 16px; line-height: 1.6; }
 
         /* ---- flow grid ---- */
-        .flow { margin-top: 20px; }
+        .flow { margin-top: 24px; }
         .flow-row { display: grid; grid-template-columns: 130px 1fr; gap: 12px; padding: 8px 0; font-size: 0.8125rem; border-bottom: 1px solid rgba(128,128,128,0.15); }
         .flow-row:last-child { border-bottom: none; }
         .flow-key { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); padding-top: 2px; }
 
         /* ---- steps ---- */
-        .step { display: grid; grid-template-columns: 80px 1fr; gap: 16px; padding: 18px 0; border-bottom: 1px solid rgba(128,128,128,0.15); }
+        .step { display: grid; grid-template-columns: 80px 1fr; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(128,128,128,0.15); }
         .step:last-child { border-bottom: none; }
         .step-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.6875rem; color: var(--text-muted); padding-top: 2px; }
         .step-title { font-weight: 400; font-size: 0.875rem; margin-bottom: 4px; }
@@ -113,7 +116,7 @@
         .contact-detail { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.8; }
         .contact-detail a { color: var(--text); text-decoration: underline; text-underline-offset: 2px; }
         .cta-row { display: flex; gap: 16px; margin-top: 24px; }
-        .cta-row a { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; padding: 9px 20px; border: 1px solid var(--text); transition: background 0.2s, color 0.2s; }
+        .cta-row a { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; padding: 8px 24px; border: 1px solid var(--text); transition: background 0.2s, color 0.2s; }
         .cta-row a:hover { background: var(--text); color: var(--bg); opacity: 1; }
 
         /* ---- site nav ---- */
@@ -135,41 +138,65 @@
         @media (max-width: 700px) {
             .sheet { padding: 0 24px; }
             section { padding: 56px 0; }
-            .cover { padding: 56px 0 40px; min-height: auto; }
+            .cover { padding: 56px 0 0; }
             .cover-logo { font-size: 2rem; }
+            .cover-hero { margin: 32px 0; }
+            .cover-footer { padding-bottom: 48px; }
             h2 { font-size: 1.2rem; }
-            .module-header { grid-template-columns: 140px 1fr; gap: 20px; }
+            .module-header { grid-template-columns: 160px 1fr; gap: 24px; }
             .creds { grid-template-columns: 1fr; gap: 24px; }
             .img-pair { grid-template-columns: 1fr; }
-            .gallery { grid-template-columns: 1fr 1fr; }
             .spec-row { grid-template-columns: 130px 1fr; }
             .module-specs .spec-row { grid-template-columns: 100px 1fr; }
         }
 
         /* ---- print ---- */
         @media print {
-            body { background: white !important; color: #1a1a1a !important; font-size: 10pt; }
-            :root { --bg: #fafafa; --text: #1a1a1a; --text-muted: #a0a0a0; }
-            .cover { min-height: auto; page-break-after: always; }
-            section { page-break-before: always; border-bottom: none; padding: 32px 0; }
-            .module-entry { page-break-inside: avoid; }
-            .module-detail { max-height: none !important; overflow: visible !important; }
+            @page { margin: 2cm 2.2cm; size: A4; }
+            body { background: white !important; color: #1a1a1a !important; font-size: 9.5pt; line-height: 1.5; }
+            :root { --bg: white; --text: #1a1a1a; --text-muted: #888; }
+            .sheet { max-width: none; padding: 0; }
+
+            /* cover */
+            .cover { page-break-after: always; padding-top: 48px; }
+            .cover-logo { font-size: 2rem; }
+            .cover-hero { width: 100%; left: auto; right: auto; margin-left: 0; margin-right: 0; position: static; margin: 32px 0; }
+            .cover-hero img { opacity: 1 !important; }
+            .cover-footer { padding-bottom: 0; border-bottom: none; }
+
+            /* sections */
+            section { border-bottom: none; padding: 40px 0 24px; }
+            section:first-of-type { page-break-before: avoid; }
+            .label { margin-bottom: 16px; }
+            h2 { margin-bottom: 4px; }
+            .sub { margin-bottom: 20px; }
+            .sep { margin-top: 32px; }
+
+            /* modules */
+            .module-entry { page-break-inside: avoid; padding: 32px 0; }
+            .module-header { grid-template-columns: 180px 1fr; gap: 24px; cursor: default; }
+            .module-detail { grid-template-rows: 1fr !important; }
+            .module-detail > div { overflow: visible !important; }
             .module-toggle { display: none !important; }
-            .module-header { cursor: default; }
+
+            /* steps */
             .step { page-break-inside: avoid; }
-            .nav-trigger, .nav-menu, .lightbox { display: none !important; }
-            .cta-row { display: none !important; }
-            .cover-label + div { display: none !important; }
+            .creds { page-break-inside: avoid; }
+
+            /* images */
             img { max-width: 100%; page-break-inside: avoid; opacity: 1 !important; }
             .module-img { opacity: 1 !important; cursor: default; }
-            .cover-hero img { opacity: 1 !important; }
             .img-full img { opacity: 1 !important; }
-            .gallery img { opacity: 1 !important; cursor: default; }
-            a { color: #1a1a1a; }
+
+            /* hide interactive elements */
+            .nav-trigger, .nav-menu, .lightbox { display: none !important; }
+            .cta-row { display: none !important; }
+
+            /* states */
+            .reveal { opacity: 1 !important; transform: none !important; }
+            a { color: #1a1a1a; text-decoration: none; }
             .muted, .sub, .label, .spec-key, .flow-key, .step-num, .cover-label, .cover-footer,
-            .module-code, .module-desc, .cred-detail, .contact-detail, .price-note, .step-desc,
-            .gallery-caption { color: #666 !important; }
-            @page { margin: 1.8cm; size: A4; }
+            .module-code, .module-desc, .cred-detail, .contact-detail, .price-note, .step-desc { color: #888 !important; }
         }
     </style>
     <script>(function(){var s=localStorage.getItem('lyn-theme'),d=window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.setAttribute('data-theme',s||(d?'dark':'light'));})()</script>
@@ -178,8 +205,11 @@
 
 <!-- ---- LIGHTBOX ---- -->
 <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" aria-label="Close">&#10005;</button>
+    <button class="lightbox-close" aria-label="Close">close</button>
+    <button class="lightbox-nav lightbox-prev" aria-label="Previous">&#8592;</button>
     <img src="" alt="">
+    <button class="lightbox-nav lightbox-next" aria-label="Next">&#8594;</button>
+    <div class="lightbox-counter" id="lightboxCounter"></div>
 </div>
 
 
@@ -192,7 +222,6 @@
     <div>
         <div class="cover-logo">Sauna</div>
         <div class="cover-label">Product Sheet</div>
-        <div style="margin-top: 12px;"><a href="#" onclick="window.print(); return false;" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--text-muted); text-decoration: underline; text-underline-offset: 2px;">download pdf</a></div>
     </div>
     <div class="cover-hero"><img src="images/lake.png" alt="LYN outdoor sauna on lake"></div>
     <div class="cover-footer">
@@ -539,10 +568,10 @@
 
     <div class="label">Site Application</div>
     <p style="font-weight: 400; margin-bottom: 4px;">Commercial indoor</p>
-    <p class="muted" style="margin-bottom: 20px;">Runs 24/7 as primary building heating system. Continuous thermal demand means high utilisation. The space needs heat regardless — electricity is a heating cost you pay anyway. Bitcoin is upside. Net heating cost is lower and the site accumulates BTC on its balance sheet.</p>
+    <p class="muted" style="margin-bottom: 24px;">Runs 24/7 as primary building heating system. Continuous thermal demand means high utilisation. The space needs heat regardless — electricity is a heating cost you pay anyway. Bitcoin is upside. Net heating cost is lower and the site accumulates BTC on its balance sheet.</p>
 
     <p style="font-weight: 400; margin-bottom: 4px;">Private outdoor</p>
-    <p class="muted" style="margin-bottom: 20px;">Runs seasonally — heating season only, approximately October through April. Heats the changing room and holds the cabin at ~20 C baseline. Without M4 the heater works from -5 C to 80 C. With M4, from 20 C to 80 C. Faster heat-up, comfortable changing room on arrival.</p>
+    <p class="muted" style="margin-bottom: 24px;">Runs seasonally — heating season only, approximately October through April. Heats the changing room and holds the cabin at ~20 C baseline. Without M4 the heater works from -5 C to 80 C. With M4, from 20 C to 80 C. Faster heat-up, comfortable changing room on arrival.</p>
 
     <p class="muted" style="font-size: 0.8125rem;">The M4 is optional. Configured per site based on thermal demand, electricity cost, and climate. The <a href="https://siteplanning.lyn.page" style="text-decoration: underline; text-underline-offset: 2px;">site planning tool</a> evaluates each site individually.</p>
 </section>
@@ -567,7 +596,7 @@
     <div class="label">Process</div>
     <h2>From interest to installation.</h2>
 
-    <div style="margin-top: 28px;">
+    <div style="margin-top: 32px;">
         <div class="step"><div class="step-num">01</div><div><div class="step-title">Site Review</div><div class="step-desc">Submit your site through the planning tool. Location, type, modules, electrical supply, water access, ground conditions. The tool generates a site-specific assessment.</div></div></div>
         <div class="step"><div class="step-num">02</div><div><div class="step-title">Project Page</div><div class="step-desc">You receive a project page with your site model, proposed configuration, M4 economics, heater sizing, and open questions. It updates as we work through details.</div></div></div>
         <div class="step"><div class="step-num">03</div><div><div class="step-title">Design Phase</div><div class="step-desc">We refine the configuration. Orientation, materials, finishes, heater specification. For indoor: architectural integration. Final pricing confirmed.</div></div></div>
@@ -592,7 +621,7 @@
 </div>
 
 <!-- site nav -->
-<button class="nav-trigger" onclick="toggleNav()" aria-label="Toggle navigation">-</button>
+<button class="nav-trigger" onclick="toggleNav()" aria-label="Toggle navigation">–</button>
 <nav class="nav-menu" id="navMenu">
     <ul>
         <li><a href="sauna.html">sauna</a></li>
@@ -636,17 +665,51 @@ document.querySelectorAll('.module-header .module-img').forEach(function(img){
 /* ---- lightbox ---- */
 var lightbox = document.getElementById('lightbox');
 var lightboxImg = lightbox.querySelector('img');
-document.querySelectorAll('[data-lightbox]').forEach(function(img){
+var lightboxCounter = document.getElementById('lightboxCounter');
+var lbImages = Array.from(document.querySelectorAll('[data-lightbox]'));
+var lbIndex = 0;
+
+function lbShow(idx) {
+    lbIndex = idx;
+    lightboxImg.src = lbImages[idx].src;
+    lightboxImg.alt = lbImages[idx].alt;
+    lightboxCounter.textContent = (idx + 1) + ' / ' + lbImages.length;
+}
+function lbNext(e) { e.stopPropagation(); lbShow((lbIndex + 1) % lbImages.length); }
+function lbPrev(e) { e.stopPropagation(); lbShow((lbIndex - 1 + lbImages.length) % lbImages.length); }
+function lbClose() { lightbox.classList.remove('open'); }
+
+lbImages.forEach(function(img, i) {
     img.style.cursor = 'pointer';
-    img.addEventListener('click', function(e){
+    img.addEventListener('click', function(e) {
         e.preventDefault();
-        lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt;
+        e.stopPropagation();
+        lbShow(i);
         lightbox.classList.add('open');
     });
 });
-lightbox.addEventListener('click', function(){ lightbox.classList.remove('open'); });
-document.addEventListener('keydown', function(e){ if(e.key==='Escape') lightbox.classList.remove('open'); });
+
+lightbox.querySelector('.lightbox-prev').addEventListener('click', lbPrev);
+lightbox.querySelector('.lightbox-next').addEventListener('click', lbNext);
+lightbox.querySelector('.lightbox-close').addEventListener('click', function(e) { e.stopPropagation(); lbClose(); });
+lightbox.addEventListener('click', lbClose);
+lightboxImg.addEventListener('click', function(e) { e.stopPropagation(); });
+document.addEventListener('keydown', function(e) {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') lbClose();
+    if (e.key === 'ArrowRight') lbNext(e);
+    if (e.key === 'ArrowLeft') lbPrev(e);
+});
+
+/* ---- scroll reveal ---- */
+var reveals = document.querySelectorAll('section');
+reveals.forEach(function(s){ s.classList.add('reveal'); });
+var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+}, { threshold: 0.08 });
+reveals.forEach(function(s){ observer.observe(s); });
 
 </script>
 </body>
